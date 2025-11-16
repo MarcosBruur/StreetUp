@@ -7,6 +7,8 @@
     <!-- Preamble de Vite DEV SERVER (OBLIGATORIO) -->
 
     <!-- Preamble de React Refresh -->
+    {% if debug %}
+
     <script type="module">
       import RefreshRuntime from "http://localhost:5173/@react-refresh";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -17,6 +19,15 @@
     <script type="module" src="http://localhost:5173/@vite/client"></script>
 
     <script type="module" src="http://localhost:5173/src/main.tsx"></script>
+    {% else %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="/static/assets/index-DHCA4LoT.css"
+    />
+    <script type="module" src="/static/assets/index-BqUkrhHp.js"></script>
+    {% endif %}
   </head>
   <body>
     <div id="root"></div>
