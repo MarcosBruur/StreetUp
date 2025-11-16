@@ -1,0 +1,97 @@
+import { z } from "zod";
+import type { JwtPayload } from "jwt-decode";
+export interface CustomJwtPayload extends JwtPayload {
+  user_id: string;
+}
+
+/**AUTH */
+export const AuthSchema = z.object({
+  userName: z.string(),
+  email: z.string(),
+  password: z.string(),
+  repeatPassword: z.string(),
+  profile: z.string().nullable(),
+});
+
+export const TokenSchema = z.object({
+  message: z.string(),
+  tokens: z.object({
+    refresh: z.string(),
+    access: z.string(),
+  }),
+});
+
+export const ActiveUserSchema = z.object({
+  confirmed: z.boolean(),
+  email: z.string(),
+  id: z.string(),
+  profile: z.string().nullable(),
+  userName: z.string(),
+});
+
+export type ActiveUser = z.infer<typeof ActiveUserSchema>;
+export type Token = z.infer<typeof TokenSchema> & { user: User };
+export type Auth = z.infer<typeof AuthSchema>;
+export type LoginForm = Pick<Auth, "email" | "password">;
+export type RegisterForm = Pick<
+  Auth,
+  "userName" | "email" | "password" | "repeatPassword"
+>;
+
+/**USERS */
+
+export const UserSchema = z.object({
+  id: z.string(),
+  userName: z.string(),
+  email: z.string(),
+  password: z.string(),
+  profile: z.string().nullable(),
+  isAuthenticated: z.boolean(),
+});
+
+export type User = z.infer<typeof UserSchema>;
+
+//export type Token = z.infer<typeof TokenSchema>;
+
+export type DraftUser = Omit<User, "id" | "profile">;
+
+//**PROFILES */
+export const ProfileStatusSchema = z.enum(["free", "busy"]);
+export type ProfileStatus = z.infer<typeof ProfileStatusSchema>;
+
+export const ProfileSchema = z.object({
+  id: z.string(),
+  photo: z.any(),
+  age: z.number(),
+  description: z.string(),
+  sports: z.array(z.string()),
+  status: ProfileStatusSchema,
+});
+
+export type Profile = z.infer<typeof ProfileSchema>;
+export type ProfileForm = Pick<
+  Profile,
+  "photo" | "age" | "description" | "sports"
+>;
+
+/**TEAMS */
+export const TeamSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  leader: z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
+  members: z.array(z.string()),
+  sport: z.string(),
+  description: z.string().nullable(),
+});
+
+export const TeamApiSchema = z.object({
+  count: z.number(),
+  next: z.string().nullable(),
+  previous: z.string().nullable(),
+  results: z.array(TeamSchema),
+});
+
+export type Team = z.infer<typeof TeamSchema>;

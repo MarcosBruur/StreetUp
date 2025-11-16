@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+  background-repeat: no-repeat; /* Evita que se repita */
+  background-position: center; /* Centra la imagen */
+  background-size: cover; /* Hace que ocupe toda la pantalla */
+  background-attachment: fixed;
+  margin: 0;
+  color: white;
+}
+
+.bg-auth {
+  background-image: url("/font_login.jpg");
+}

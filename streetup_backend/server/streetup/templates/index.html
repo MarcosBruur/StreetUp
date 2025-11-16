@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Testing Vite React</title>
+
+    <!-- Preamble de Vite DEV SERVER (OBLIGATORIO) -->
+
+    <!-- Preamble de React Refresh -->
+    <script type="module">
+      import RefreshRuntime from "http://localhost:5173/@react-refresh";
+      RefreshRuntime.injectIntoGlobalHook(window);
+      window.$RefreshReg$ = () => {};
+      window.$RefreshSig$ = () => (type) => type;
+      window._vite_plugin_react_preamble_installed_ = true;
+    </script>
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+
+    <script type="module" src="http://localhost:5173/src/main.tsx"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Archivo principal del proyecto React -->
+  </body>
+</html>
