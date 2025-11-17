@@ -7,7 +7,7 @@
     <!-- Preamble de Vite DEV SERVER (OBLIGATORIO) -->
 
     <!-- Preamble de React Refresh -->
-    {% if debug %}
+    {% if "localhost" in request.get_host %}
 
     <script type="module">
       import RefreshRuntime from "http://localhost:5173/@react-refresh";
@@ -24,9 +24,9 @@
       rel="stylesheet"
       type="text/css"
       media="screen"
-      href="/static/assets/index-DHCA4LoT.css"
+      href="/static/assets/index-BVS6k2Cl.css"
     />
-    <script type="module" src="/static/assets/index-BqUkrhHp.js"></script>
+    <script type="module" src="/static/assets/index-BVS6k2Cl.js"></script>
     {% endif %}
   </head>
   <body>

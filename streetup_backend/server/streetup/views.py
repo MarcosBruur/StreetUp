@@ -12,8 +12,19 @@ from .utils.jwt import login_with_jwt
 from .email.AuthEmail import AuthEmail
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.views.generic import TemplateView
+from django.conf import settings
 # Create your views here.
+
+
+class HomeView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["debug"] = settings.DEBUG  # ← aquí pasás la variable
+        return context
+
 
 class AuthViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
@@ -239,4 +250,5 @@ class TeamViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         team = serializer.save()
         return Response(TeamSerializer(team).data, status=status.HTTP_201_CREATED)
-    
+
+

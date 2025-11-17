@@ -19,11 +19,15 @@ from django.views.generic import TemplateView
 from django.urls import path,include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import render
+from streetup.views import HomeView
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('streetup.urls')),
+    path("", HomeView.as_view(), name="home"),
     #Catch-all para rutas de Vue
     re_path(r'^(?!api/|media/).*$', TemplateView.as_view(template_name='index.html')), 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

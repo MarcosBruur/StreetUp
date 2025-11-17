@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django.template.context_processors.debug",
             ],
         },
     },
@@ -97,7 +98,7 @@ import mongoengine
 
 mongoengine.connect(
     db='streetup',
-    host='mongodb+srv://marcosbruur_db_user:XZ6dqv37LAR0z55Y@cluster0.za6sv6n.mongodb.net/'
+    host=os.environ.get('DB_URL')
 )
 
 
