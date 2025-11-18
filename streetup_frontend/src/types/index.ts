@@ -65,13 +65,14 @@ export const ProfileSchema = z.object({
   age: z.number(),
   description: z.string(),
   sports: z.array(z.string()),
+  location: z.string(),
   status: ProfileStatusSchema,
 });
 
 export type Profile = z.infer<typeof ProfileSchema>;
 export type ProfileForm = Pick<
   Profile,
-  "photo" | "age" | "description" | "sports"
+  "photo" | "age" | "description" | "sports" | "location"
 >;
 
 /**TEAMS */

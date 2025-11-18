@@ -52,18 +52,22 @@ class ProfileSerializer(serializers.Serializer):
     id= serializers.CharField(read_only=True)
     age= serializers.IntegerField()
     description= serializers.CharField()
-    photoUrl=serializers.CharField(required=False)
-    sports=serializers.ListField()
+    photo=serializers.CharField(required=False)
+    sports = serializers.ListField(child=serializers.CharField())
     status = serializers.ChoiceField(choices=["free", "busy"],required=False)
+    location= serializers.CharField(required=False)
 
     def create(self, validated_data):
-
         profile = Profiles(**validated_data)
         profile.save()
         return profile
 
     def update(self, instance, validated_data):
         instance.age = validated_data.get('age', instance.age)
+        instance.photo = validated_data.get('photo', instance.photo)
+        instance.description = validated_data.get('description', instance.description)
+        instance.sports = validated_data.get('sports', instance.sports)
+        instance.location = validated_data.get('location',instance.location)
         instance.save()
         return instance
 
