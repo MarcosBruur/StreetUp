@@ -12,8 +12,19 @@ from .utils.jwt import login_with_jwt
 from .email.AuthEmail import AuthEmail
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.views.generic import TemplateView
+from django.conf import settings
 # Create your views here.
+
+
+class HomeView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["debug"] = settings.DEBUG  # ← aquí pasás la variable
+        return context
+
 
 class AuthViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
@@ -150,6 +161,47 @@ class ProfileViewSet(viewsets.ViewSet):
 
         return Response(ProfileSerializer(profile).data, status=status.HTTP_201_CREATED)
     
+    @action(detail=False,methods=['put'],parser_classes=[MultiPartParser, FormParser])
+    def editProfile(self, request):
+        try:
+            user = request.user.to_dict()
+            profile = Profiles.objects.get(id=user['profile'])
+
+            data = request.data.copy()
+
+            
+
+           
+            photo = request.FILES.get("photo")
+            
+            if photo:
+
+                import os
+                from django.conf import settings
+                from django.core.files.storage import default_storage
+
+                folder = os.path.join(settings.BASE_DIR, "media", "profiles")
+                os.makedirs(folder, exist_ok=True)
+
+                filename = default_storage.save(f"profiles/{photo.name}", photo)
+                data["photo"] = filename
+                
+
+                print(data)
+
+            
+            serializer = ProfileSerializer(profile, data=data, partial=True)
+            serializer.is_valid(raise_exception=True)
+
+            serializer.save()
+            return Response("Perfil actualizado", status=200)
+            
+
+           
+
+        except Profiles.DoesNotExist:
+            return Response('Perfil no encontrado', status=404)
+
     def retrieve(self,request,pk=None):
         try:
             profile = Profiles.objects.get(id=pk)
@@ -161,8 +213,8 @@ class ProfileViewSet(viewsets.ViewSet):
     @action(detail=False,methods=['get'])
     def getProfile(self,request):
         try:
-            user = request.user
-            profile = Profiles.objects.get(id=user.profile)
+            user = request.user.to_dict()
+            profile = Profiles.objects.get(id=user['profile'])
             serializer = ProfileSerializer(profile)
             return Response(serializer.data)
         
@@ -239,4 +291,5 @@ class TeamViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         team = serializer.save()
         return Response(TeamSerializer(team).data, status=status.HTTP_201_CREATED)
-    
+
+

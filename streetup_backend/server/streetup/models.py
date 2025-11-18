@@ -5,12 +5,12 @@ ProfileStatus = ["free","busy"]
 # Create your models here.
 
 class Profiles(Document):
-    photoUrl=fields.StringField()
+    photo=fields.StringField()
     age= fields.IntField(min_value=13,required=True)
     description= fields.StringField()
     sports=fields.ListField(fields.StringField())
     status=fields.StringField(required=True,choices=ProfileStatus,default="free")
-    
+    location=fields.StringField()
 
 
 

@@ -33,7 +33,10 @@ SECRET_KEY = 'django-insecure-pwi(wtslm=s5i&+s^bm#t-q5qljp4h)6me5toe667(6*o7@csk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+if DEBUG == True:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['marcos.alexis.ar']
 
 
 # Application definition
@@ -76,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django.template.context_processors.debug",
             ],
         },
     },
@@ -94,7 +98,8 @@ import mongoengine
 
 mongoengine.connect(
     db='streetup',
-    host='mongodb+srv://marcosbruur_db_user:XZ6dqv37LAR0z55Y@cluster0.za6sv6n.mongodb.net/'
+    host=os.environ.get("DB_URL")
+    
 )
 
 
@@ -185,15 +190,19 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(weeks=2),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
 CORS_ALLOW_ALL_ORIGINS = False    
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1.8000",
-]
+if DEBUG == True:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1.8000",
+    ]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "https://marcos.alexis.ar",
+    ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')

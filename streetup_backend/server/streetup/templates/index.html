@@ -3,10 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <title>Testing Vite React</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <!-- Preamble de Vite DEV SERVER (OBLIGATORIO) -->
 
     <!-- Preamble de React Refresh -->
+    {% if "localhost" in request.get_host %}
+
     <script type="module">
       import RefreshRuntime from "http://localhost:5173/@react-refresh";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -17,6 +24,15 @@
     <script type="module" src="http://localhost:5173/@vite/client"></script>
 
     <script type="module" src="http://localhost:5173/src/main.tsx"></script>
+    {% else %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="/static/assets/index-BVS6k2Cl.css"
+    />
+    <script type="module" src="/static/assets/index-BkgjISHd.js"></script>
+    {% endif %}
   </head>
   <body>
     <div id="root"></div>

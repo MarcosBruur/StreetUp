@@ -10,7 +10,7 @@ export default function Modal() {
   const queryParams = new URLSearchParams(location.search);
   const show = !!queryParams.get("new");
   const navigate = useNavigate();
-  console.log(show);
+
   return (
     <>
       <Transition appear show={show} as={Fragment}>
@@ -67,15 +67,6 @@ export default function Modal() {
                   </div>
 
                   <EditProfileForm />
-
-                  <div className="mt-5 flex flex-col justify-between gap-2">
-                    <button
-                      type="button"
-                      className="w-full rounded bg-emerald-500 hover:bg-emerald-600 p-3 font-bold uppercase text-white shadow"
-                    >
-                      Guardar
-                    </button>
-                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

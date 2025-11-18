@@ -12,6 +12,7 @@ export default function Profile() {
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
+    retry: 2,
   });
 
   return (
@@ -31,17 +32,20 @@ export default function Profile() {
 
       <div className="flex justify-center items-center h-full w-auto">
         <div
-          className="shadow-[0px_0px_53px_17px_rgba(147,51,234,0.5)] w-full md:w-1/2 h-11/12 border border-stone-300 grid grid-rows-5 grid-cols-6 rounded-xl bg-[url('/static/font_graffiti_cel.jpg')]
-    md:bg-[url('/static/font_graffiti.jpg')]"
-          style={{
-            backgroundImage:
-              "url('/static/font_graffiti_cel.jpg') md:url('/static/font_graffiti.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="shadow-[0px_0px_53px_17px_rgba(147,51,234,0.5)] w-full md:w-1/2 h-11/12 
+          border-10 border-double border-violet-700 grid grid-rows-5 grid-cols-6 rounded-xl 
+          bg-linear-to-b from-purple-900 via-purple-950 to-purple-900"
+
+          // style={{
+          //bg-[url('/static/font_graffiti_cel.jpg')] md:bg-[url('/static/font_graffiti.jpg')]
+          //   backgroundImage:
+          //     "url('/static/font_graffiti_cel.jpg') md:url('/static/font_graffiti.jpg')",
+          //   backgroundSize: "cover",
+          //   backgroundPosition: "center",
+          // }}
         >
           <div className="col-start-1 col-end-7">
-            <h2 className=" bg-black/60 text-xl font-bold capitalize text-white px-2 py-5 text-center md:text-start ">
+            <h2 className=" bg-black/60  text-xl font-bold capitalize text-white px-2 py-5 text-center ">
               {user?.userName}
             </h2>
           </div>
@@ -49,8 +53,8 @@ export default function Profile() {
           <div className="col-start-1 col-end-7 row-start-2 row-end-4 grid md:grid-cols-5 p-2 overflow-hidden gap-2">
             <div className="flex justify-center md:col-start-1 md:col-end-3">
               <img
-                src="/static/player.jpg"
-                alt=""
+                src={`/media/profiles/${data?.photo}.jpeg`}
+                alt="imagen perfil"
                 className="h-full rounded-xl "
               />
             </div>
@@ -75,7 +79,7 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="col-start-1 col-end-7 row-start-4 row-end-6 grid gap-2  mt-2 bg-black/40">
+          <div className="py-3 col-start-1 col-end-7 row-start-4 row-end-6 grid gap-2  mt-2 bg-black/40">
             {/* Me gusta */}
             <div className="flex justify-start items-center">
               <div className="bg-blue-600/50 px-4 py-2 ml-2 rounded-xl">
@@ -91,28 +95,34 @@ export default function Profile() {
             <div className="grid shadow-[0px_5px_53px_-4px_rgba(147,51,234,0.5)]">
               {/* Edad */}
               <div className="border-b-2 border-white inline-block w-fit ml-2 ">
-                <h2 className="font-medium text-lg text-fuchsia-600 ">
-                  {data?.age}
-                </h2>
+                <p className="font-bold text-lg ">
+                  Edad: <span className="font-normal">{data?.age}</span>
+                </p>
               </div>
 
               {/* Deportes */}
               <div className="border-b-2 border-white inline-block w-fit ml-2">
-                <h2 className="font-medium text-lg text-fuchsia-600 capitalize">
-                  {data?.sports}
-                </h2>
+                <p className="font-bold text-lg  capitalize">
+                  Deportes:
+                  {data?.sports.map((sport) => (
+                    <span className="font-normal" key={sport}>
+                      {" "}
+                      {sport}{" "}
+                    </span>
+                  ))}
+                </p>
               </div>
 
               {/* Nombre */}
               <div className="border-b-2 border-white inline-block w-fit ml-2">
-                <h2 className="font-medium text-lg text-fuchsia-600">
-                  Martín García
+                <h2 className="font-bold text-lg">
+                  <span className="font-normal">Martín García</span>
                 </h2>
               </div>
             </div>
 
             {/* Descripción */}
-            <div className="bg-green-600/50 px-4 py-2 m-2 rounded-xl shadow-[0px_5px_53px_-4px_rgba(34,197,94,0.5)]">
+            <div className="bg-black/40 px-4 py-2 m-2 rounded-xl shadow-[0px_5px_53px_-4px_rgba(34,197,94,0.5)]">
               <div className="flex gap-2 items-center justify-center">
                 <h2 className="font-medium text-lg text-white">
                   {data?.description}
@@ -124,11 +134,15 @@ export default function Profile() {
       </div>
       <div className="hidden md:flex justify-center">
         <button
-          className="bg-linear-to-r from-cyan-800 via-emerald-800 to-cyan-800 hover:scale-110 transition-transform  text-white px-15 py-2 
-      rounded uppercase font-bold text-lg"
+          className="bg-gray-200 w-1/6 border rounded-br-2xl rounded-tl-2xl 
+          hover:bg-gray-300 transition-all duration-500 
+          border-fuchsia-300 shadow-[0px_3px_19px_11px_#ea73ff] 
+          py-2  hover:shadow-[0px_3px_19px_11px_#ac0de0]"
           onClick={() => navigate(location.pathname + `?new=false`)}
         >
-          Editar
+          <p className="text-xl text-black font-bold hover:text-2xl transition-all">
+            Editar
+          </p>
         </button>
       </div>
 

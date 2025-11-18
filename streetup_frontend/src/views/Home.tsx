@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-4xl">Home</h1>
+      <h1 className="text-6xl font-bold shadow-2xl">Home ¡¡¡Actualizado!!!</h1>
       {/* <section>
           <h2 className="text-xl mt-5">Equipos</h2>
 

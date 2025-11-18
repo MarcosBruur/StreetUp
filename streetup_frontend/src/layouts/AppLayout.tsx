@@ -13,6 +13,7 @@ import SearchBar from "../components/sidebar/SearchBar";
 import SideBar from "../components/sidebar/SideBar";
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import Logo from "../components/global/Logo";
 
 export default function AppLayout() {
   const { data, isError, isLoading } = useAuth();
@@ -101,11 +102,7 @@ export default function AppLayout() {
 
               <main className="w-full md:w-[80%] p-5 overflow-y-auto">
                 <div className="flex justify-center">
-                  <div className="bg-linear-to-r from-cyan-800 to-fuchsia-800 w-1/4 rounded-xl">
-                    <h1 className="hidden md:block text-4xl font-bold text-center py-2 px-5">
-                      StreetUp
-                    </h1>
-                  </div>
+                  <Logo />
                 </div>
 
                 <Outlet />

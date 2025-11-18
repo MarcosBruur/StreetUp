@@ -39,7 +39,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <form noValidate onSubmit={handleSubmit(handleLogin)}>
+      <form onSubmit={handleSubmit(handleLogin)}>
         <div className="grid gap-2">
           <div className="grid md:flex md:items-center gap-2">
             <label
