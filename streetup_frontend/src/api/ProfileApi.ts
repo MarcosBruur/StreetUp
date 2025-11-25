@@ -5,7 +5,6 @@ import { type Profile, type ProfileForm } from "../types";
 export async function getProfile() {
   try {
     const { data } = await api("/profiles/getProfile/");
-
     return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {

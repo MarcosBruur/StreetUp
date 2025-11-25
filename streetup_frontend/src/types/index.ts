@@ -46,7 +46,7 @@ export const UserSchema = z.object({
   email: z.string(),
   password: z.string(),
   profile: z.string().nullable(),
-  isAuthenticated: z.boolean(),
+  confirmed: z.boolean(),
 });
 
 export type User = z.infer<typeof UserSchema>;
@@ -83,6 +83,7 @@ export const TeamSchema = z.object({
   members: z.array(z.string()),
   sport: z.string(),
   description: z.string().nullable(),
+  location: z.string().nullable(),
 });
 
 export const TeamApiSchema = z.array(
@@ -93,6 +94,7 @@ export const TeamApiSchema = z.array(
     members: z.array(z.string()),
     sport: z.string(),
     description: z.string(),
+    location: z.string(),
   })
 );
 
@@ -105,4 +107,7 @@ export const TeamsApiSchema = z.object({
 
 export type TeamApi = z.infer<typeof TeamApiSchema>;
 export type Team = z.infer<typeof TeamSchema>;
-export type TeamForm = Pick<Team, "name" | "description" | "sport">;
+export type TeamForm = Pick<
+  Team,
+  "name" | "description" | "sport" | "location"
+>;

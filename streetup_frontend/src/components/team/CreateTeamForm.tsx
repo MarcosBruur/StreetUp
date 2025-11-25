@@ -28,7 +28,6 @@ export default function CreateTeamForm() {
   } = useForm<TeamForm>();
 
   const handleEditProfile = (data: TeamForm) => {
-    console.log(data);
     mutate(data);
   };
 
@@ -67,6 +66,21 @@ export default function CreateTeamForm() {
             placeholder="Deporte de tu equipo"
             {...register("sport", {
               required: "Deporte obligatorio",
+            })}
+          />
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <label htmlFor="location" className="hidden">
+            Ubicación:
+          </label>
+          <input
+            type="text"
+            id="location"
+            className="bg-white px-2 w-full text-black"
+            placeholder="País,Provincia,Barrio"
+            {...register("location", {
+              required: "Ubicación obligatoria",
             })}
           />
         </div>

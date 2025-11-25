@@ -40,6 +40,7 @@ export default function NewProfileForm() {
       fd.append("sports", sport);
     });
 
+    fd.append("location", formData.location);
     mutate(fd);
   };
 
@@ -123,6 +124,27 @@ export default function NewProfileForm() {
               value="basquet"
               className="bg-white p-2 w-11/12 text-black"
               {...register("sports")}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-2">
+        <div className="grid md:flex md:items-center gap-2">
+          <label
+            htmlFor="location"
+            className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
+          >
+            Ubicación
+          </label>
+
+          <div className="flex justify-center md:w-full">
+            <input
+              type="text"
+              placeholder="País,Ciudad,Barrio"
+              id="location"
+              className="bg-white p-2 w-11/12 mb-2 text-black"
+              {...register("location")}
             />
           </div>
         </div>

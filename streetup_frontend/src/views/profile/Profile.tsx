@@ -122,7 +122,7 @@ export default function Profile() {
             </div>
 
             {/* Descripción */}
-            <div className="bg-black/40 px-4 py-2 m-2 rounded-xl shadow-[0px_5px_53px_-4px_rgba(34,197,94,0.5)]">
+            <div className="bg-black/40 px-4 py-2 m-2 rounded-xl ">
               <div className="flex gap-2 items-center justify-center">
                 <h2 className="font-medium text-lg text-white">
                   {data?.description}

@@ -115,6 +115,7 @@ class UserViewSet(viewsets.ViewSet):
         try:
             user = Users.objects.get(id=pk)
             serializer = UserSerializer(user)
+            
             return Response(serializer.data)    
         except Users.DoesNotExist:
             return Response('Usuario no econtrado',status=status.HTTP_404_NOT_FOUND)
@@ -161,6 +162,7 @@ class ProfileViewSet(viewsets.ViewSet):
         user = request.user
         user.profile = profile.id
         user.save(update_fields=['profile'])
+        print(ProfileSerializer(profile).data,"--------------------------------------")
 
         return Response(ProfileSerializer(profile).data, status=status.HTTP_201_CREATED)
     

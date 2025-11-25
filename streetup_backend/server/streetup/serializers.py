@@ -86,14 +86,27 @@ class ProfileSerializer(serializers.Serializer):
 class TeamSerializer(serializers.Serializer):
     id = serializers.CharField(read_only=True)
     name = serializers.CharField()
+    photo = serializers.FileField(required=False)
     leader = serializers.CharField(required=False)
     members = serializers.ListField(required=False)
     sport = serializers.CharField()
+    location = serializers.CharField(required=False)
     description = serializers.CharField()
+    photo_view = serializers.CharField(read_only=True, source='photo')
+
+
+    def to_representation(self, instance):
+        
+        data = super().to_representation(instance)
+        data['photo_view'] = instance.photo
+        return data
 
     def create(self, validated_data):
+        photo = validated_data.pop('photo',None)
         team = Teams(**validated_data)
         team.save()
+
+        team.save_image(photo)
         return team
 
     def update(self, instance, validated_data):
@@ -101,6 +114,7 @@ class TeamSerializer(serializers.Serializer):
         instance.members = validated_data.get('members', instance.members)
         instance.sport = validated_data.get('sport', instance.sport)
         instance.description = validated_data.get('description', instance.description)
+        instance.location = validated_data.get('location', instance.location)
         instance.save()
         return instance
 
@@ -112,4 +126,5 @@ class TeamSerializer(serializers.Serializer):
             "members": [str(member.id) for member in instance.members],
             "sport": instance.sport,
             "description": instance.description,
+            "location": instance.location
         }
