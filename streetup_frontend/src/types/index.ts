@@ -79,20 +79,30 @@ export type ProfileForm = Pick<
 export const TeamSchema = z.object({
   id: z.string(),
   name: z.string(),
-  leader: z.object({
-    id: z.string(),
-    name: z.string(),
-  }),
+  leader: z.string(),
   members: z.array(z.string()),
   sport: z.string(),
   description: z.string().nullable(),
 });
 
-export const TeamApiSchema = z.object({
+export const TeamApiSchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    leader: z.string(),
+    members: z.array(z.string()),
+    sport: z.string(),
+    description: z.string(),
+  })
+);
+
+export const TeamsApiSchema = z.object({
   count: z.number(),
   next: z.string().nullable(),
   previous: z.string().nullable(),
   results: z.array(TeamSchema),
 });
 
+export type TeamApi = z.infer<typeof TeamApiSchema>;
 export type Team = z.infer<typeof TeamSchema>;
+export type TeamForm = Pick<Team, "name" | "description" | "sport">;

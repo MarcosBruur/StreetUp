@@ -79,7 +79,6 @@ export default function EditProfileForm() {
             className="bg-white px-2 w-full text-black"
             placeholder="Ingresa tu edad"
             {...register("age", {
-              required: "La edad es obligatoria",
               min: { value: 18, message: "Debes ser mayor de 18 años" },
               max: { value: 120, message: "Error, Edad imposible" },
             })}

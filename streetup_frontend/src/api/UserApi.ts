@@ -30,7 +30,8 @@ export async function loginUser(formData: LoginForm) {
       email: formData.email,
       password: formData.password,
     };
-    const { data } = await api.post<Token>("/auth/login_user/", request);
+
+    const { data } = await api.post<Token>("/auth/login/", request);
 
     const access = data.tokens["access"];
     const refresh = data.tokens["refresh"];

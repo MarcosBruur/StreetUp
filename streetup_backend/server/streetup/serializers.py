@@ -49,25 +49,36 @@ class TokenSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.Serializer):
-    id= serializers.CharField(read_only=True)
-    age= serializers.IntegerField()
-    description= serializers.CharField()
-    photo=serializers.CharField(required=False)
+    id = serializers.CharField(read_only=True)
+    age = serializers.IntegerField()
+    description = serializers.CharField()
+    photo = serializers.FileField(required=False)
     sports = serializers.ListField(child=serializers.CharField())
-    status = serializers.ChoiceField(choices=["free", "busy"],required=False)
-    location= serializers.CharField(required=False)
+    status = serializers.ChoiceField(choices=["free", "busy"], required=False)
+    location = serializers.CharField(required=False)
+    photo_view = serializers.CharField(read_only=True, source='photo')
 
+    def to_representation(self, instance):
+        
+        data = super().to_representation(instance)
+        data['photo_view'] = instance.photo
+        return data
+    
+    
     def create(self, validated_data):
+        photo = validated_data.pop('photo',None)
         profile = Profiles(**validated_data)
         profile.save()
-        return profile
 
+        profile.save_image(photo)
+        return profile
+    
     def update(self, instance, validated_data):
         instance.age = validated_data.get('age', instance.age)
         instance.photo = validated_data.get('photo', instance.photo)
         instance.description = validated_data.get('description', instance.description)
         instance.sports = validated_data.get('sports', instance.sports)
-        instance.location = validated_data.get('location',instance.location)
+        instance.location = validated_data.get('location', instance.location)
         instance.save()
         return instance
 
@@ -75,10 +86,10 @@ class ProfileSerializer(serializers.Serializer):
 class TeamSerializer(serializers.Serializer):
     id = serializers.CharField(read_only=True)
     name = serializers.CharField()
-    leader = serializers.CharField()
+    leader = serializers.CharField(required=False)
     members = serializers.ListField(required=False)
     sport = serializers.CharField()
-    description = serializers.CharField(required=False)
+    description = serializers.CharField()
 
     def create(self, validated_data):
         team = Teams(**validated_data)
@@ -87,6 +98,9 @@ class TeamSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
+        instance.members = validated_data.get('members', instance.members)
+        instance.sport = validated_data.get('sport', instance.sport)
+        instance.description = validated_data.get('description', instance.description)
         instance.save()
         return instance
 
@@ -94,10 +108,7 @@ class TeamSerializer(serializers.Serializer):
         return {
             "id": str(instance.id),
             "name": instance.name,
-            "leader": {
-                "id": str(instance.leader.id),
-                "name": instance.leader.userName  
-            },
+            "leader" :str(instance.leader.id),
             "members": [str(member.id) for member in instance.members],
             "sport": instance.sport,
             "description": instance.description,

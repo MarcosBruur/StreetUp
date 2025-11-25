@@ -15,8 +15,8 @@ export default function NewProfileForm() {
 
   const navigate = useNavigate();
   const { mutate } = useMutation({
-    mutationFn: createProfile,
-    onError: (error) => {
+    mutationFn: (data: FormData) => createProfile(data),
+    onError: (error: any) => {
       toast.error(error.message);
     },
     onSuccess: () => {
@@ -27,7 +27,20 @@ export default function NewProfileForm() {
 
   const { register, handleSubmit } = useForm<ProfileForm>();
   const handleCreateProfile = (formData: ProfileForm) => {
-    mutate(formData);
+    const fd = new FormData();
+
+    if (formData.photo && formData.photo[0]) {
+      fd.append("photo", formData.photo[0]);
+    }
+
+    fd.append("age", formData.age.toString());
+    fd.append("description", formData.description);
+
+    formData.sports?.forEach((sport) => {
+      fd.append("sports", sport);
+    });
+
+    mutate(fd);
   };
 
   return (
@@ -35,6 +48,7 @@ export default function NewProfileForm() {
       noValidate
       className="text-black"
       onSubmit={handleSubmit(handleCreateProfile)}
+      encType="multipart/form-data"
     >
       <div className="grid gap-2">
         <div className="grid md:flex md:items-center gap-2">

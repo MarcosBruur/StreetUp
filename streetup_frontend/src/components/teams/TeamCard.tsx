@@ -17,8 +17,7 @@ export default function TeamCard({ team }: { team: Team }) {
         <div className="text-start ml-5 mt-2 inline-grid gap-2 auto-cols-max">
           <div className="bg-gray-200/40 py-1 px-2 w-full">
             <p className="md:text-lg text-cyan-800 font-bold">
-              Lider:{" "}
-              <span className="font-black text-black">{team.leader.name}</span>
+              Lider: <span className="font-black text-black"></span>
             </p>
           </div>
           <div className="bg-gray-200/40 py-1 px-2 w-full">

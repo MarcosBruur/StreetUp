@@ -1,14 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import EditProfileForm from "./EditProfileForm";
+import CreateTeamForm from "./CreateTeamForm";
 
-export default function EditProfileModal() {
+export default function CreateTeamModal() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const show = !!queryParams.get("new");
+  const show = !!queryParams.get("edit");
   const navigate = useNavigate();
 
   return (
@@ -44,7 +44,7 @@ export default function EditProfileModal() {
               >
                 <Dialog.Panel className="transform overflow-hidden rounded-lg bg-linear-to-br from-gray-800 via-fuchsia-950 to-gray-800  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Personalizar Perfil</h2>
+                    <h2 className="text-2xl font-bold">Personalizar Equipo</h2>
                     <button
                       type="button"
                       onClick={() =>
@@ -56,17 +56,7 @@ export default function EditProfileModal() {
                     </button>
                   </div>
 
-                  <div className="flex justify-center mt-2">
-                    <div className="relative">
-                      <img src="player.jpg" alt="imagen de perfil" />
-
-                      <button className="absolute top-0 right-0 hover:scale-110 transition-transform">
-                        <PencilSquareIcon className="h-10 w-10" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <EditProfileForm />
+                  <CreateTeamForm />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

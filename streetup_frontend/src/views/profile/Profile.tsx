@@ -1,9 +1,9 @@
 import { HandThumbUpIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../components/profiles/EditProfileModal";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "../../api/ProfileApi";
 import { useAuth } from "../../hooks/useAuth";
+import EditProfileModal from "../../components/profiles/EditProfileModal";
 
 export default function Profile() {
   const { data: user } = useAuth();
@@ -53,7 +53,7 @@ export default function Profile() {
           <div className="col-start-1 col-end-7 row-start-2 row-end-4 grid md:grid-cols-5 p-2 overflow-hidden gap-2">
             <div className="flex justify-center md:col-start-1 md:col-end-3">
               <img
-                src={`/media/profiles/${data?.photo}.jpeg`}
+                src={`${data?.photo_view}`}
                 alt="imagen perfil"
                 className="h-full rounded-xl "
               />
@@ -104,7 +104,7 @@ export default function Profile() {
               <div className="border-b-2 border-white inline-block w-fit ml-2">
                 <p className="font-bold text-lg  capitalize">
                   Deportes:
-                  {data?.sports.map((sport) => (
+                  {data?.sports.map((sport: string) => (
                     <span className="font-normal" key={sport}>
                       {" "}
                       {sport}{" "}
@@ -113,11 +113,11 @@ export default function Profile() {
                 </p>
               </div>
 
-              {/* Nombre */}
               <div className="border-b-2 border-white inline-block w-fit ml-2">
-                <h2 className="font-bold text-lg">
-                  <span className="font-normal">Martín García</span>
-                </h2>
+                <p className="font-bold text-lg  capitalize">
+                  Ubicación:
+                  <span className="font-normal"> {data?.location}</span>
+                </p>
               </div>
             </div>
 
@@ -134,10 +134,11 @@ export default function Profile() {
       </div>
       <div className="hidden md:flex justify-center">
         <button
-          className="bg-gray-200 w-1/6 border rounded-br-2xl rounded-tl-2xl 
+          className="bg-gray-200 w-1/6 border rounded-br-2xl rounded-tl-2xl
+          hover:rounded-br-none hover:rounded-tl-none hover:rounded-bl-2xl hover:rounded-tr-2xl 
           hover:bg-gray-300 transition-all duration-500 
           border-fuchsia-300 shadow-[0px_3px_19px_11px_#ea73ff] 
-          py-2  hover:shadow-[0px_3px_19px_11px_#ac0de0]"
+          py-2  hover:shadow-[0px_3px_19px_11px_#ac0de0] "
           onClick={() => navigate(location.pathname + `?new=false`)}
         >
           <p className="text-xl text-black font-bold hover:text-2xl transition-all">
@@ -146,7 +147,7 @@ export default function Profile() {
         </button>
       </div>
 
-      <Modal />
+      <EditProfileModal />
     </>
   );
 }

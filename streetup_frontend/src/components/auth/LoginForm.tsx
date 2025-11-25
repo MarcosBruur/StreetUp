@@ -5,6 +5,7 @@ import { loginUser } from "../../api/UserApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import type { LoginForm as LoginFormType, LoginForm } from "../../types";
+import PasswordInput from "./PasswordInput";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       toast.success(data?.message);
-      console.log(data?.user.profile);
 
       if (data?.user.profile === null) {
         navigate("/new_profile");
@@ -77,18 +77,9 @@ export default function LoginForm() {
               Contraseña
             </label>
             <div className="flex justify-center md:w-full">
-              <input
-                type="text"
-                id="password"
-                placeholder="Contraseña"
-                className="bg-white p-2 w-11/12 text-black"
-                {...register("password", {
-                  required: "Contraseña obligatoria",
-                  minLength: {
-                    value: 8,
-                    message: "Minimo 8 caracteres",
-                  },
-                })}
+              <PasswordInput
+                register={register}
+                error={errors.password?.message}
               />
             </div>
           </div>

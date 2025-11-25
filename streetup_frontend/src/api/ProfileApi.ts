@@ -1,15 +1,12 @@
 import api from "../lib/axios";
 import { isAxiosError } from "axios";
-import { ProfileSchema, type Profile, type ProfileForm } from "../types";
+import { type Profile, type ProfileForm } from "../types";
 
 export async function getProfile() {
   try {
     const { data } = await api("/profiles/getProfile/");
-    const response = ProfileSchema.safeParse(data);
-    console.log(response);
-    if (response.success) {
-      return response.data;
-    }
+
+    return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);
@@ -17,21 +14,12 @@ export async function getProfile() {
   }
 }
 
-export async function createProfile(formData: ProfileForm) {
-  try {
-    const { data: profileData } = await api.post<Profile>(
-      "/profiles/",
-      formData
-    );
-    return profileData;
-  } catch (error) {
-    if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.error);
-    }
-    throw new Error("Error creando el perfil");
-  }
-}
-
+export const createProfile = async (data: FormData) => {
+  const res = await api.post("/profiles/", data, {
+    withCredentials: true,
+  });
+  return res.data;
+};
 export async function editProfile(data: ProfileForm) {
   const formData = new FormData();
 

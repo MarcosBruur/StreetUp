@@ -1,17 +1,43 @@
 from mongoengine import Document,fields,CASCADE,DO_NOTHING,NULLIFY
-from datetime import datetime,timedelta
+from datetime import datetime
+import uuid
+import os
+import uuid
+from PIL import Image
+from django.conf import settings
+UPLOAD_DIR = os.path.join(settings.MEDIA_ROOT, "profiles")
 
 ProfileStatus = ["free","busy"]
 # Create your models here.
 
-class Profiles(Document):
-    photo=fields.StringField()
-    age= fields.IntField(min_value=13,required=True)
-    description= fields.StringField()
-    sports=fields.ListField(fields.StringField())
-    status=fields.StringField(required=True,choices=ProfileStatus,default="free")
-    location=fields.StringField()
 
+
+class Profiles(Document):
+    photo = fields.StringField()
+    age = fields.IntField(min_value=13, required=True)
+    description = fields.StringField()
+    sports = fields.ListField(fields.StringField())
+    status = fields.StringField(required=True, choices=["free", "busy"], default="free")
+    location = fields.StringField()
+
+    def save_image(self, file_obj):
+        # Asegurar directorio
+        os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+        # Nombre único
+        nombre = f"{uuid.uuid4()}.webp"
+        path = os.path.join(UPLOAD_DIR, nombre)
+
+        # Convertir a webp
+        img = Image.open(file_obj).convert("RGB")
+        img.save(path, "WEBP", quality=90)
+
+        # Guardar ruta relativa
+        self.imagen = f"profiles/{nombre}"
+       
+        self.photo =  f"media/profiles/{nombre}"
+        self.save()
+    
 
 
 class Users(Document):
@@ -23,6 +49,7 @@ class Users(Document):
     reverse_delete_rule=NULLIFY,
     required=False
     )
+    
     confirmed = fields.BooleanField(default=False)
 
 
@@ -57,7 +84,7 @@ class Tokens(Document):
 
 class Teams(Document):
     name= fields.StringField(required=True)
-    leader= fields.ReferenceField('Users',reverse_delete_rule=NULLIFY,required=True)
+    leader= fields.ReferenceField('Users',reverse_delete_rule=NULLIFY,required=False)
     members=fields.ListField(fields.ReferenceField('Users',reverse_delete_rule=DO_NOTHING,required=True))
     sport=fields.StringField(required=True)
-    description=fields.StringField()
+    description=fields.StringField(required=True)

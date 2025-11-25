@@ -97,7 +97,7 @@ export default function RegisterForm() {
             </label>
             <div className="flex justify-center md:w-full">
               <input
-                type="text"
+                type="password"
                 id="password"
                 placeholder="Contraseña"
                 className="bg-white p-2 w-11/12 text-black"
@@ -124,7 +124,7 @@ export default function RegisterForm() {
             </label>
             <div className="flex justify-center md:w-full">
               <input
-                type="text"
+                type="password"
                 id="repeatPassword"
                 placeholder="Repetir"
                 className="bg-white p-2 w-11/12 text-black"

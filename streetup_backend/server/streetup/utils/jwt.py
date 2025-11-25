@@ -31,6 +31,9 @@ def login_with_jwt(request):
 
 
     user = Users.objects(email=email).first()
+    print("Email recibido:", email)
+    print("Usuario encontrado:", user)
+    print("Password match:", checkPassword(password, user.password) if user else "no")
     if not user or not checkPassword(password, user.password):
         return Response({"error": "Email o contraseña incorrectos"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -38,6 +41,7 @@ def login_with_jwt(request):
         return Response({"error": "Cuenta no confirmada"}, status=status.HTTP_403_FORBIDDEN)
 
     tokens = generate_jwt_for_user(user)
+
     return JsonResponse({
         "message":"Login exitoso",
         "tokens": tokens,

@@ -14,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.views.generic import TemplateView
 from django.conf import settings
+from rest_framework import parsers
+
 # Create your views here.
 
 
@@ -81,9 +83,9 @@ class AuthViewSet(viewsets.ViewSet):
         except Tokens.DoesNotExist:
             return JsonResponse({"error": "Invalid or expired token"}, status=status.HTTP_400_BAD_REQUEST)
         
-
+    
     @action(detail=False, methods=['post'])
-    def login_user(self, request):
+    def login(self, request):
         return login_with_jwt(request)
     
 
@@ -143,16 +145,17 @@ class UserViewSet(viewsets.ViewSet):
         
 class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
-    
-    def list(self,request):
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
+
+    def list(self, request):
         profile = Profiles.objects.all()
-        serializer = ProfileSerializer(profile,many=True)
+        serializer = ProfileSerializer(profile, many=True)
         return Response(serializer.data)
     
-    def create(self,request):
-        
+    def create(self, request):
         serializer = ProfileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         profile = serializer.save()
 
         user = request.user
@@ -285,11 +288,29 @@ class TeamViewSet(viewsets.ViewSet):
 
         serializer = TeamSerializer(paginated_teams, many=True)
         return paginator.get_paginated_response(serializer.data)
-    
-    def create(self,request):
-        serializer= TeamSerializer(data=request.data)
+           
+    def create(self, request):
+        serializer = TeamSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        team = serializer.save()
+
+        user = request.user 
+
+        validated = serializer.validated_data
+        validated["leader"] = user  
+
+        team = Teams.objects.create(**validated)
         return Response(TeamSerializer(team).data, status=status.HTTP_201_CREATED)
 
+    @action(methods=['get'],detail=False)
+    def getTeamsByUser(self,request):
+        try:
+            user = request.user
+            teams = Teams.objects.filter(leader=user)
+            serializer = TeamSerializer(teams, many=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        except Users.DoesNotExist:
+            return Response('Usuario no encontrado',status=status.HTTP_404_NOT_FOUND)
+        
+       
+    
 
