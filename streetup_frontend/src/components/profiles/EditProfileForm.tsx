@@ -1,15 +1,22 @@
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import { useMutation } from "@tanstack/react-query"; // TODO: Implementar la mutación
+import { useMutation, useQuery } from "@tanstack/react-query"; // TODO: Implementar la mutación
 import { useForm } from "react-hook-form";
 import Error from "../auth/Error";
 import type { ProfileForm } from "../../types";
 import { useRef } from "react";
-import { editProfile } from "../../api/ProfileApi";
+import { editProfile, getProfile } from "../../api/ProfileApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
+  const { data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    retry: 2,
+  });
+
+  console.log(data);
   const { mutate } = useMutation({
     mutationFn: editProfile,
     onError: (error) => {
@@ -25,12 +32,11 @@ export default function EditProfileForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<ProfileForm>();
+  } = useForm<ProfileForm>({ defaultValues: data });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEditProfile = (data: ProfileForm) => {
-    console.log(data);
     mutate(data);
   };
 
@@ -40,9 +46,12 @@ export default function EditProfileForm() {
       noValidate
       className="mt-2"
     >
+      <div className="flex flex-col"></div>
       <div className="flex justify-center mt-2">
         <div className="relative">
-          <img src="/static/player.jpg" alt="imagen de perfil" />
+          <div className="w-[200px] h-[200px]">
+            <img src={`${data.photo_view}`} alt="imagen de perfil" />
+          </div>
 
           <button
             type="button"

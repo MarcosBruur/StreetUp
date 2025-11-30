@@ -56,16 +56,6 @@ export default function EditProfileModal() {
                     </button>
                   </div>
 
-                  <div className="flex justify-center mt-2">
-                    <div className="relative">
-                      <img src="player.jpg" alt="imagen de perfil" />
-
-                      <button className="absolute top-0 right-0 hover:scale-110 transition-transform">
-                        <PencilSquareIcon className="h-10 w-10" />
-                      </button>
-                    </div>
-                  </div>
-
                   <EditProfileForm />
                 </Dialog.Panel>
               </Transition.Child>

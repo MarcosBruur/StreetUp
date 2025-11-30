@@ -1,127 +1,84 @@
+import { useEffect, useState } from "react";
+import Map, { Marker, Popup } from "react-map-gl/mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
+
+const MAPBOX_TOKEN =
+  "pk.eyJ1IjoibWFyY29zYnJ1dXIiLCJhIjoiY21pbDBhaWM0MWV0MTNlcHB4a2N1cTJ2MSJ9.Obi8EuY8j-rbL-51UPvh2w";
+
 export default function Home() {
-  // // 🔹 Cargar equipos con paginación
-  // useEffect(() => {
-  //   const fetchTeams = async () => {
-  //     setLoading(true);
-  //     const paginator = {
-  //       page: teamsCurrentPage,
-  //       page_size: pageSize,
-  //     };
+  const [viewState, setViewState] = useState({
+    latitude: 0,
+    longitude: 0,
+    zoom: 14,
+  });
 
-  //     try {
-  //       const data = await getTeams(paginator);
+  const [marker, setMarker] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
-  //       // Si es la primera página, reemplaza; si no, agrega (para mobile scroll)
-  //       if (teamsCurrentPage === 1 || window.innerWidth >= 768) {
-  //         setTeams(data?.results ?? []);
-  //       } else {
-  //         setTeams((prev) => [...prev, ...(data?.results ?? [])]);
-  //       }
+  const [loading, setLoading] = useState(true);
 
-  //       setTotalTeams(data?.count ?? 0);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
 
-  //   fetchTeams();
-  // }, [teamsCurrentPage]);
+        setViewState({
+          latitude,
+          longitude,
+          zoom: 14,
+        });
 
-  // const totalPages = Math.ceil(totalTeams / pageSize);
+        setMarker({ latitude, longitude });
 
-  // // 🔹 Scroll lateral para pantallas pequeñas
-  // useEffect(() => {
-  //   if (window.innerWidth >= 768) return;
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error ubicación:", err);
+        setLoading(false);
+      }
+    );
+  }, []);
 
-  //   const container = containerRef.current;
-  //   if (!container) return;
-
-  //   const handleScroll = () => {
-  //     const { scrollLeft, scrollWidth, clientWidth } = container;
-  //     const nearEnd = scrollLeft + clientWidth >= scrollWidth - 50;
-  //     if (nearEnd && !loading && teamsCurrentPage < totalPages) {
-  //       setTeamsCurrentPage((prev) => prev + 1);
-  //     }
-  //   };
-
-  //   container.addEventListener("scroll", handleScroll);
-  //   return () => container.removeEventListener("scroll", handleScroll);
-  // }, [loading, teamsCurrentPage, totalPages]);
+  if (loading) return <p>Cargando ubicación...</p>;
 
   return (
     <>
-      <h1 className="text-6xl font-bold shadow-2xl">Home ¡¡¡Actualizado!!!</h1>
-      {/* <section>
-          <h2 className="text-xl mt-5">Equipos</h2>
+      <h1 className="text-2xl font-bold">StreetUp</h1>
 
-          <div
-            ref={containerRef}
-            className="
-              flex gap-4 mt-5 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide
-              md:grid md:grid-cols-2 md:grid-rows-1 md:overflow-visible
-            "
+      <div className="flex justify-center mt-10">
+        <Map
+          {...viewState}
+          onMove={(e) => setViewState(e.viewState)}
+          style={{ width: 800, height: 600, borderRadius: 10 }}
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapboxAccessToken={MAPBOX_TOKEN}
+        >
+          {/* --- POPUP CORRECTO (mapbox) --- */}
+          <Popup
+            longitude={marker.longitude}
+            latitude={marker.latitude}
+            closeButton={false}
+            anchor="top"
+            className="text-black text-ml"
           >
-            {teams.map((team) => (
-              <div
-                key={team.id}
-                className="shrink-0 w-[85%] snap-start md:w-auto"
-              >
-                <TeamCard team={team} />
-              </div>
-            ))}
-          </div>
+            Estás aquí
+          </Popup>
 
-          <div className="hidden md:flex justify-center gap-4 mt-6">
-            <button
-              disabled={teamsCurrentPage === 1}
-              onClick={() => setTeamsCurrentPage((prev) => prev - 1)}
-              className={`px-4 py-2 rounded-lg font-semibold transition ${
-                teamsCurrentPage === 1
-                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                  : "bg-gray-800 text-white hover:bg-gray-700"
-              }`}
-            >
-              Anterior
-            </button>
-
-            <span className="self-center font-bold text-lg">
-              Página {teamsCurrentPage} / {totalPages || 1}
-            </span>
-
-            <button
-              disabled={teamsCurrentPage === totalPages}
-              onClick={() => setTeamsCurrentPage((prev) => prev + 1)}
-              className={`px-4 py-2 rounded-lg font-semibold transition ${
-                teamsCurrentPage === totalPages
-                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                  : "bg-gray-800 text-white hover:bg-gray-700"
-              }`}
-            >
-              Siguiente
-            </button>
-          </div>
-
-          {loading && (
-            <p className="text-center text-gray-500 mt-3">
-              Cargando equipos...
-            </p>
-          )}
-        </section> */}
-
-      {/*         
-        <section>
-          <h2 className="text-xl mt-8">Jugadores Cerca</h2>
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
-            {data
-              .filter((user) => user.profile !== null)
-
-              .map((user) => (
-                <PlayerCard key={user.id} player={user} />
-              ))}
-          </div>
-        </section> */}
+          {/* --- MARCADOR DRAGGABLE --- */}
+          <Marker
+            longitude={marker.longitude}
+            latitude={marker.latitude}
+            draggable
+            onDragEnd={(e) => {
+              const { lng, lat } = e.lngLat;
+              setMarker({ latitude: lat, longitude: lng });
+            }}
+            color="red"
+          />
+        </Map>
+      </div>
     </>
   );
 }
