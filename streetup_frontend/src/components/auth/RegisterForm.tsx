@@ -3,18 +3,18 @@ import { useMutation } from "@tanstack/react-query";
 
 import { createUser } from "../../api/UserApi";
 import { toast } from "react-toastify";
+import PasswordInput from "./PasswordInput";
+import Error from "./Error";
+import type { RegisterForm } from "../../types";
 
 export default function RegisterForm() {
   const { mutate } = useMutation({
     mutationFn: createUser,
     onError: (error) => {
-      console.log(error);
       const message = error.message;
-
       setError("email", { type: "manual", message });
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       toast.success("Usuario creado correctamente");
     },
   });
@@ -22,12 +22,12 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-
     setError,
     watch,
-  } = useForm();
+    formState: { errors },
+  } = useForm<RegisterForm>();
 
-  const handleRegister = (data: any) => {
+  const handleRegister = (data: RegisterForm) => {
     mutate(data);
   };
 
@@ -56,7 +56,7 @@ export default function RegisterForm() {
               />
             </div>
           </div>
-          {/* {errors.userName && <Error>{errors.userName.message}</Error>} */}
+          {errors.userName && <Error>{errors.userName.message}</Error>}
         </div>
 
         <div className="grid gap-2">
@@ -84,7 +84,7 @@ export default function RegisterForm() {
               />
             </div>
           </div>
-          {/* {errors.email && <Error>{errors.email.message}</Error>} */}
+          {errors.email && <Error>{errors.email.message}</Error>}
         </div>
 
         <div className="grid gap-2">
@@ -96,22 +96,10 @@ export default function RegisterForm() {
               Contraseña
             </label>
             <div className="flex justify-center md:w-full">
-              <input
-                type="password"
-                id="password"
-                placeholder="Contraseña"
-                className="bg-white p-2 w-11/12 text-black"
-                {...register("password", {
-                  required: "Contraseña obligatoria",
-                  minLength: {
-                    value: 8,
-                    message: "Minimo 8 caracteres",
-                  },
-                })}
-              />
+              <PasswordInput register={register} isConfirmField={false} />
             </div>
           </div>
-          {/* {errors.password && <Error>{errors.password.message}</Error>} */}
+          {errors.password && <Error>{errors.password.message}</Error>}
         </div>
 
         <div className="grid gap-2 mt-2">
@@ -123,29 +111,12 @@ export default function RegisterForm() {
               Repetir
             </label>
             <div className="flex justify-center md:w-full">
-              <input
-                type="password"
-                id="repeatPassword"
-                placeholder="Repetir"
-                className="bg-white p-2 w-11/12 text-black"
-                {...register("repeatPassword", {
-                  required: "Contraseña obligatoria",
-                  minLength: {
-                    value: 8,
-                    message: "Minimo 8 caracteres",
-                  },
-                  validate: (value) => {
-                    return (
-                      value === passwordValue || "Las contraseñas no coinciden"
-                    );
-                  },
-                })}
-              />
+              <PasswordInput register={register} isConfirmField={true} />
             </div>
           </div>
-          {/* {errors.repeatPassword && (
-            // <Error>{errors.repeatPassword.message}</Error>
-          )} */}
+          {errors.repeatPassword && (
+            <Error>{errors.repeatPassword.message}</Error>
+          )}
         </div>
 
         <div className="flex justify-center">

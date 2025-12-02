@@ -6,9 +6,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import type { LoginForm as LoginFormType, LoginForm } from "../../types";
 import PasswordInput from "./PasswordInput";
+import { useState } from "react";
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const [disabledForm, setDisabledForm] = useState(false);
   const { mutate } = useMutation({
     mutationFn: loginUser,
     onError: (error) => {
@@ -17,7 +19,7 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       toast.success(data?.message);
-
+      setDisabledForm(true);
       if (data?.user.profile === null) {
         navigate("/new_profile");
       } else {
@@ -77,10 +79,7 @@ export default function LoginForm() {
               Contraseña
             </label>
             <div className="flex justify-center md:w-full">
-              <PasswordInput
-                register={register}
-                error={errors.password?.message}
-              />
+              <PasswordInput register={register} isConfirmField={false} />
             </div>
           </div>
           {errors.password && <Error>{errors.password.message}</Error>}
@@ -90,7 +89,14 @@ export default function LoginForm() {
           <input
             type="submit"
             value="Iniciar Sesión"
-            className="bg-linear-to-r from-cyan-800 to-fuchsia-800 hover:bg-gray-600 cursor-pointer py-2 px-4 w-11/12 mt-5 text-white text-lg rounded-sm"
+            disabled={disabledForm}
+            className={`
+    bg-linear-to-r from-cyan-800 to-fuchsia-800
+    cursor-pointer py-2 px-4 w-11/12 mt-5 
+    text-white text-lg rounded-sm 
+    hover:from-cyan-900 hover:to-fuchsia-900
+    ${disabledForm ? "opacity-50 cursor-not-allowed" : ""}
+  `}
           />
         </div>
       </form>

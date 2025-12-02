@@ -3,19 +3,19 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 interface Props {
   register: any;
-  error?: string;
+  isConfirmField: boolean;
 }
 
-export default function PasswordInput({ register, error }: Props) {
+export default function PasswordInput({ register, isConfirmField }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="relative w-11/12">
       <input
         type={showPassword ? "text" : "password"}
-        placeholder="Contraseña"
+        placeholder={`${isConfirmField ? "Repetir Contraseña" : "Contraseña"}`}
         className="bg-white p-2 w-full text-black pr-10"
-        {...register("password", {
+        {...register(`${isConfirmField ? "repeatPassword" : "password"}`, {
           required: "Contraseña obligatoria",
           minLength: {
             value: 8,
@@ -36,8 +36,6 @@ export default function PasswordInput({ register, error }: Props) {
           <EyeIcon className="h-5 w-5" />
         )}
       </button>
-
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 }
