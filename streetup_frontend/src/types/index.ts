@@ -61,7 +61,8 @@ export type ProfileStatus = z.infer<typeof ProfileStatusSchema>;
 
 export const ProfileSchema = z.object({
   id: z.string(),
-  photo: z.any(),
+  photo: z.any().nullable(),
+  photo_view: z.string(),
   age: z.number(),
   description: z.string(),
   sports: z.array(z.string()),

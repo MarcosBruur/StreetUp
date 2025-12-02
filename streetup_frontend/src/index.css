@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-custom-orange: #ff4949;
+  --color-custom-purple: #3b0270;
+  --color-custom-violet: #e9b3fb;
+  --color-custom-violetdark: #6f00ff;
+  --color-custom-gray: #fff1f1;
+}
 body {
   background-repeat: no-repeat; /* Evita que se repita */
   background-position: center; /* Centra la imagen */

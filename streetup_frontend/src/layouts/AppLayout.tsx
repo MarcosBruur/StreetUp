@@ -34,6 +34,12 @@ export default function AppLayout() {
     navigate(`/${value}`);
   };
 
+  const handleLogout = () => {
+    localStorage.setItem("access_token", "");
+    localStorage.setItem("refresh_token", "");
+    navigate("/auth/login");
+  };
+
   if (data)
     return (
       <>
@@ -94,9 +100,20 @@ export default function AppLayout() {
                     </div>
                   </div>
 
-                  <p className="text-center m-2">
-                    Todos los derechos reservados {new Date().getFullYear()}
-                  </p>
+                  <div className="flex flex-col items-center ">
+                    <button
+                      className="bg-gray-200 w-1/2 rounded-br-2xl 
+                      rounded-tl-2xl p-2 hover:bg-gray-300 cursor-pointer transition-all"
+                      onClick={handleLogout}
+                    >
+                      <p className="text-sm text-black font-bold">
+                        Cerrar sesión
+                      </p>
+                    </button>
+                    <p className="text-center mb-2 mt-10">
+                      Todos los derechos reservados {new Date().getFullYear()}
+                    </p>
+                  </div>
                 </footer>
               </aside>
 
