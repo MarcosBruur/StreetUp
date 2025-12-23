@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import mongoengine
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -18,8 +19,6 @@ from datetime import timedelta
 load_dotenv()
 
 
-
-import mongoengine
 mongoengine.connect(
     db='streetup',
     host='mongodb+srv://marcosbruur_db_user:XZ6dqv37LAR0z55Y@cluster0.za6sv6n.mongodb.net/'
@@ -90,7 +89,6 @@ TEMPLATES = [
 ]
 
 
-
 WSGI_APPLICATION = 'server.wsgi.application'
 
 
@@ -98,14 +96,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-import mongoengine
-
+mongoengine.disconnect(alias="default")
 mongoengine.connect(
     db='streetup',
     host=os.environ.get("DB_URL")
 )
-
-
 
 
 # DATABASES = {
@@ -114,8 +109,6 @@ mongoengine.connect(
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-
 
 
 # Password validation
@@ -146,12 +139,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 DEFAULT_CHARSET = 'utf-8'
-
-
-
-
-
-
 
 
 # Static files (CSS, JavaScript, Images)
@@ -193,7 +180,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(weeks=10),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-CORS_ALLOW_ALL_ORIGINS = True    
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 if DEBUG == True:
@@ -208,10 +195,19 @@ else:
         "https://marcos.alexis.ar",
     ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'no-reply@tusitio.com'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = os.getenv('EMAIL_HOST')
+# EMAIL_PORT = os.getenv('EMAIL_PORT')
+# EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'no-reply@tusitio.com'
+EMAIL_HOST = 'soslxzimc01.soslinux.com.ar'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'marcos.conegliano@cunix.net'
+DEFAULT_FROM_EMAIL = 'StreetUp <marcos.conegliano@cunix.net>'
+EMAIL_HOST_PASSWORD = 'Yt3md34+09'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50485760

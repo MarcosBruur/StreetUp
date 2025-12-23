@@ -1,132 +1,324 @@
-import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-
-import { createUser } from "../../api/UserApi";
+import { createUser, loginUser } from "../../api/UserApi";
 import { toast } from "react-toastify";
-import PasswordInput from "./PasswordInput";
-import Error from "./Error";
-import type { RegisterForm } from "../../types";
+import type { RegisterForm as RegisterFormFields } from "../../types";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, 
+  EnvelopeIcon, ExclamationCircleIcon, EyeIcon, 
+  EyeSlashIcon, LockClosedIcon, UserIcon } from "@heroicons/react/24/solid";
+
 
 export default function RegisterForm() {
-  const { mutate } = useMutation({
-    mutationFn: createUser,
-    onError: (error) => {
-      const message = error.message;
-      setError("email", { type: "manual", message });
-    },
-    onSuccess: () => {
-      toast.success("Usuario creado correctamente");
-    },
-  });
 
+  // Estado para mostrar/ocultar contraseña
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const navigate = useNavigate()
+  
+
+  // Configuración de React Hook Form
   const {
-    register,
-    handleSubmit,
-    setError,
-    watch,
-    formState: { errors },
-  } = useForm<RegisterForm>();
+  register,
+  handleSubmit,
+  formState: { errors, touchedFields },
+  clearErrors,
+  reset,
+  watch,
+} = useForm<RegisterFormFields>({
+  defaultValues: {
+    userName: '',
+    email: '',
+    password: '',
+    repeatPassword: ''
+  },
+  mode: 'onChange'
+});
 
-  const handleRegister = (data: RegisterForm) => {
+  const password = watch("password");
+
+  const {mutate,isPending,isSuccess} = useMutation({
+    mutationFn: createUser,
+    onError: (error) =>{
+      toast.error("error al crear cuenta, vuelve a intentarlo :c")
+      reset()
+    },
+    onSuccess: (data)=>{
+      toast.success(data?.message);
+      localStorage.setItem("pending_email", data.email);
+            if (data?.user.profile === null) {
+              navigate("/new_profile");
+            } else {
+              navigate("/profile");
+            }
+          },
+  })
+
+  // Handler para el envío del formulario
+  const onSubmit: SubmitHandler<RegisterFormFields> = (data) => {
+    clearErrors();
     mutate(data);
   };
 
-  const passwordValue = watch("password");
+  // Handler para limpiar errores
+  const handleInputFocus = (field: keyof RegisterFormFields) => {
+    if (errors[field]) {
+      clearErrors(field);
+    }
+    if (errors.root?.server || errors.root?.network) {
+      clearErrors('root');
+    }
+  };
+
+  // Función para alternar visibilidad de contraseña
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
   return (
     <>
-      <form noValidate onSubmit={handleSubmit(handleRegister)}>
-        <div className="grid gap-2">
-          <div className="grid md:flex md:items-center gap-2">
-            <label
-              htmlFor="username"
-              className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
-            >
-              Usuario
-            </label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-black">
 
-            <div className="flex justify-center md:w-full">
-              <input
-                type="text"
-                placeholder="Nombre de usuario"
-                id="username"
-                className="bg-white p-2 w-11/12 mb-2 text-black"
-                {...register("userName", {
-                  required: "Nombre de usuario obligatorio",
-                })}
-              />
-            </div>
-          </div>
-          {errors.userName && <Error>{errors.userName.message}</Error>}
-        </div>
+              {/* Campo usuario */}
+              <div className="space-y-2">
+                <label htmlFor="userName" className="block text-sm font-medium text-gray-700">
+                  Nombre de usuario
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <UserIcon className={`h-5 w-5 ${
+                      errors.email ? 'text-red-400' : 
+                      touchedFields.email ? 'text-cyan-800' : 'text-gray-400'
+                    }`} />
+                  </div>
+                  <input
+                    id="userName"
+                    type="text"
+                    {...register("userName", {
+                      required: "Nombre de usuario es requerido",
+                      onBlur: () => handleInputFocus('userName')
+                    })}
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg text-sm sm:text-base transition-all duration-200 ${
+                      errors.userName
+                        ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500' 
+                        : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
+                    } focus:outline-none`}
+                    placeholder="tu usuario"
+                    onFocus={() => handleInputFocus('userName')}
+                  />
+                </div>
+                {errors.userName && (
+                  <div className="flex items-center gap-1 text-sm text-red-600 mt-1">
+                    <ExclamationCircleIcon className="h-4 w-4 shrink-0" />
+                    <span>{errors.userName.message}</span>
+                  </div>
+                )}
+              </div>
 
-        <div className="grid gap-2">
-          <div className="grid md:flex md:items-center gap-2">
-            <label
-              htmlFor="email"
-              className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
-            >
-              Email
-            </label>
+              {/* Campo Email */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Correo Electrónico
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <EnvelopeIcon className={`h-5 w-5 ${
+                      errors.email ? 'text-red-400' : 
+                      touchedFields.email ? 'text-cyan-800' : 'text-gray-400'
+                    }`} />
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    {...register("email", {
+                      required: "El correo electrónico es requerido",
+                      pattern: {
+                        value: /\S+@\S+\.\S+/,
+                        message: "Ingresa un correo electrónico válido"
+                      },
+                      onBlur: () => handleInputFocus('email')
+                    })}
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg text-sm sm:text-base transition-all duration-200 ${
+                      errors.email 
+                        ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500' 
+                        : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
+                    } focus:outline-none`}
+                    placeholder="usuario@ejemplo.com"
+                    onFocus={() => handleInputFocus('email')}
+                  />
+                </div>
+                {errors.email && (
+                  <div className="flex items-center gap-1 text-sm text-red-600 mt-1">
+                    <ExclamationCircleIcon className="h-4 w-4 shrink-0" />
+                    <span>{errors.email.message}</span>
+                  </div>
+                )}
+              </div>
 
-            <div className="flex justify-center md:w-full">
-              <input
-                type="text"
-                placeholder="Correo electrónico"
-                id="email"
-                className="bg-white p-2 w-11/12 mb-2 text-black"
-                {...register("email", {
-                  required: "Email obligatorio",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "El email ingresado no es válido",
-                  },
-                })}
-              />
-            </div>
-          </div>
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
+              {/* Campo Contraseña */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Contraseña
+                  </label>
+                  
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <LockClosedIcon className={`h-5 w-5 ${
+                      errors.password ? 'text-red-400' : 
+                      touchedFields.password ? 'text-cyan-800' : 'text-gray-400'
+                    }`} />
+                  </div>
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "La contraseña es requerida",
+                      minLength: {
+                        value: 6,
+                        message: "La contraseña debe tener al menos 6 caracteres"
+                      },
+                      onBlur: () => handleInputFocus('password')
+                    })}
+                    className={`block w-full pl-10 pr-10 py-3 border rounded-lg text-sm sm:text-base transition-all duration-200 ${
+                      errors.password 
+                        ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500' 
+                        : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
+                    } focus:outline-none`}
+                    placeholder="Tu contraseña"
+                    onFocus={() => handleInputFocus('password')}
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      
+                        <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      
+                    ) : (
+                      
+                      <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+  
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <div className="flex items-center gap-1 text-sm text-red-600 mt-1">
+                    <ExclamationCircleIcon className="h-4 w-4 shrink-0" />
+                    <span>{errors.password.message}</span>
+                  </div>
+                )}
+              </div>
 
-        <div className="grid gap-2">
-          <div className="grid md:flex md:items-center gap-2">
-            <label
-              htmlFor="password"
-              className="md:text-start text-sm font-bold mt-2 ml-5 min-w-25 text-black"
-            >
-              Contraseña
-            </label>
-            <div className="flex justify-center md:w-full">
-              <PasswordInput register={register} isConfirmField={false} />
-            </div>
-          </div>
-          {errors.password && <Error>{errors.password.message}</Error>}
-        </div>
+              {/* Campo repetir contraseña */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="repeatPassword" className="block text-sm font-medium text-gray-700">
+                    Repetir
+                  </label>
+                  
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <LockClosedIcon className={`h-5 w-5 ${
+                      errors.repeatPassword ? 'text-red-400' : 
+                      touchedFields.repeatPassword ? 'text-cyan-800' : 'text-gray-400'
+                    }`} />
+                  </div>
+                  <input
+                    id="repeatPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Repetir contraseña"
+                    {...register("repeatPassword", {
+                      required: "Debes repetir la contraseña",
+                      validate: (value) =>
+                        value === password || "Las contraseñas no coinciden",
+                      onBlur: () => handleInputFocus('repeatPassword')
+                    })}
+                    className={`block w-full pl-10 pr-10 py-3 border rounded-lg text-sm sm:text-base transition-all duration-200 ${
+                      errors.repeatPassword
+                        ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500'
+                        : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
+                    } focus:outline-none`}
+                    onFocus={() => handleInputFocus('repeatPassword')}
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      
+                        <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      
+                    ) : (
+                      
+                      <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+  
+                    )}
+                  </button>
+                </div>
+                {errors.repeatPassword && (
+                  <div className="flex items-center gap-1 text-sm text-red-600 mt-1">
+                    <ExclamationCircleIcon className="h-4 w-4 shrink-0" />
+                    <span>{errors.repeatPassword.message}</span>
+                  </div>
+                )}
+              </div>
 
-        <div className="grid gap-2 mt-2">
-          <div className="grid md:flex md:items-center gap-2">
-            <label
-              htmlFor="repeatPassword"
-              className="md:text-start text-sm font-bold mt-2 ml-5 min-w-25 text-black"
-            >
-              Repetir
-            </label>
-            <div className="flex justify-center md:w-full">
-              <PasswordInput register={register} isConfirmField={true} />
-            </div>
-          </div>
-          {errors.repeatPassword && (
-            <Error>{errors.repeatPassword.message}</Error>
-          )}
-        </div>
+      
 
-        <div className="flex justify-center">
-          <input
-            type="submit"
-            value="Registrarse"
-            className="bg-linear-to-r from-cyan-800 to-fuchsia-800 hover:bg-gray-600 cursor-pointer py-2 px-4 w-11/12 mt-5 text-white text-lg rounded-sm"
-          />
-        </div>
-      </form>
+              {/* Errores del servidor/red */}
+              {(errors.root?.server || errors.root?.network) && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-center">
+                    <ExclamationCircleIcon className="h-5 w-5 text-red-400 mr-2" />
+                    <p className="text-sm text-red-600">
+                      {errors.root.server?.message || errors.root.network?.message}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              
+
+              {/* Botón de envío */}
+              <button
+                type="submit"
+                disabled={isPending || isSuccess}
+                className="group w-full flex items-center justify-center 
+                py-3.5 px-4 rounded-lg 
+                shadow-sm text-sm sm:text-base font-medium text-white 
+                bg-linear-to-r from-cyan-800 to-fuchsia-800 
+                hover:from-cyan-900 hover:to-fuchsia-900 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 
+                disabled:opacity-70 
+                disabled:cursor-not-allowed transition-all duration-200 
+                transform hover:-translate-y-0.5"
+              >
+                {isPending ? (
+                  <>
+                    <ArrowPathIcon className="animate-spin h-5 w-5 mr-2" />
+                    Creando Cuenta...
+                  </>
+                ) : isSuccess ? (
+                  <>
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                    ¡Cuenta Creada!
+                  </>
+                ) : (
+                  <>
+                    Continuar
+                    <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
+            </form>
     </>
   );
 }

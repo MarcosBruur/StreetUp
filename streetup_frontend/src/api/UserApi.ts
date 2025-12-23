@@ -25,6 +25,7 @@ export async function createUser(formData: RegisterForm) {
 }
 
 export async function loginUser(formData: LoginForm) {
+  
   try {
     const request = {
       email: formData.email,

@@ -1,4 +1,4 @@
-from mongoengine import Document,fields,CASCADE,DO_NOTHING,NULLIFY
+from mongoengine import Document, fields, CASCADE, DO_NOTHING, NULLIFY
 from datetime import datetime
 import uuid
 import os
@@ -7,9 +7,8 @@ from PIL import Image
 from django.conf import settings
 UPLOAD_DIR = os.path.join(settings.MEDIA_ROOT, "profiles")
 
-ProfileStatus = ["free","busy"]
+ProfileStatus = ["free", "busy"]
 # Create your models here.
-
 
 
 class Profiles(Document):
@@ -17,7 +16,8 @@ class Profiles(Document):
     age = fields.IntField(min_value=13, required=True)
     description = fields.StringField()
     sports = fields.ListField(fields.StringField())
-    status = fields.StringField(required=True, choices=["free", "busy"], default="free")
+    status = fields.StringField(required=True, choices=[
+                                "free", "busy"], default="free")
     location = fields.StringField()
 
     def save_image(self, file_obj):
@@ -34,24 +34,22 @@ class Profiles(Document):
 
         # Guardar ruta relativa
         self.imagen = f"profiles/{nombre}"
-       
-        self.photo =  f"media/profiles/{nombre}"
+
+        self.photo = f"media/profiles/{nombre}"
         self.save()
-    
 
 
 class Users(Document):
-    userName= fields.StringField(required=True)
-    email=fields.StringField(required=True)
-    password=fields.StringField(required=True)
+    userName = fields.StringField(required=True)
+    email = fields.StringField(required=True)
+    password = fields.StringField(required=True)
     profile = fields.ReferenceField(
-    'Profiles',
-    reverse_delete_rule=NULLIFY,
-    required=False
+        'Profiles',
+        reverse_delete_rule=NULLIFY,
+        required=False
     )
-    
-    confirmed = fields.BooleanField(default=False)
 
+    confirmed = fields.BooleanField(default=False)
 
     def to_dict(self):
         return {
@@ -67,16 +65,18 @@ class Users(Document):
         """Compatibilidad con el sistema de autenticación de Django."""
         return True
 
+
 class Tokens(Document):
-    token= fields.StringField(required=True)
-    user= fields.ReferenceField('Users',reverse_delete_rule=CASCADE,required=True)
-    createdAt= fields.DateTimeField(default=datetime.now)
+    token = fields.StringField(required=True)
+    user = fields.ReferenceField(
+        'Users', reverse_delete_rule=CASCADE, required=True)
+    createdAt = fields.DateTimeField(default=datetime.utcnow)
 
     meta = {
         'indexes': [
             {
                 'fields': ['createdAt'],
-                'expireAfterSeconds': 600 #10 minutes 
+                'expireAfterSeconds': 1800
             }
         ]
     }
@@ -84,11 +84,13 @@ class Tokens(Document):
 
 class Teams(Document):
     photo = fields.StringField()
-    name= fields.StringField(required=True)
-    leader= fields.ReferenceField('Users',reverse_delete_rule=NULLIFY,required=False)
-    members=fields.ListField(fields.ReferenceField('Users',reverse_delete_rule=DO_NOTHING,required=True))
-    sport=fields.StringField(required=True)
-    description=fields.StringField(required=True)
+    name = fields.StringField(required=True)
+    leader = fields.ReferenceField(
+        'Users', reverse_delete_rule=NULLIFY, required=False)
+    members = fields.ListField(fields.ReferenceField(
+        'Users', reverse_delete_rule=DO_NOTHING, required=True))
+    sport = fields.StringField(required=True)
+    description = fields.StringField(required=True)
     location = fields.StringField(required=False)
 
     def save_image(self, file_obj):
@@ -105,6 +107,6 @@ class Teams(Document):
 
         # Guardar ruta relativa
         self.imagen = f"teams/{nombre}"
-       
-        self.photo =  f"media/teams/{nombre}"
+
+        self.photo = f"media/teams/{nombre}"
         self.save()

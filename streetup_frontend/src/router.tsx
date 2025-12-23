@@ -9,6 +9,7 @@ import Teams from "./views/teams/Teams";
 import Players from "./views/players/Players";
 import Team from "./views/team/Team";
 import NewProfile from "./views/profile/NewProfile";
+import Confirm from "./views/auth/Confirm";
 
 export default function Router() {
   return (
@@ -17,6 +18,8 @@ export default function Router() {
         <Route element={<AuthLayout />}>
           <Route path="/auth/login" element={<Login />} />"
           <Route path="/auth/register" element={<Register />} />"
+          
+          <Route path="/auth/confirm" element={<Confirm/>} />"
         </Route>
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
