@@ -1,10 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { createUser, loginUser } from "../../api/UserApi";
+import { createUser } from "../../api/UserApi";
 import { toast } from "react-toastify";
 import type { RegisterForm as RegisterFormFields } from "../../types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, 
   EnvelopeIcon, ExclamationCircleIcon, EyeIcon, 
   EyeSlashIcon, LockClosedIcon, UserIcon } from "@heroicons/react/24/solid";
@@ -15,7 +14,6 @@ export default function RegisterForm() {
   // Estado para mostrar/ocultar contraseña
   const [showPassword, setShowPassword] = useState(false);
   
-  const navigate = useNavigate()
   
 
   // Configuración de React Hook Form
@@ -41,23 +39,18 @@ export default function RegisterForm() {
   const {mutate,isPending,isSuccess} = useMutation({
     mutationFn: createUser,
     onError: (error) =>{
-      toast.error("error al crear cuenta, vuelve a intentarlo :c")
+      toast.error(error.message)
       reset()
     },
     onSuccess: (data)=>{
       toast.success(data?.message);
       localStorage.setItem("pending_email", data.email);
-            if (data?.user.profile === null) {
-              navigate("/new_profile");
-            } else {
-              navigate("/profile");
-            }
           },
   })
 
   // Handler para el envío del formulario
   const onSubmit: SubmitHandler<RegisterFormFields> = (data) => {
-    clearErrors();
+    
     mutate(data);
   };
 

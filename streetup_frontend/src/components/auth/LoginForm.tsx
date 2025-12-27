@@ -5,7 +5,7 @@ import type { LoginForm as LoginFormFields } from "../../types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, EnvelopeIcon, ExclamationCircleIcon, EyeIcon, EyeSlashIcon, LockClosedIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, EnvelopeIcon, ExclamationCircleIcon, EyeIcon, EyeSlashIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 
 
 export default function LoginForm() {
@@ -118,14 +118,6 @@ export default function LoginForm() {
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                     Contraseña
                   </label>
-                  <button
-                    type="button"
-                    onClick={() => {/* Lógica para recuperar contraseña */}}
-                    className="inline-flex items-center text-sm text-blue-600 hover:text-blue-500 transition-colors"
-                  >
-                    <QuestionMarkCircleIcon className="h-4 w-4 mr-1" />
-                    ¿Olvidaste tu contraseña?
-                  </button>
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

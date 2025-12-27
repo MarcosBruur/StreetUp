@@ -29,6 +29,16 @@ export const ActiveUserSchema = z.object({
   userName: z.string(),
 });
 
+export const ConfirmAccountSchema = z.object({
+  token: z.number(),
+});
+
+export const ConfirmAccountApiSchema = z.object({
+  message: z.string()
+})
+
+export type ConfirmAccount = z.infer<typeof ConfirmAccountSchema>;
+export type ConfirmAccountApi = z.infer<typeof ConfirmAccountApiSchema>;
 export type ActiveUser = z.infer<typeof ActiveUserSchema>;
 export type Token = z.infer<typeof TokenSchema> & { user: User };
 export type Auth = z.infer<typeof AuthSchema>;
@@ -37,6 +47,7 @@ export type RegisterForm = Pick<
   Auth,
   "userName" | "email" | "password" | "repeatPassword"
 >;
+
 
 /**USERS */
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -11,47 +11,33 @@ import {
 } from "@heroicons/react/24/outline";
 import { confirmAccount, resendEmail } from '../../api/AuthApi';
 import { toast } from 'react-toastify';
+import type { ConfirmAccountApi } from '../../types';
 
-// Importa tu función confirmAccount desde el módulo de API
-// import { confirmAccount } from '../lib/api';
 
 // Definición de tipos
 interface ConfirmFormInputs {
   token: string;
 }
 
-interface ConfirmAccountResponse {
-  success: boolean;
-  message: string;
-  // Agrega más propiedades según la respuesta de tu API
-}
-
-interface ApiError {
-  message: string;
-  details?: Record<string, string[]>;
-}
 
 
-interface ConfirmAccountProps {
-  email?: string;
-  onResendCode?: () => void;
-}
 
-export default function ConfirmAccount(){ 
+
+export default function ConfirmAccountView(){ 
  
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState<number>(0);
   const [manualCode, setManualCode] = useState<string[]>(Array(6).fill(''));
+  const pendingEmail = localStorage.getItem('pending_email')
 
+  
+ 
   // Configuración de React Hook Form
   const {
     register,
     handleSubmit,
     setValue,
-    setError,
     clearErrors,
-    formState: { errors, isSubmitting },
-    reset
+    formState: { errors  },
   } = useForm<ConfirmFormInputs>({
     defaultValues: {
       token: ''
@@ -60,31 +46,30 @@ export default function ConfirmAccount(){
 
   // Configuración de React Query Mutation
   
-  const {mutate,isPending} = useMutation({
-    mutationFn: confirmAccount,
-    onError: (error)=>{
-      toast.error("error al confirmar cuenta :c")
-    },
-    onSuccess: (data) =>{
-      toast.success(data?.message)
-      localStorage.setItem("pending_email", data.email);
-      navigate("/auth/login")
-    }
-  })
+  const { mutate, isPending } = useMutation<ConfirmAccountApi, Error, string>({
+  mutationFn: confirmAccount,
+  onSuccess: (data) => {
+    toast.success(data.message);
+    navigate("/auth/login");
+  },
+  onError: () => toast.error("error al confirmar cuenta :c"),
+});
 
 
   const resendMutation = useMutation({
-  mutationFn: resendEmail,
-  onSuccess: () => {
-    toast.success("Código reenviado correctamente");
-    setCountdown(30); // por ejemplo
-  },
-  onError: (error: Error) => {
-    toast.error(error.message);
-  }
-  });
-  
-
+    mutationFn: resendEmail,
+    onError: () => toast.error("Error al reenviar código :c"),
+    onSuccess: (data) =>{
+      toast.success(data.message);
+    }
+  })
+ 
+  // Manejar reenvío de código
+  const handleResend = () => {
+    if (!pendingEmail) return toast.error("No hay email pendiente");
+    resendMutation.mutate(pendingEmail);
+  };
+ 
   // Manejar cambio en inputs manuales
   const handleManualChange = (value: string, index: number) => {
     if (!/^\d*$/.test(value)) return;
@@ -125,14 +110,11 @@ export default function ConfirmAccount(){
   };
 
   // Handler para el submit del formulario
-  const onSubmit=(data:number)=>{
-    mutate(data)
+  const onSubmit: SubmitHandler<ConfirmFormInputs> = ({ token }) => {
+  mutate(token)   // <- importante convertir a number
   };
 
-  // Manejar reenvío de código
-  const handleResend = () => {
-    console.log("reenviando codigo....")
-  };
+ 
 
   // Determinar si el botón debe estar deshabilitado
   //const isSubmitDisabled = manualCode.join('').length !== 6 || isSubmitting || confirmMutation.isPending;
@@ -266,18 +248,26 @@ export default function ConfirmAccount(){
               <button
                 type="button"
                 onClick={handleResend}
-                disabled={false}
+                disabled={resendMutation.isPending}
                 className="inline-flex items-center text-fuchsia-700 hover:text-fuchsia-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                <ArrowPathIcon className='text-fuchsia-800 size-5 mx-2'/>
-                {countdown > 0 ? `Reenviar en ${countdown}s` : 'Reenviar código'}
+                
+                <ArrowPathIcon className={`${resendMutation.isPending? 'animate-spin': ''} text-fuchsia-800 size-5 mx-2`}/>
+                
+                {resendMutation.isPending ? (
+                  
+                  <p>Reenviando...</p>
+                ): (
+                  <p>Reenviar</p>
+                )}
+
               </button>
             </div>
 
             {/* Información adicional */}
             <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
               <div className="flex items-start">
-                <InformationCircleIcon className="w-5 h-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
+                <InformationCircleIcon className="w-5 h-5 text-blue-500 mt-0.5 mr-2 shrink-0" />
                 <div>
                   <p className="text-sm text-blue-800 font-medium mb-1">Advertencia:</p>
                   <ul className="text-xs text-blue-700 space-y-1">

@@ -37,7 +37,7 @@ class AuthViewSet(viewsets.ViewSet):
             "message": "Endpoints disponibles:",
         })
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def create_account(self, request):
         data = request.data.copy()
         # validate user unique
@@ -68,7 +68,7 @@ class AuthViewSet(viewsets.ViewSet):
 
         AuthEmail.send_confirmation_email(
             {"userName": data['userName'], "email": data['email'], "token": tokenSerializer.data['token']})
-        return Response({"message": "usuario creado correctamente", "email": data['email']}, status=status.HTTP_201_CREATED)
+        return Response({"message": "usuario creado correctamente, revisa tu email para activar tu cuenta", "email": data['email']}, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])
     def send_email(self, request):
@@ -108,7 +108,7 @@ class AuthViewSet(viewsets.ViewSet):
         })
 
         return Response(
-            {"message": "Código reenviado correctamente"},
+            {"message": "Se envió un nuevo codigo a tu email, revisa tu bandeja de entrada"},
             status=status.HTTP_201_CREATED
         )
 

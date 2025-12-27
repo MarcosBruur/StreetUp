@@ -3,15 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import type { ProfileForm } from "../../types";
 import { createProfile } from "../../api/ProfileApi";
 import { toast } from "react-toastify";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import {  useNavigate } from "react-router-dom";
+
 
 export default function NewProfileForm() {
-  const { data } = useAuth();
+ 
 
-  if (data?.profile !== null) {
-    return <Navigate to="/profile" />;
-  }
 
   const navigate = useNavigate();
   const { mutate } = useMutation({
