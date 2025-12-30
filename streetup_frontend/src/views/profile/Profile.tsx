@@ -1,3 +1,4 @@
+// components/profiles/Profile.tsx - Versión mejorada
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "../../api/ProfileApi";
@@ -5,6 +6,8 @@ import { useAuth } from "../../hooks/useAuth";
 import EditProfileModal from "../../components/profiles/EditProfileModal";
 import ProfileCard from "../../components/profiles/ProfileCard";
 import type { Profile } from "../../types";
+import { PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon as PencilSquareIconSolid } from "@heroicons/react/24/solid";
 
 export default function Profile() {
   const { data: user } = useAuth();
@@ -16,44 +19,134 @@ export default function Profile() {
     retry: 2,
   });
 
-  if (isLoading || !user || !profile) {
-    return <p>Cargando...</p>;
+  // Estado de carga mejorado
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-fuchsia-500 mb-4"></div>
+          <p className="text-white text-xl font-semibold">Cargando tu perfil...</p>
+        </div>
+      </div>
+    );
   }
 
-  console.log(profile);
-  return (
-    <>
-      <div className="flex gap-2 justify-between items-center md:justify-start mb-2">
-        <h1 className="text-2xl font-bold">Mi Perfil</h1>
-        <div className="md:hidden flex justify-center">
+  if (!user || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+        <div className="text-center p-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+          <UserCircleIcon className="w-24 h-24 text-white/50 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Perfil no encontrado</h2>
+          <p className="text-gray-300 mb-6">Inicia sesión para ver tu perfil</p>
           <button
-            className="bg-gray-700 hover:bg-gray-600 hover:scale-110 transition-colors text-white px-15 py-2 
-      rounded uppercase font-bold text-lg"
-            onClick={() => navigate(location.pathname + `?edit=true`)}
+            onClick={() => navigate("/auth/login")}
+            className="bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 hover:scale-105"
           >
-            Editar
+            Iniciar Sesión
           </button>
         </div>
       </div>
+    );
+  }
 
-      <ProfileCard user={user} profile={profile} />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header con título y botón de editar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-600 flex items-center justify-center shadow-xl">
+                <UserCircleIcon className="w-10 h-10 text-white" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900"></div>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">Mi Perfil</h1>
+              <p className="text-gray-300 text-sm sm:text-base">Bienvenido de vuelta, {user.userName}!</p>
+            </div>
+          </div>
 
-      <div className="hidden md:flex justify-center mt-4">
-        <button
-          className="bg-gray-200 w-1/6 border rounded-br-2xl rounded-tl-2xl
-          hover:rounded-br-none hover:rounded-tl-none hover:rounded-bl-2xl hover:rounded-tr-2xl 
-          hover:bg-gray-300 transition-all duration-500 
-          border-fuchsia-300 shadow-[0px_3px_19px_11px_#ea73ff] 
-          py-2  hover:shadow-[0px_3px_19px_11px_#ac0de0] "
-          onClick={() => navigate(location.pathname + `?new=false`)}
-        >
-          <p className="text-xl text-black font-bold hover:text-2xl transition-all">
-            Editar
-          </p>
-        </button>
+          {/* Botón de editar - Responsive */}
+          <div className="flex gap-3">
+            <button
+              className="sm:hidden flex items-center gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+              onClick={() => navigate(location.pathname + `?edit=true`)}
+            >
+              <PencilSquareIcon className="w-5 h-5" />
+              Editar
+            </button>
+
+            <button
+              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(224,46,250,0.5)] border border-fuchsia-500/30"
+              onClick={() => navigate(location.pathname + `?edit=true`)}
+            >
+              <PencilSquareIconSolid className="w-5 h-5" />
+              Editar Perfil
+            </button>
+          </div>
+        </div>
+
+        {/* Tarjeta de perfil */}
+        <ProfileCard user={user} profile={profile} />
+
+        {/* Estadísticas rápidas */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Partidos Jugados</p>
+                <p className="text-3xl font-bold text-white">50</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+                <span className="text-fuchsia-400 text-xl">⚽</span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-gradient-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-3/4"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Me Gusta</p>
+                <p className="text-3xl font-bold text-white">80</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+                <span className="text-fuchsia-400 text-xl">❤️</span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-gradient-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-2/3"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Equipos Activos</p>
+                <p className="text-3xl font-bold text-white">3</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+                <span className="text-fuchsia-400 text-xl">👥</span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-gradient-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal de edición */}
+        <EditProfileModal />
       </div>
-
-      <EditProfileModal />
-    </>
+    </div>
   );
 }

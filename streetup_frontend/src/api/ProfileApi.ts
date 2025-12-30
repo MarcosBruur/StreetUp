@@ -13,10 +13,23 @@ export async function getProfile() {
   }
 }
 
-export const createProfile = async (data: FormData) => {
-  const res = await api.post("/profiles/", data, {
+export const createProfile = async (data: ProfileForm) => {
+  const formData = new FormData();
+
+  if (data.photo && data.photo[0]) {
+    formData.append("photo", data.photo[0]);
+  }
+
+  formData.append("age", String(data.age));
+  formData.append("location", data.location);
+  formData.append("description", data.description);
+  data.sports?.forEach((sport) => formData.append("sports", sport));
+
+  const res = await api.post("/profiles/", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
   });
+
   return res.data;
 };
 export async function editProfile(data: ProfileForm) {

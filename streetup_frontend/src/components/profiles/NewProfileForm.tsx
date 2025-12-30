@@ -1,177 +1,156 @@
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import { useMutation } from "@tanstack/react-query"; // TODO: Implementar la mutación
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import Error from "../auth/Error";
 import type { ProfileForm } from "../../types";
-import { createProfile } from "../../api/ProfileApi";
+import { useRef } from "react";
+import { createProfile  } from "../../api/ProfileApi";
 import { toast } from "react-toastify";
-import {  useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 export default function NewProfileForm() {
- 
-
-
   const navigate = useNavigate();
+  
+
+
   const { mutate } = useMutation({
-    mutationFn: (data: FormData) => createProfile(data),
-    onError: (error: any) => {
+    mutationFn: createProfile,
+    onError: (error) => {
       toast.error(error.message);
     },
-    onSuccess: () => {
-      toast.success("Perfil creado exitosamente");
-      navigate("/");
+    onSuccess: (data) => {
+      toast.success(data);
+      navigate('/profile');
     },
   });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ProfileForm>();
 
-  const { register, handleSubmit } = useForm<ProfileForm>();
-  const handleCreateProfile = (formData: ProfileForm) => {
-    const fd = new FormData();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    if (formData.photo && formData.photo[0]) {
-      fd.append("photo", formData.photo[0]);
-    }
-
-    fd.append("age", formData.age.toString());
-    fd.append("description", formData.description);
-
-    formData.sports?.forEach((sport) => {
-      fd.append("sports", sport);
-    });
-
-    fd.append("location", formData.location);
-    mutate(fd);
+  const handleEditProfile = (data: ProfileForm) => {
+    mutate(data);
   };
 
   return (
+    
     <form
+      onSubmit={handleSubmit(handleEditProfile)}
       noValidate
-      className="text-black"
-      onSubmit={handleSubmit(handleCreateProfile)}
-      encType="multipart/form-data"
+      className="mt-2 rounded-lg bg-linear-to-br from-gray-800 via-fuchsia-950 to-gray-800  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6"
     >
-      <div className="grid gap-2">
-        <div className="grid md:flex md:items-center gap-2">
-          <label
-            htmlFor="photo"
-            className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
+      <div className="flex flex-col">
+        <div className="flex justify-center">
+          <div
+            className="w-[200px] h-[300px] overflow-hidden relative 
+          rounded-xl border-2 shadow-[0px_0px_27px_16px_rgba(147,51,234,0.5)]"
           >
-            Foto de usuario
-          </label>
+            <img
+              src="/static/default_user.webp"
+              alt="imagen de perfil"
+              className="w-full h-full object-center object-cover"
+            />
+            <button
+              type="button"
+              className="absolute top-0 right-0 hover:scale-110 transition-transform"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <PencilSquareIcon className="h-10 w-10" />
+            </button>
 
-          <div className="flex justify-center md:w-full">
             <input
               type="file"
               accept="image/*"
-              id="photo"
-              className="bg-white p-2 w-11/12 mb-2 text-black"
+              className="hidden"
               {...register("photo")}
+              ref={(e) => {
+                register("photo").ref(e);
+                fileInputRef.current = e;
+              }}
             />
+            <p className="text-center mt-2">
+              {watch("photo")?.[0]?.name ?? "Ningún archivo seleccionado"}
+            </p>
           </div>
         </div>
-      </div>
 
-      <div className="grid gap-2">
-        <div className="grid md:flex md:items-center gap-2">
-          <label
-            htmlFor="age"
-            className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
-          >
-            Edad
-          </label>
-
-          <div className="flex justify-center md:w-full">
+        <div className="flex flex-col gap-y-2 mt-5">
+          <div className="flex gap-2 justify-between">
+            <label htmlFor="age" className="hidden">
+              Edad:
+            </label>
             <input
-              type="number"
-              placeholder="Tu edad"
+              type="text"
               id="age"
-              className="bg-white p-2 w-11/12 mb-2 text-black"
-              {...register("age")}
+              className="bg-white p-2 w-full text-black rounded-sm"
+              placeholder="Ingresa tu edad"
+              {...register("age", {
+                min: { value: 18, message: "Debes ser mayor de 18 años" },
+                max: { value: 120, message: "Error, Edad imposible" },
+              })}
             />
           </div>
-        </div>
-      </div>
+          {errors.age && <Error>{errors.age.message}</Error>}
 
-      <div className="grid gap-2">
-        <div className="grid md:flex md:items-center gap-2">
-          <p>Deportes: </p>
-          <label
-            htmlFor="futbol"
-            className="md:text-start text-sm font-bold mt-2 ml-5 min-w-25 text-black"
-          >
-            Futbol
-          </label>
-          <div className="flex justify-center md:w-full">
+          <div className="flex gap-2 items-center">
+            <label htmlFor="location" className="hidden">
+              Ubicación:
+            </label>
+            <input
+              type="text"
+              id="location"
+              className="bg-white p-2 w-full text-black"
+              placeholder="Ingresa tu ubicación"
+              {...register("location")}
+            />
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <label htmlFor="description" className="hidden">
+              Descripción:
+            </label>
+            <textarea
+              id="description"
+              className="bg-white p-2 w-full text-black"
+              placeholder="Descripción"
+              {...register("description")}
+            />
+          </div>
+          <div className="flex gap-2 items-center mt-2">
+            <label htmlFor="sports" className="font-bold">
+              Deportes:
+            </label>
+            <label htmlFor="futbol">Futbol</label>
             <input
               type="checkbox"
               id="futbol"
               value="futbol"
-              className="bg-white p-2 w-11/12 text-black"
+              className="size-6"
               {...register("sports")}
             />
-          </div>
-          <label
-            htmlFor="basquet"
-            className="md:text-start text-sm font-bold mt-2 ml-5 min-w-25 text-black"
-          >
-            Basquet
-          </label>
-          <div className="flex justify-center md:w-full">
+            <label htmlFor="basquet">Basquet</label>
             <input
               type="checkbox"
               id="basquet"
               value="basquet"
-              className="bg-white p-2 w-11/12 text-black"
+              className="size-6"
               {...register("sports")}
             />
           </div>
         </div>
       </div>
 
-      <div className="grid gap-2">
-        <div className="grid md:flex md:items-center gap-2">
-          <label
-            htmlFor="location"
-            className="md:text-start text-sm font-bold ml-5 min-w-25 text-black"
-          >
-            Ubicación
-          </label>
-
-          <div className="flex justify-center md:w-full">
-            <input
-              type="text"
-              placeholder="País,Ciudad,Barrio"
-              id="location"
-              className="bg-white p-2 w-11/12 mb-2 text-black"
-              {...register("location")}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="grid gap-2 mt-2">
-        <div className="grid md:flex md:items-center gap-2">
-          <label
-            htmlFor="description"
-            className="md:text-start text-sm font-bold mt-2 ml-5 min-w-25 text-black"
-          >
-            Descripción
-          </label>
-          <div className="flex justify-center md:w-full">
-            <textarea
-              id="description"
-              placeholder="Agrega una descripción"
-              className="bg-white p-2 w-11/12 text-black"
-              {...register("description")}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center">
-        <input
+      <div className="mt-5 flex flex-col justify-between gap-2">
+        <button
           type="submit"
-          value="Crear Perfil"
-          className="bg-linear-to-r from-cyan-800 to-fuchsia-800 hover:bg-gray-600 cursor-pointer py-2 px-4 w-11/12 mt-5 text-white text-lg rounded-sm"
-        />
+          className="w-full rounded bg-emerald-500 hover:bg-emerald-600 p-3 font-bold uppercase text-white shadow"
+        >
+          Guardar
+        </button>
       </div>
     </form>
   );

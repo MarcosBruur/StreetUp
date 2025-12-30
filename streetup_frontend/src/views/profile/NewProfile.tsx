@@ -19,7 +19,7 @@ export default function NewProfile() {
       </p>
 
       <div className="flex justify-center mt-10">
-        <div className="md:w-1/2 w-11/12 bg-gray-200 rounded-xl py-5">
+        <div className="md:w-1/2 w-11/12 rounded-xl py-5">
           <NewProfileForm />
         </div>
       </div>

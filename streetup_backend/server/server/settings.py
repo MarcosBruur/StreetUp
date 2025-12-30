@@ -189,6 +189,8 @@ if DEBUG == True:
         "http://localhost:8000",
         "http://127.0.0.1:5173",
         "http://127.0.0.1.8000",
+        "http://192.168.1.139:5173",
+        "http://192.168.1.139",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
