@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import EditProfileForm from "./EditProfileForm";

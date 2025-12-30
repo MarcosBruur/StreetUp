@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { middleOfUSA } from "../lib/constants";
-import { Marker, Popup, useMap } from "@vis.gl/react-maplibre";
+import { middleOfARG } from "../lib/constants";
+import { Marker, useMap } from "@vis.gl/react-maplibre";
 import { getLocation } from "../lib/map";
 import { MapPinIcon } from "@heroicons/react/24/solid";
 
 export default function YouAreHere() {
   const [popupLocation, setPopupLocation] =
-    useState<[number, number]>(middleOfUSA);
+    useState<[number, number]>(middleOfARG);
   const { current: map } = useMap();
 
   useEffect(() => {
     if (!map) return;
     (async () => {
       const location = await getLocation();
-      if (location !== middleOfUSA) {
+      if (location !== middleOfARG) {
         setPopupLocation(location);
         map.flyTo({ center: location, zoom: 12 });
       }
