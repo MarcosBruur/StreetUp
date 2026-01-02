@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Testing Vite React</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,18 +13,20 @@
     <!-- Preamble de Vite DEV SERVER (OBLIGATORIO) -->
 
     <!-- Preamble de React Refresh -->
-    {% if  "localhost" in request.get_host %}
+    {% if "localhost" in request.get_host or "192.168" in request.get_host %}
 
     <script type="module">
-      import RefreshRuntime from "http://localhost:5173/@react-refresh";
+      //import RefreshRuntime from "http://localhost:5173/@react-refresh";  //PC
+      import RefreshRuntime from "http://192.168.1.227:5173/@react-refresh"; //Movile test usar ip de wifi
       RefreshRuntime.injectIntoGlobalHook(window);
       window.$RefreshReg$ = () => {};
       window.$RefreshSig$ = () => (type) => type;
       window._vite_plugin_react_preamble_installed_ = true;
     </script>
-    <script type="module" src="http://localhost:5173/@vite/client"></script>
-
-    <script type="module" src="http://localhost:5173/src/main.tsx"></script>
+    <script type="module" src="http://192.168.1.227:5173/@vite/client"></script>
+    <script type="module" src="http://192.168.1.227:5173/src/main.tsx"></script>
+    {% comment %} <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module" src="http://localhost:5173/src/main.tsx"></script> {% endcomment %}
     {% else %}
     <link
       rel="stylesheet"

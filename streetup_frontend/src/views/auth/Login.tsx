@@ -14,16 +14,16 @@ export default function Login() {
           <div className="px-6 py-8 sm:px-8 sm:py-10">
             <div className="text-center mb-20 md:mb-8">
               <div className="inline-flex items-center justify-center 
-              size-30 md:size-16 bg-linear-to-br 
+              size-16 bg-linear-to-br 
               from-cyan-800 to-fuchsia-800 rounded-full 
               mb-4 shadow-lg">
-                <EnvelopeIcon className="size-15 md:size-8 text-white" />
+                <EnvelopeIcon className="size-8 text-white" />
               </div>
-              <h1 className="text-7xl md:text-3xl font-bold text-gray-800 mb-2">
-                Bienvenido de nuevo
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                Bienvenido de nuevo 
               </h1>
-              <p className="text-black md:text-gray-600 text-4xl 
-              md:text-sm">
+              <p className="text-black md:text-gray-600 
+              text-lg md:text-sm">
                 Ingresa tus credenciales para continuar
               </p>
             </div>
@@ -32,18 +32,17 @@ export default function Login() {
 
             {/* Enlace a registro */}
             <div className="text-center pt-4">
-              <p className="text-5xl md:text-sm text-gray-600 p-3">
+              <p className="text-lg md:text-sm text-gray-600 p-3">
                 ¿No tienes una cuenta?{' '}
                 <button
                   type="button"
                   onClick={() => navigate("/auth/register")}
                   className="text-blue-600 hover:text-blue-500 
                   transition-colors inline-flex items-center
-                  
                   "
                 >
                   Regístrate aquí
-                  <ArrowRightIcon className="ml-1 size-10 md:size-4" />
+                  <ArrowRightIcon className="ml-1 size-4" />
                 </button>
               </p>
             </div>

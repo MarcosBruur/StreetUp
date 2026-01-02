@@ -73,7 +73,7 @@ export default function LoginForm() {
     <>
       <form onSubmit={handleSubmit(onSubmit)} 
         className="space-y-6 text-black md:text-gray-700 
-        text-5xl md:text-sm">
+        text-lg md:text-sm">
         
               {/* Campo Email */}
               <div className="space-y-2">
@@ -82,7 +82,7 @@ export default function LoginForm() {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <EnvelopeIcon className={`size-10 md:size-5 ${
+                    <EnvelopeIcon className={`size-8 md:size-5 ${
                       errors.email ? 'text-red-400' : 
                       touchedFields.email ? 'text-cyan-800' : 'text-gray-400'
                     }`} />
@@ -98,7 +98,7 @@ export default function LoginForm() {
                       },
                       onBlur: () => handleInputFocus('email')
                     })}
-                    className={`flex-row w-full pl-20 md:pl-10 pr-3 py-10 md:py-3 border rounded-lg transition-all duration-200 ${
+                    className={`flex-row w-full pl-15 md:pl-10 pr-3 py-5 md:py-3 border rounded-lg transition-all duration-200 ${
                       errors.email 
                         ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
@@ -124,7 +124,7 @@ export default function LoginForm() {
                
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <LockClosedIcon className={`size-10 md:size-5 ${
+                    <LockClosedIcon className={`size-8 md:size-5 ${
                       errors.password ? 'text-red-400' : 
                       touchedFields.password ? 'text-cyan-800' : 'text-gray-400'
                     }`} />
@@ -140,7 +140,7 @@ export default function LoginForm() {
                       },
                       onBlur: () => handleInputFocus('password')
                     })}
-                    className={`w-full pl-20 md:pl-10 pr-10 py-10 md:py-3 border rounded-lg transition-all duration-200 ${
+                    className={`w-full pl-15 md:pl-10 pr-10 py-5 md:py-3 border rounded-lg transition-all duration-200 ${
                       errors.password 
                         ? 'border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300 focus:ring-2 focus:ring-fuchsia-800 focus:border-fuchsia-800'
@@ -155,17 +155,17 @@ export default function LoginForm() {
                   >
                     {showPassword ? (
                       
-                        <EyeSlashIcon className="size-10 md:size-5 text-gray-400 hover:text-gray-600" />
+                        <EyeSlashIcon className="size-8 md:size-5 text-gray-400 hover:text-gray-600" />
                       
                     ) : (
                       
-                      <EyeIcon className="size-10 md:size-5 text-gray-400 hover:text-gray-600" />
+                      <EyeIcon className="size-8 md:size-5 text-gray-400 hover:text-gray-600" />
   
                     )}
                   </button>
                 </div>
                 {errors.password && (
-                  <div className="text-4xl flex items-center gap-1 md:text-sm text-red-600 mt-1">
+                  <div className="flex items-center gap-1 text-red-600 mt-1">
                     <ExclamationCircleIcon className="size-4 shrink-0" />
                     <span>{errors.password.message}</span>
                   </div>
@@ -177,7 +177,7 @@ export default function LoginForm() {
               {(errors.root?.server || errors.root?.network) && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                   <div className="flex items-center">
-                    <ExclamationCircleIcon className="h-5 w-5 text-red-400 mr-2" />
+                    <ExclamationCircleIcon className="size-5 text-red-400 mr-2" />
                     <p className="text-red-600">
                       {errors.root.server?.message || errors.root.network?.message}
                     </p>
@@ -192,7 +192,7 @@ export default function LoginForm() {
                 type="submit"
                 disabled={isPending || isSuccess}
                 className="group w-full flex items-center justify-center 
-                py-15 md:py-3.5 px-4 text-5xl md:text-lg md:rounded-lg 
+                py-5 md:py-3.5 px-4 text-xl md:text-lg md:rounded-lg 
                 shadow-sm sm:text-base font-medium text-white 
                 bg-linear-to-r from-cyan-800 to-fuchsia-800 
                 hover:from-cyan-900 hover:to-fuchsia-900 
@@ -203,18 +203,18 @@ export default function LoginForm() {
               >
                 {isPending ? (
                   <>
-                    <ArrowPathIcon className="animate-spin size-10 md:size-5 mr-2" />
+                    <ArrowPathIcon className="animate-spin size-8 md:size-5 mr-2" />
                     Iniciando sesión...
                   </>
                 ) : isSuccess ? (
                   <>
-                    <CheckCircleIcon className="size-10 md:size-5 mr-2" />
+                    <CheckCircleIcon className="size-8 md:size-5 mr-2" />
                     ¡Acceso concedido!
                   </>
                 ) : (
                   <>
                     Continuar
-                    <ArrowRightIcon className="ml-2 size-10 md:size-5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRightIcon className="ml-2 size-8 md:size-5 group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
