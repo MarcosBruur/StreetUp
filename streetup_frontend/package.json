@@ -19,6 +19,7 @@
     "@types/mapbox-gl": "^3.4.1",
     "@vis.gl/react-maplibre": "^8.1.0",
     "axios": "^1.13.1",
+    "fs-extra": "^11.3.3",
     "jwt-decode": "^4.0.0",
     "mapbox-gl": "^3.16.0",
     "maplibre-gl": "^5.13.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",

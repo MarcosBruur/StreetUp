@@ -1,9 +1,22 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
+import fs from "fs-extra"
+import path from "path";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      name: "clean-django-static",
+      buildStart() {
+        const target = path.resolve(__dirname, "../streetup_backend/server/static");
+        fs.emptyDirSync(target);
+        console.log("🧹 Limpieza de static Django completada");
+      },
+    },
+  ],
 
   server: {
     host: true,
@@ -24,7 +37,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "../streetup_backend/server/static", // ajusta tu ruta real
-    emptyOutDir: true,
+    outDir: "../streetup_backend/server/static",
+    emptyOutDir: false, // NO hace nada fuera del root, por eso limpiamos manualmente
   },
 });
