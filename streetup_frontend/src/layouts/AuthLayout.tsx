@@ -35,12 +35,12 @@ export default function AuthLayout() {
     <div className="relative z-10 flex flex-col min-h-dvh">
 
       {/* Header */}
-          <div className="hidden md:block mt-20 md:mt-10">
+          <div className="hidden md:block mt-10">
             <div className="text-center max-w-2xl mx-auto">
-              <h1 className="text-6xl md:text-3xl font-bold text-white mb-2 drop-shadow-md">
+              <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
                 Bienvenido a StreetUp
               </h1>
-              <p className="text-white/90 text-3xl md:text-lg drop-shadow-sm">
+              <p className="text-white/90 text-lg drop-shadow-sm">
                 {text}
               </p>
             </div>
@@ -53,9 +53,9 @@ export default function AuthLayout() {
         </div>
       </div>
 
-        <footer className="fixed bottom-0 left-0 w-full">
+        <footer className="w-full">
           <div className="max-w-6xl mx-auto">
-            <p className="text-center text-white/80 text-2xl md:text-sm">
+            <p className="text-center text-white/80 text-lg md:text-sm">
               © {new Date().getFullYear()} - Todos los derechos reservados
             </p>
           </div>

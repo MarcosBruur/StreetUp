@@ -52,7 +52,7 @@ export default function ConfirmAccountView(){
     toast.success(data.message);
     navigate("/auth/login");
   },
-  onError: () => toast.error("error al confirmar cuenta :c"),
+  onError: () => toast.error("error al confirmar cuenta, revisa que el codigo ingresado sea el correcto"),
 });
 
 
@@ -123,25 +123,25 @@ export default function ConfirmAccountView(){
         <div className="min-h-screen flex flex-col items-center justify-center ">
           <div className="w-full">
             {/* Card del formulario */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-white md:rounded-2xl shadow-xl overflow-hidden">
               <div className="p-6 sm:p-8">
                 {/* Icono de verificación */}
                 <div className="flex justify-center mb-6">
-                  <div className="size-26 md:size-16 rounded-full flex items-center justify-center">
-                    <CheckCircleIcon className='text-fuchsia-800 size-26 md:size-12'/>
+                  <div className="size-16 rounded-full flex items-center justify-center">
+                    <CheckCircleIcon className='text-fuchsia-800 size-12'/>
                   </div>
                 </div>
 
                 {/* Título y descripción */}
                 <div className="text-center mb-8">
-                  <h1 className="text-6xl md:text-2xl font-bold text-gray-800 mb-3">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-3">
                     Verifica tu cuenta
                   </h1>
-                  <p className="text-4xl md:text-sm text-gray-600 mb-2">
+                  <p className="text-lg md:text-sm text-gray-600 mb-2">
                     Ingresa el código de 6 dígitos enviado a tu correo
                   </p>
                   
-                  <p className="text-4xl md:text-sm text-gray-500 mt-2">
+                  <p className="text-lg md:text-sm text-gray-500 mt-2">
                     El código expira en 30 minutos
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default function ConfirmAccountView(){
 
                   {/* Inputs visuales del código */}
                   <div className="space-y-4">
-                    <label className="text-4xl md:text-sm block font-medium text-gray-700 text-center">
+                    <label className="text-lg md:text-sm block font-medium text-gray-700 text-center">
                       Código de verificación
                     </label>
                     
@@ -187,7 +187,7 @@ export default function ConfirmAccountView(){
                           onChange={(e) => handleManualChange(e.target.value, index)}
                           onKeyDown={(e) => handleKeyDown(e, index)}
                           onPaste={handlePaste}
-                          className="size-26 md:size-12 text-center text-4xl md:text-sm font-bold text-black bg-white border-2 border-gray-300 rounded-lg focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 focus:outline-none transition-all duration-200"
+                          className="size-12 text-center text-lg md:text-sm font-bold text-black bg-white border-2 border-gray-300 rounded-lg focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 focus:outline-none transition-all duration-200"
                           //disabled={isSubmitting || confirmMutation.isPending}
                           autoFocus={index === 0}
                         />
@@ -197,8 +197,8 @@ export default function ConfirmAccountView(){
                     {/* Mostrar errores de validación */}
                     {errors.token && (
                       <div className="text-center">
-                        <p className="text-4xl md:text-sm text-red-600 flex items-center justify-center gap-1">
-                          <ExclamationTriangleIcon className="size-10 md:size-4" />
+                        <p className="text-lg md:text-sm text-red-600 flex items-center justify-center gap-1">
+                          <ExclamationTriangleIcon className="size-8 md:size-4" />
                           {errors.token.message}
                         </p>
                       </div>
@@ -206,7 +206,7 @@ export default function ConfirmAccountView(){
 
                     {/* Indicador de progreso */}
                     <div className="text-center">
-                      <p className={`text-4xl md:text-sm font-medium ${manualCode.join('').length === 6 ? 'text-green-600' : 'text-gray-500'}`}>
+                      <p className={`text-lg md:text-sm font-medium ${manualCode.join('').length === 6 ? 'text-green-600' : 'text-gray-500'}`}>
                         {manualCode.join('').length === 6 ? '✓ Código completo' : ``}
                       </p>
                     </div>
@@ -216,7 +216,7 @@ export default function ConfirmAccountView(){
                   <button
                     type="submit"
                     className="group w-full flex items-center justify-center 
-                    py-15 md:py-3.5 px-4 text-5xl md:text-lg md:rounded-lg 
+                    py-5 md:py-3.5 px-4 text-xl md:text-lg md:rounded-lg 
                     shadow-sm sm:text-base font-medium text-white 
                     bg-linear-to-r from-cyan-800 to-fuchsia-800 
                     hover:from-cyan-900 hover:to-fuchsia-900 
@@ -227,9 +227,9 @@ export default function ConfirmAccountView(){
                     disabled={isPending}
                   >
                     {isPending? (
-                      <div className="md:text-sm flex items-center justify-center">
-                        <ArrowPathIcon className="animate-spin -ml-1 mr-3 size-15 md:size-5 
-                        text-white text-4xl md:text-sm"/> 
+                      <div className="text-lg md:text-sm flex items-center justify-center">
+                        <ArrowPathIcon className="animate-spin -ml-1 mr-3 size-5 
+                        text-white text-lg md:text-sm"/> 
                         Verificando...
                       </div>
                     ): (
@@ -243,7 +243,7 @@ export default function ConfirmAccountView(){
 
                 {/* Sección de reenvío */}
                 <div className="mt-8 text-center">
-                  <p className="text-gray-600 text-4xl md:text-sm mb-3">
+                  <p className="text-gray-600 text-lg md:text-sm mb-3">
                     ¿No recibiste el código?
                   </p>
                   <button
@@ -255,13 +255,13 @@ export default function ConfirmAccountView(){
                     disabled:cursor-not-allowed transition-colors"
                   >
                     
-                    <ArrowPathIcon className={`${resendMutation.isPending? 'animate-spin': ''} text-fuchsia-800 size-15 md:size-5 mx-2`}/>
+                    <ArrowPathIcon className={`${resendMutation.isPending? 'animate-spin': ''} text-fuchsia-800 size-8 md:size-5 mx-2`}/>
                     
                     {resendMutation.isPending ? (
                       
-                      <p className='text-4xl md:text-sm'>Reenviando...</p>
+                      <p className='text-lg md:text-sm'>Reenviando...</p>
                     ): (
-                      <p className='text-4xl md:text-sm'>Reenviar</p>
+                      <p className='text-lg md:text-sm'>Reenviar</p>
                     )}
 
                   </button>
@@ -270,10 +270,10 @@ export default function ConfirmAccountView(){
                 {/* Información adicional */}
                 <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
                   <div className="flex items-start">
-                    <InformationCircleIcon className="size-15 md:size-5 text-blue-500 mt-0.5 mr-2 shrink-0" />
+                    <InformationCircleIcon className="size-5 text-blue-500 mt-0.5 mr-2 shrink-0" />
                     <div>
-                      <p className="text-4xl md:text-sm text-blue-800 font-medium mb-1">Advertencia:</p>
-                      <ul className="text-4xl md:text-sm text-blue-700 space-y-1">
+                      <p className="text-lg md:text-sm text-blue-800 font-medium mb-1">Advertencia:</p>
+                      <ul className="text-lg md:text-sm text-blue-700 space-y-1">
                         <li>El código es válido por hasta 30 minutos</li>
                         <li>Revisa tu carpeta de spam si no encuentras el correo que te fue enviado</li>
                       </ul>
@@ -286,15 +286,15 @@ export default function ConfirmAccountView(){
                   <div className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
                     <Link
                       to="/auth/login"
-                      className="text-gray-600 hover:text-gray-800 text-4xl md:text-sm font-medium transition-colors inline-flex items-center"
+                      className="text-gray-600 hover:text-gray-800 text-lg md:text-sm font-medium transition-colors inline-flex items-center"
                     >
-                      <ArrowLeftIcon className="size-15 md:size-4 mr-1" />
+                      <ArrowLeftIcon className="size-6 md:size-4 mr-1" />
                       Volver al login
                     </Link>
                     
                     <Link
                       to="/auth/register"
-                      className="text-gray-600 hover:text-gray-800 text-4xl md:text-sm font-medium transition-colors"
+                      className="text-gray-600 hover:text-gray-800 text-lg md:text-sm font-medium transition-colors"
                     >
                       ¿No tienes cuenta? Regístrate
                     </Link>
