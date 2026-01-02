@@ -4,17 +4,27 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+
   server: {
-    host: true,                     // permite acceso desde LAN
+    host: true,
     port: 5173,
     strictPort: true,
     cors: {
-      origin: "http://192.168.1.227:8000",   // tu Django
+      origin: [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://192.168.1.227:8000",
+      ],
       credentials: true,
     },
     hmr: {
-      host: "192.168.1.227",        // tu IP LAN
+      host: "localhost",
       protocol: "ws",
     },
+  },
+
+  build: {
+    outDir: "../streetup_backend/server/static", // ajusta tu ruta real
+    emptyOutDir: true,
   },
 });
