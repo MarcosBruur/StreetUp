@@ -22,7 +22,7 @@ export default function AuthLayout() {
     <div
       className="fixed inset-0 z-0"
       style={{
-        backgroundImage: `url(/static/font_login.jpg)`,
+        backgroundImage: `url(/static/static/font_login.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

@@ -11,7 +11,7 @@ export default defineConfig({
     {
       name: "clean-django-static",
       buildStart() {
-        const target = path.resolve(__dirname, "../streetup_backend/server/static");
+        const target = path.resolve(__dirname, "../streetup_backend/server/static/assets");
         fs.emptyDirSync(target);
         console.log("🧹 Limpieza de static Django completada");
       },
