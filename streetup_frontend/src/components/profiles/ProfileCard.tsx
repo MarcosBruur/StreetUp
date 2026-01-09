@@ -8,7 +8,6 @@ import {
   ChatBubbleLeftRightIcon
 } from "@heroicons/react/24/solid";
 import { 
-  HandThumbUpIcon as HandThumbUpOutline,
   MapPinIcon as MapPinOutline,
 } from "@heroicons/react/24/outline";
 import type { ActiveUser, Profile } from "../../types";
@@ -38,17 +37,14 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             <div className="flex items-end gap-4">
               {/* Foto de perfil */}
               <div className="relative group">
-                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-gray-900 overflow-hidden shadow-2xl">
+                <div className="size-32 sm:w-50 sm:h-50 rounded-3xl border-4 border-gray-900 overflow-hidden shadow-2xl">
                   <img
-                    src={`${profile.photo_view}`}
+                    src={`media/${profile.photo}`}
                     alt={user.userName}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="absolute inset-0 rounded-full border-2 border-fuchsia-500/30 group-hover:border-fuchsia-500 transition-all duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-linear-to-r from-fuchsia-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold">★</span>
-                </div>
+                
               </div>
 
               {/* Información del usuario */}
@@ -74,33 +70,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             {/* Columna izquierda - Estadísticas */}
             <div className="lg:col-span-2 space-y-8">
               {/* Card de estadísticas */}
-              <div className="bg-linear-to-br from-gray-800/50 to-gray-900/50 rounded-xl p-6 border border-white/10">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <TrophyIcon className="w-6 h-6 text-yellow-500" />
-                    Estadísticas
-                  </h3>
-                  <div className="text-sm text-gray-400">Esta temporada</div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <div className="bg-gray-800/50 rounded-lg p-4 text-center hover:bg-gray-800 transition-all duration-300">
-                    <div className="text-3xl font-bold text-white mb-1">50</div>
-                    <div className="text-gray-400 text-sm">Partidos</div>
-                  </div>
-                  <div className="bg-gray-800/50 rounded-lg p-4 text-center hover:bg-gray-800 transition-all duration-300">
-                    <div className="text-3xl font-bold text-white mb-1">80</div>
-                    <div className="text-gray-400 text-sm flex items-center justify-center gap-1">
-                      <HandThumbUpOutline className="w-4 h-4" />
-                      Me Gusta
-                    </div>
-                  </div>
-                  <div className="bg-gray-800/50 rounded-lg p-4 text-center hover:bg-gray-800 transition-all duration-300">
-                    <div className="text-3xl font-bold text-white mb-1">3</div>
-                    <div className="text-gray-400 text-sm">Equipos</div>
-                  </div>
-                </div>
-              </div>
+              
 
               {/* Card de descripción */}
               <div className="bg-linear-to-br from-gray-800/50 to-gray-900/50 rounded-xl p-6 border border-white/10">
@@ -134,7 +104,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                       <MapPinIcon className="w-5 h-5 text-fuchsia-500" />
                       <span className="text-gray-300">Ubicación</span>
                     </div>
-                    <span className="text-white font-semibold">{profile.location}</span>
+                    <span className="text-white font-semibold">Cordoba</span>
                   </div>
 
                   <div className="py-3">
@@ -195,19 +165,66 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             </div>
           </div>
 
-          {/* Badge de likes */}
-          <div className="mt-8 flex justify-center">
-            <div className="inline-flex items-center gap-4 bg-linear-to-r from-fuchsia-600/20 to-purple-600/20 px-8 py-4 rounded-2xl border border-fuchsia-500/30">
-              <HandThumbUpIcon className="w-8 h-8 text-fuchsia-400" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">80</div>
-                <div className="text-gray-300">Me Gusta Recibidos</div>
+          
+
+          {/* Estadísticas rápidas */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Partidos Jugados</p>
+                <p className="text-3xl font-bold text-white">50</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-600 to-purple-600 flex items-center justify-center shadow-lg">
-                <span className="text-white text-lg">🔥</span>
+              <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+                <span className="text-fuchsia-400 text-xl">⚽</span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-3/4"></div>
               </div>
             </div>
           </div>
+
+          
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Equipos Activos</p>
+                <p className="text-3xl font-bold text-white">3</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+                <span className="text-fuchsia-400 text-xl">👥</span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-1/2"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-4 bg-linear-to-r from-fuchsia-600/20 to-purple-600/20 px-8 py-4 rounded-2xl border border-fuchsia-500/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Me gusta recibidos</p>
+                <p className="text-3xl font-bold text-white">3</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+              <span className="text-fuchsia-400 text-xl">
+                <HandThumbUpIcon className="w-8 h-8 text-fuchsia-400" />
+              </span>
+                
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>

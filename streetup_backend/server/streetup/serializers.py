@@ -1,22 +1,22 @@
 from rest_framework import serializers
 
-from .models import Users, Profiles, Teams,Tokens
+from .models import Users, Profiles, Teams, Tokens
+
 
 class UserSerializer(serializers.Serializer):
-    id= serializers.CharField(read_only=True)
-    userName= serializers.CharField()
-    email=serializers.CharField()
-    password=serializers.CharField()
-    profile= serializers.CharField(required=False)
+    id = serializers.CharField(read_only=True)
+    userName = serializers.CharField()
+    email = serializers.CharField()
+    password = serializers.CharField()
+    profile = serializers.CharField(required=False)
     confirmed = serializers.BooleanField(default=False)
-
 
     def create(self, validated_data):
         user = Users(**validated_data)
         user.save()
         return user
 
-    def update(self,instance,validated_data):
+    def update(self, instance, validated_data):
         if 'profile' in validated_data:
             profileId = validated_data.pop('profile')
             instance.profile = Profiles.objects.get(id=profileId)
@@ -27,14 +27,16 @@ class UserSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['profile'] = str(instance.profile.id) if instance.profile else None
+        data['profile'] = str(
+            instance.profile.id) if instance.profile else None
         return data
 
+
 class TokenSerializer(serializers.Serializer):
-    id=serializers.CharField(read_only=True)
-    token=serializers.CharField()
-    user=serializers.CharField()
-    createdAt= serializers.DateTimeField(read_only=True)
+    id = serializers.CharField(read_only=True)
+    token = serializers.CharField()
+    user = serializers.CharField()
+    createdAt = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
         token = Tokens(**validated_data)
@@ -44,8 +46,7 @@ class TokenSerializer(serializers.Serializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['user'] = str(instance.user.id)
-        return data 
-
+        return data
 
 
 class ProfileSerializer(serializers.Serializer):
@@ -59,30 +60,42 @@ class ProfileSerializer(serializers.Serializer):
     photo_view = serializers.CharField(read_only=True, source='photo')
 
     def to_representation(self, instance):
-        
         data = super().to_representation(instance)
-        data['photo_view'] = instance.photo
+        if instance.photo:
+            request = self.context.get("request")
+            url = f"/{instance.photo}"   # por si ya viene con profiles/...
+            if request:
+                url = request.build_absolute_uri(url)
+            data["photo"] = url
         return data
-    
-    
+
     def create(self, validated_data):
-        photo = validated_data.pop('photo',None)
+        request = self.context["request"]
+
+        photo = request.FILES.get("photo")   # archivo real
+
+        # ❗️ Eliminar campo photo porque no es string
+        validated_data.pop("photo", None)
+
         profile = Profiles(**validated_data)
         profile.save()
 
-        profile.save_image(photo)
+        if photo:
+            profile.save_image(photo)
+
         return profile
-    
+
     def update(self, instance, validated_data):
         instance.age = validated_data.get('age', instance.age)
         instance.photo = validated_data.get('photo', instance.photo)
-        instance.description = validated_data.get('description', instance.description)
+        instance.description = validated_data.get(
+            'description', instance.description)
         instance.sports = validated_data.get('sports', instance.sports)
         instance.location = validated_data.get('location', instance.location)
         instance.save()
         return instance
 
-        
+
 class TeamSerializer(serializers.Serializer):
     id = serializers.CharField(read_only=True)
     name = serializers.CharField()
@@ -94,15 +107,14 @@ class TeamSerializer(serializers.Serializer):
     description = serializers.CharField()
     photo_view = serializers.CharField(read_only=True, source='photo')
 
-
     def to_representation(self, instance):
-        
+
         data = super().to_representation(instance)
         data['photo_view'] = instance.photo
         return data
 
     def create(self, validated_data):
-        photo = validated_data.pop('photo',None)
+        photo = validated_data.pop('photo', None)
         team = Teams(**validated_data)
         team.save()
 
@@ -113,7 +125,8 @@ class TeamSerializer(serializers.Serializer):
         instance.name = validated_data.get('name', instance.name)
         instance.members = validated_data.get('members', instance.members)
         instance.sport = validated_data.get('sport', instance.sport)
-        instance.description = validated_data.get('description', instance.description)
+        instance.description = validated_data.get(
+            'description', instance.description)
         instance.location = validated_data.get('location', instance.location)
         instance.save()
         return instance
@@ -122,7 +135,7 @@ class TeamSerializer(serializers.Serializer):
         return {
             "id": str(instance.id),
             "name": instance.name,
-            "leader" :str(instance.leader.id),
+            "leader": str(instance.leader.id),
             "members": [str(member.id) for member in instance.members],
             "sport": instance.sport,
             "description": instance.description,

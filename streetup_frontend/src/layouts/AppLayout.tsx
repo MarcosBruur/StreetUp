@@ -45,11 +45,11 @@ export default function AppLayout() {
       <>
         <div
           className="bg-cover bg-center min-h-screen flex flex-col justify-between"
-          style={{ backgroundImage: "url('/static/font_login.jpg')" }}
+          style={{ backgroundImage: "url('/static/static/font_login.jpg')" }}
         >
           <div className="overflow-hidden">
             <div className="flex flex-col md:flex-row md:h-screen mt-2 overflow-hidden">
-              <aside className="w-full md:w-[20%] border-r border-stone-300 p-4 flex flex-col justify-between shadow-[0px_0px_53px_17px_rgba(147,51,234,0.5)]">
+              <aside className="hidden w-full md:w-[20%] border-r border-stone-300 p-4 md:flex flex-col justify-between ">
                 <div>
                   <h2 className="text-2xl text-center mt-5">
                     Bienvenido <br />
@@ -117,7 +117,7 @@ export default function AppLayout() {
                 </footer>
               </aside>
 
-              <main className="w-full md:w-[80%] p-5 overflow-y-auto">
+              <main className="w-full md:w-[80%] overflow-y-auto">
                 <div className="flex justify-center">
                   <Logo />
                 </div>

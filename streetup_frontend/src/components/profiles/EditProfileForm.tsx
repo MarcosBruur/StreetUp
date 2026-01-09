@@ -53,7 +53,7 @@ export default function EditProfileForm() {
           rounded-xl border-2 shadow-[0px_0px_27px_16px_rgba(147,51,234,0.5)]"
           >
             <img
-              src={`${data.photo_view}`}
+              src={`media/${data.photo}`}
               alt="imagen de perfil"
               className="w-full h-full object-center object-cover"
             />

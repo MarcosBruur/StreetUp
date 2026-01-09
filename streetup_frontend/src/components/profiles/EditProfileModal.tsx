@@ -8,7 +8,7 @@ import EditProfileForm from "./EditProfileForm";
 export default function EditProfileModal() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const show = !!queryParams.get("new");
+  const show = !!queryParams.get("edit");
   const navigate = useNavigate();
 
   return (

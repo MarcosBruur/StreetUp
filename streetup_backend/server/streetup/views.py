@@ -197,7 +197,8 @@ class ProfileViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = ProfileSerializer(data=request.data)
+        serializer = ProfileSerializer(
+            data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
 
         profile = serializer.save()
@@ -205,8 +206,6 @@ class ProfileViewSet(viewsets.ViewSet):
         user = request.user
         user.profile = profile.id
         user.save(update_fields=['profile'])
-        print(ProfileSerializer(profile).data,
-              "--------------------------------------")
 
         return Response(ProfileSerializer(profile).data, status=status.HTTP_201_CREATED)
 
