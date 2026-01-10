@@ -19,10 +19,6 @@ from datetime import timedelta
 load_dotenv()
 
 
-mongoengine.connect(
-    db='streetup',
-    host='mongodb+srv://marcosbruur_db_user:XZ6dqv37LAR0z55Y@cluster0.za6sv6n.mongodb.net/'
-)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-pwi(wtslm=s5i&+s^bm#t-q5qljp4h)6me5toe667(6*o7@csk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG == True:
     ALLOWED_HOSTS = ['*']

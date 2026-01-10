@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { ActiveUserSchema, ConfirmAccountApiSchema, type ConfirmAccountApi } from "../types";
+import { ActiveUserSchema, ConfirmAccountApiSchema, type ConfirmAccountApi, type ConfirmToken } from "../types";
 
 export async function getUser() {
   try {
@@ -16,7 +16,7 @@ export async function getUser() {
 
 
 
-export async function confirmAccount(code: string) {
+export async function confirmAccount(code: ConfirmToken['token']) {
   
   try {
     const { data } = await api.post<ConfirmAccountApi>(

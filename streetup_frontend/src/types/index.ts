@@ -11,7 +11,18 @@ export const AuthSchema = z.object({
   password: z.string(),
   repeatPassword: z.string(),
   profile: z.string().nullable(),
+  token: z.string(),
 });
+
+type Auth = z.infer<typeof AuthSchema>;
+export type LoginForm = Pick<Auth, "email" | "password">;
+export type RegisterForm = Pick<
+  Auth,
+  "userName" | "email" | "password" | "repeatPassword"
+>;
+export type ConfirmToken = Pick<Auth,"token">;
+/**--------------- */
+
 
 export const TokenSchema = z.object({
   message: z.string(),
@@ -41,12 +52,6 @@ export type ConfirmAccount = z.infer<typeof ConfirmAccountSchema>;
 export type ConfirmAccountApi = z.infer<typeof ConfirmAccountApiSchema>;
 export type ActiveUser = z.infer<typeof ActiveUserSchema>;
 export type Token = z.infer<typeof TokenSchema> & { user: User };
-export type Auth = z.infer<typeof AuthSchema>;
-export type LoginForm = Pick<Auth, "email" | "password">;
-export type RegisterForm = Pick<
-  Auth,
-  "userName" | "email" | "password" | "repeatPassword"
->;
 
 
 /**USERS */
