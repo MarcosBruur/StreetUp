@@ -26,7 +26,7 @@ export async function createUser(formData: RegisterForm) {
 
 export async function loginUser(formData: LoginForm) {
   
-  //try {
+  try {
     const request = {
       email: formData.email,
       password: formData.password,
@@ -41,11 +41,11 @@ export async function loginUser(formData: LoginForm) {
     localStorage.setItem("refresh_token", refresh);
 
     return data;
-//   //} catch (error) {
-//     if (isAxiosError(error) && error.response) {
-//       throw new Error(error.response.data.error);
-//     }
-//  // }
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+ }
 }
 
 export async function getUsers() {

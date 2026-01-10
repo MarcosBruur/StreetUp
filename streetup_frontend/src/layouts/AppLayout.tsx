@@ -6,6 +6,7 @@ import {
   StarIcon,
   UserGroupIcon,
   UserIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -49,18 +50,18 @@ export default function AppLayout() {
         >
           <div className="overflow-hidden">
             <div className="flex flex-col md:flex-row md:h-screen mt-2 overflow-hidden">
-              <aside className="hidden w-full md:w-[20%] border-r border-stone-300 p-4 md:flex flex-col justify-between ">
-                <div>
-                  <h2 className="text-2xl text-center mt-5">
+              <aside className="w-full md:w-[20%] border-r border-stone-300 p-4 md:flex flex-col justify-between ">
+                <div className="">
+                  <h2 className="hidden md:block text-2xl text-center mt-5">
                     Bienvenido <br />
                     <span className="text-3xl font-bold capitalize">
                       {data.userName}
                     </span>
                   </h2>
 
-                  <div className="mt-6">
+                  <div className="hidden md:block mt-6">
                     <SearchBar />
-                    <div className="hidden md:block mt-4">
+                    <div className="md:block mt-4">
                       <SideBar />
                     </div>
                   </div>
@@ -97,10 +98,13 @@ export default function AppLayout() {
                           {<StarIcon className="w-5 h-auto mx-2" />}
                         </SideBarButton>
                       </button>
+                      <button onClick={handleLogout}>
+                          <XMarkIcon className="w-5 h-auto mx-2" />
+                      </button>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center ">
+                  <div className="hidden md:flex flex-col items-center ">
                     <button
                       className="bg-gray-200 w-1/2 rounded-br-2xl 
                       rounded-tl-2xl p-2 hover:bg-gray-300 cursor-pointer transition-all"

@@ -38,7 +38,6 @@ export default function LoginForm() {
       reset()
     },
     onSuccess: (data)=>{
-      toast.success(data?.message);
             if (data?.user.profile === null) {
               navigate("/new_profile");
             } else {
