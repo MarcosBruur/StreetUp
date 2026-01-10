@@ -26,7 +26,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
       <div className="absolute -top-20 -left-20 w-64 h-64 bg-fuchsia-500/10 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
       
-      <div className="relative bg-linear-to-br from-gray-800 via-gray-900 to-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl backdrop-blur-sm">
+      <div className="relative bg-linear-to-br from-gray-800 via-gray-900 to-black overflow-hidden border border-white/10 shadow-2xl backdrop-blur-sm">
         {/* Header con gradiente */}
         <div className="relative h-48 sm:h-56 bg-linear-to-r from-fuchsia-700 via-purple-700 to-violet-800">
           <div className="absolute inset-0 bg-black/30"></div>
@@ -205,25 +205,21 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-4 bg-linear-to-r from-fuchsia-600/20 to-purple-600/20 px-8 py-4 rounded-2xl border border-fuchsia-500/30">
+          <div className="bg-linear-to-r from-fuchsia-600/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Me gusta recibidos</p>
                 <p className="text-3xl font-bold text-white">3</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
-              <span className="text-fuchsia-400 text-xl">
-                <HandThumbUpIcon className="w-8 h-8 text-fuchsia-400" />
-              </span>
-                
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="w-full bg-gray-700 rounded-full h-2">
-                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-1/2"></div>
+                <span className="text-fuchsia-400 text-xl">
+                  <HandThumbUpIcon className="w-8 h-8 text-fuchsia-400" />
+                </span>
               </div>
             </div>
           </div>
+
+          
         </div>
         </div>
       </div>

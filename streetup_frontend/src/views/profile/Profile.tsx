@@ -50,10 +50,10 @@ export default function Profile() {
   }
 
   return (
-    <div className="mt-10 min-h-screen bg-linear-to-br from-gray-900 via-purple-900 to-violet-900 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="mt-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black pt-8 mx-5">
       <div className="max-w-7xl mx-auto">
         {/* Header con título y botón de editar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">
+        <div className="px-4 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="w-16 h-16 rounded-full bg-linear-to-r from-fuchsia-500 to-purple-600 flex items-center justify-center shadow-xl">
