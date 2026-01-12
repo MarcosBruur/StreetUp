@@ -31,14 +31,9 @@ export default defineConfig({
       ],
       credentials: true,
     },
-    hmr: {
-      host: "localhost",
-      protocol: "ws",
-    },
   },
 
   build: {
-    outDir: "../streetup_backend/server/static",
     emptyOutDir: false, // NO hace nada fuera del root, por eso limpiamos manualmente
   },
 });
