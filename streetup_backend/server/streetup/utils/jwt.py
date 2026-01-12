@@ -2,8 +2,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from rest_framework import status
-from ..models import Users
-from ..utils.auth import checkPassword
+from streetup.models import Users
+from .auth import checkPassword
 
 
 def generate_jwt_for_user(user):

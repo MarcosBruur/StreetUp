@@ -6,7 +6,7 @@ import {
   StarIcon,
   UserGroupIcon,
   UserIcon,
-  XMarkIcon,
+  PowerIcon,
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -99,7 +99,7 @@ export default function AppLayout() {
                         </SideBarButton>
                       </button>
                       <button onClick={handleLogout}>
-                          <XMarkIcon className="w-5 h-auto mx-2" />
+                          <PowerIcon className="w-5 h-auto mx-2" />
                       </button>
                     </div>
                   </div>
