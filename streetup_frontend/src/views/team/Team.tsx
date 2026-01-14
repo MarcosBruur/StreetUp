@@ -1,49 +1,136 @@
-import { Link } from "react-router-dom";
-import CreateTeamModal from "../../components/team/CreateTeamModal";
+
+// components/teams/Teams.tsx - Vista de equipos con paleta azul/verde
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getTeamByUser } from "../../api/TeamsApi";
+import { getTeamByUser } from "../../api/TeamsApi"
+import { useAuth } from "../../hooks/useAuth";
 import TeamCard from "../../components/team/TeamCard";
+import CreateTeamModal from "../../components/team/CreateTeamModal";
+import type { Team } from "../../types";
+import { 
+  UserGroupIcon, 
+  PlusIcon, 
+  MagnifyingGlassIcon,
+  FireIcon,
+  TrophyIcon,
+  MapPinIcon
+} from "@heroicons/react/24/outline";
+import { 
+  UserGroupIcon as UserGroupIconSolid,
+  PlusIcon as PlusIconSolid,
+  FireIcon as FireIconSolid
+} from "@heroicons/react/24/solid";
 
 export default function Team() {
-  const { data } = useQuery({
+  const { data: user } = useAuth();
+  const navigate = useNavigate();
+
+  
+  // Consulta para obtener mis equipos
+  const { data:team, isLoading } = useQuery({
     queryKey: ["team"],
-    queryFn: getTeamByUser,
-    retry: 1,
+    queryFn: () => getTeamByUser(),
+    enabled: !!user?.id,
+    retry: 2,
   });
 
-  if (data)
+  // Estado de carga
+  // const isLoading = isLoadingAll || isLoadingMyTeams;
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-blue-900 to-emerald-900">
+  //       <div className="text-center">
+  //         <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-emerald-500 mb-4"></div>
+  //         <p className="text-white text-xl font-semibold">Cargando equipos...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  if (!user) {
     return (
-      <>
-        <h1 className="text-2xl font-bold">Mi Equipo</h1>
-        <div className="mt-5 flex flex-col gap-8  items-center">
-          {data?.length > 0 ? (
-            data.map((team) => (
-              <>
-                <TeamCard team={team} key={team.id} />
-              </>
-            ))
-          ) : (
-            <div className="min-h-10/12 flex flex-col justify-center items-center text-2xl">
-              <p>
-                Aún no tienes un equipo propio, deseas{" "}
-                <Link
-                  to={location.pathname + `?edit=true`}
-                  className="font-bold"
-                >
-                  Crear un nuevo equipo
-                </Link>
-              </p>
-              <p>
-                O si lo prefieres puedes{" "}
-                <Link to="/teams" className="font-bold">
-                  Solicitar unirme a un equipo
-                </Link>
-              </p>
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-blue-900 to-emerald-900">
+        <div className="text-center p-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+          <UserGroupIcon className="w-24 h-24 text-white/50 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Acceso restringido</h2>
+          <p className="text-gray-300 mb-6">Inicia sesión para ver los equipos</p>
+          <button
+            onClick={() => navigate("/auth/login")}
+            className="bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 hover:scale-105"
+          >
+            Iniciar Sesión
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black py-8 mx-5">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="px-4 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full bg-linear-to-r from-blue-500 to-emerald-600 flex items-center justify-center shadow-xl">
+                <UserGroupIconSolid className="w-10 h-10 text-white" />
+              </div>
+              
             </div>
-          )}
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">Mi Equipo</h1>
+              <p className="text-gray-400">Crea y gestiona tu propio equipo deportivo</p>
+            </div>
+          </div>
+
+          {/* Botones de acción */}
+          <div className="flex flex-wrap gap-3">
+            <button
+              className="flex items-center gap-2 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+              onClick={() => navigate(location.pathname + `?create=true`)}
+            >
+              <PlusIcon className="w-5 h-5" />
+              Crear Equipo
+            </button>
+          </div>
         </div>
 
+
+        {team && team.length > 0 && (
+          <div className="px-4 mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-lg bg-linear-to-r from-blue-500/20 to-emerald-500/20">
+                <UserGroupIconSolid className="w-6 h-6 text-blue-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-white">Mis Equipos</h2>
+              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm">
+                {team.length} equipo{team.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {team.slice(0, 3).map((team) => (
+                <TeamCard key={team.id} team={team} isMyTeam={true} />
+              ))}
+            </div>
+            
+            {team.length > 3 && (
+              <div className="text-center mt-6">
+                <button 
+                  onClick={() => navigate("/teams/my-teams")}
+                  className="text-blue-400 hover:text-blue-300 font-medium"
+                >
+                  Ver todos mis equipos ({team.length})
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Modal de creación de equipo */}
         <CreateTeamModal />
-      </>
-    );
+      </div>
+    </div>
+  );
 }

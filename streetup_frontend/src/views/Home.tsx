@@ -45,9 +45,8 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">StreetUp</h1>
-
-      <div className="flex justify-center mt-10">
+      
+      <div className="flex justify-center my-10">
         <Map
           {...viewState}
           onMove={(e) => setViewState(e.viewState)}

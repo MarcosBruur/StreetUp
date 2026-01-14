@@ -21,7 +21,7 @@ type TeamCardProps = {
   isMyTeam?: boolean;
 };
 
-export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
+export default function TeamsCard({ team, isMyTeam = false }: TeamCardProps) {
   const navigate = useNavigate();
 
   const getSportColor = (sport: string) => {
