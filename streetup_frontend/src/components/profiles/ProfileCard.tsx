@@ -51,9 +51,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
               <div className="mb-4 ml-4">
                 <h2 className="text-3xl sm:text-4xl font-bold text-white capitalize mb-2">
                   {user.userName}
-                  <span className="ml-3 text-sm font-normal bg-fuchsia-500/20 text-fuchsia-300 px-3 py-1 rounded-full">
-                    Nivel 15
-                  </span>
+                  
                 </h2>
                 <p className="text-gray-300 flex items-center gap-2">
                   <MapPinOutline className="w-5 h-5" />
@@ -211,9 +209,9 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                 <p className="text-gray-400 text-sm">Me gusta recibidos</p>
                 <p className="text-3xl font-bold text-white">3</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
+              <div className="animate-bounce size-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
                 <span className="text-fuchsia-400 text-xl">
-                  <HandThumbUpIcon className="w-8 h-8 text-fuchsia-400" />
+                  <HandThumbUpIcon className="size-8 text-fuchsia-400" />
                 </span>
               </div>
             </div>

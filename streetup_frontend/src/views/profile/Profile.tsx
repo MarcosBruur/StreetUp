@@ -59,11 +59,10 @@ export default function Profile() {
               <div className="w-16 h-16 rounded-full bg-linear-to-r from-fuchsia-500 to-purple-600 flex items-center justify-center shadow-xl">
                 <UserCircleIcon className="w-10 h-10 text-white" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900"></div>
+              <div className="animate-pulse animate-duration-2000 absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900"></div>
             </div>
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white">Mi Perfil</h1>
-              
             </div>
           </div>
 
