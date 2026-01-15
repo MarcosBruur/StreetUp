@@ -10,15 +10,9 @@ import type { Team } from "../../types";
 import { 
   UserGroupIcon, 
   PlusIcon, 
-  MagnifyingGlassIcon,
-  FireIcon,
-  TrophyIcon,
-  MapPinIcon
 } from "@heroicons/react/24/outline";
 import { 
   UserGroupIcon as UserGroupIconSolid,
-  PlusIcon as PlusIconSolid,
-  FireIcon as FireIconSolid
 } from "@heroicons/react/24/solid";
 
 export default function Team() {
@@ -27,7 +21,7 @@ export default function Team() {
 
   
   // Consulta para obtener mis equipos
-  const { data:team, isLoading } = useQuery({
+  const { data:team } = useQuery({
     queryKey: ["team"],
     queryFn: () => getTeamByUser(),
     enabled: !!user?.id,

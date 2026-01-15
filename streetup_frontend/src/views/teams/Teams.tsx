@@ -1,23 +1,19 @@
 
 // components/teams/Teams.tsx - Vista de equipos con paleta azul/verde
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getTeamByUser } from "../../api/TeamsApi"
 import { useAuth } from "../../hooks/useAuth";
-import TeamCard from "../../components/team/TeamCard";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
-import type { Team } from "../../types";
+
 import { 
   UserGroupIcon, 
   PlusIcon, 
   MagnifyingGlassIcon,
-  FireIcon,
+  
   TrophyIcon,
-  MapPinIcon
+  
 } from "@heroicons/react/24/outline";
 import { 
   UserGroupIcon as UserGroupIconSolid,
-  PlusIcon as PlusIconSolid,
   FireIcon as FireIconSolid
 } from "@heroicons/react/24/solid";
 
@@ -197,7 +193,7 @@ export default function Teams() {
         <div className="px-4 mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Estadísticas de la Comunidad</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
+            <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Equipos Activos</p>
@@ -215,7 +211,7 @@ export default function Teams() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-500/20">
+            <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-500/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Miembros Totales</p>
@@ -233,7 +229,7 @@ export default function Teams() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
+            <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Partidos esta semana</p>
@@ -251,7 +247,7 @@ export default function Teams() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-500/20">
+            <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-500/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Deportes diferentes</p>

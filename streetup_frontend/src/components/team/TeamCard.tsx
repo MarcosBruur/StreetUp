@@ -4,12 +4,8 @@ import {
   MapPinIcon,
   TrophyIcon,
   CalendarIcon,
-  StarIcon,
-  UserPlusIcon,
-  CheckCircleIcon
 } from "@heroicons/react/24/outline";
 import { 
-  UserGroupIcon as UserGroupIconSolid,
   StarIcon as StarIconSolid,
   CheckCircleIcon as CheckCircleIconSolid
 } from "@heroicons/react/24/solid";
@@ -53,13 +49,13 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
   return (
     <div className="group relative">
       {/* Efectos de fondo */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
+      <div className="absolute -inset-0.5 bg-linear-to-r from-blue-500 to-emerald-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
       
-      <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl overflow-hidden border border-white/10 shadow-xl hover:shadow-2xl hover:border-blue-500/30 transition-all duration-300">
+      <div className="relative bg-linear-to-br from-gray-800 via-gray-900 to-black rounded-2xl overflow-hidden border border-white/10 shadow-xl hover:shadow-2xl hover:border-blue-500/30 transition-all duration-300">
         {/* Header con gradiente específico del deporte */}
-        <div className={`relative h-40 bg-gradient-to-r ${getSportColor(team.sport)}`}>
+        <div className={`relative h-40 bg-linear-to-r ${getSportColor(team.sport)}`}>
           <div className="absolute inset-0 bg-black/30"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-gray-900 to-transparent"></div>
           
           {/* Badge del deporte */}
           <div className="absolute top-4 left-4">
@@ -82,7 +78,7 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
           {/* Logo del equipo */}
           <div className="absolute -bottom-8 left-6">
             <div className="relative">
-              {/* <div className="size-20 rounded-2xl border-4 border-gray-900 overflow-hidden shadow-2xl bg-gradient-to-br from-blue-600 to-emerald-600">
+              {/* <div className="size-20 rounded-2xl border-4 border-gray-900 overflow-hidden shadow-2xl bg-linear-to-br from-blue-600 to-emerald-600">
                 {team.logo ? (
                   <img 
                     src={`media/${team.logo}`} 
@@ -164,7 +160,7 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
             {isMyTeam ? (
               <button
                 onClick={() => navigate(`/teams/${team.id}`)}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center"
+                className="flex-1 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center"
               >
                 Ver Equipo
               </button>
@@ -178,7 +174,7 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
             ) : (
               <button
                 onClick={() => navigate(`/teams/${team.id}/join`)}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center flex items-center justify-center gap-2"
+                className="flex-1 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center flex items-center justify-center gap-2"
               >
                 <UserPlusIcon className="w-5 h-5" />
                 Unirse
