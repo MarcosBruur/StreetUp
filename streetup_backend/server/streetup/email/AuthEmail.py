@@ -11,7 +11,7 @@ class AuthEmail:
         # Usamos el remitente definido en settings.py para evitar errores de autenticación
         from_email = settings.DEFAULT_FROM_EMAIL
         to = [data['email']]
-        url = "http://localhost:8000/auth/confirm/" if settings.DEGUG else "https://marcos.alexis.ar/auth/confirm/"
+        url = "http://localhost:8000/auth/confirm/" if settings.DEBUG else "https://marcos.alexis.ar/auth/confirm/"
         # HTML (versión completa)
         html_content = f"""
         <html>
@@ -19,7 +19,7 @@ class AuthEmail:
                 <p>Hola <b>{data['userName']}</b>, has creado tu cuenta en <b>StreetUp</b>, casi está todo listo.</p>
                 <p>Solo debes confirmar tu cuenta.</p>
                 <p>Visita el siguiente enlace:</p>
-                <a href={url} 
+                <a href={url}
                    style="background-color:#16a34a;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;display:inline-block;">
                    Confirmar Cuenta
                 </a>

@@ -88,19 +88,13 @@ class Teams(Document):
     location = fields.StringField(required=False)
 
     def save_image(self, file_obj):
-        # Asegurar directorio
         os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-        # Nombre único
         nombre = f"{uuid.uuid4()}.webp"
         path = os.path.join(UPLOAD_DIR, nombre)
 
-        # Convertir a webp
         img = Image.open(file_obj).convert("RGB")
         img.save(path, "WEBP", quality=90)
 
-        # Guardar ruta relativa
-        self.imagen = f"teams/{nombre}"
-
-        self.photo = f"media/teams/{nombre}"
+        self.photo = f"teams/{nombre}"
         self.save()

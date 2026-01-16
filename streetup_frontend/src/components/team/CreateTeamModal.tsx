@@ -8,7 +8,7 @@ import CreateTeamForm from "./CreateTeamForm";
 export default function CreateTeamModal() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const show = !!queryParams.get("edit");
+  const show = !!queryParams.get("create");
   const navigate = useNavigate();
 
   return (
@@ -42,9 +42,9 @@ export default function CreateTeamModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="transform overflow-hidden rounded-lg bg-linear-to-br from-gray-800 via-fuchsia-950 to-gray-800  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+                <Dialog.Panel className="transform overflow-hidden rounded-lg bg-linear-to-br from-gray-800 via-fuchsia-950 to-gray-800  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-6">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Personalizar Equipo</h2>
+                    <h2 className="text-2xl font-bold">Crear Equipo</h2>
                     <button
                       type="button"
                       onClick={() =>

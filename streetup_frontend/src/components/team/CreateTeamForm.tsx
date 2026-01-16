@@ -98,6 +98,58 @@ export default function CreateTeamForm() {
             })}
           />
         </div>
+        <div className="">
+          <label htmlFor="description" className="">
+            Fondo:
+          </label>
+          <div className="mt-2 py-2 px-4 md:px-0 grid grid-cols-2 md:flex  overflow-hidden justify-around items-center gap-5 md:gap-0">
+            <div className="border-2 border-white 
+              hover:shadow-[0px_0px_11px_3px_#4f90ff] 
+              transition-all hover:scale-105">
+            <img 
+              src="/static/static/teams/team.jpg" 
+              alt="team_logo_1" 
+              className="size-30"
+              />
+            </div>
+            <div className="border-2 border-white 
+              hover:shadow-[0px_0px_11px_3px_#4f90ff] 
+              transition-all hover:scale-105">
+            <img 
+              src="/static/static/teams/font_color.jpg" 
+              alt="team_logo_2" 
+              className="size-30"
+              />
+            </div>
+            <div className="border-2 border-white 
+            hover:shadow-[0px_0px_11px_3px_#4f90ff] 
+            transition-all hover:scale-105">
+            <img 
+              src="/static/static/teams/font_graffiti.jpg" 
+              alt="team_logo_3" 
+              className="size-30"
+              />
+            </div>
+            <div className="border-2 border-white 
+            hover:shadow-[0px_0px_11px_3px_#4f90ff] 
+            transition-all hover:scale-105">
+            <img 
+              src="/static/static/teams/font_graffiti_cel.jpg" 
+              alt="team_logo_4" 
+              className="size-30"
+              />
+            </div>
+            <div className="border-2 border-white 
+            hover:shadow-[0px_0px_11px_3px_#4f90ff] 
+            transition-all hover:scale-105">
+            <img 
+              src="/static/static/teams/font_home.jpg" 
+              alt="team_logo_5" 
+              className="size-30"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div className="mt-5 flex flex-col justify-between gap-2">
         <button

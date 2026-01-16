@@ -7,6 +7,7 @@ import {
   UserGroupIcon,
   UserIcon,
   PowerIcon,
+  ArrowLeftStartOnRectangleIcon
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ import SideBar from "../components/sidebar/SideBar";
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import Logo from "../components/global/Logo";
+
 
 export default function AppLayout() {
   const { data, isError, isLoading } = useAuth();
@@ -60,7 +62,7 @@ export default function AppLayout() {
                   </h2>
 
                   <div className="hidden md:block mt-6">
-                    <SearchBar />
+                    
                     <div className="md:block mt-4">
                       <SideBar />
                     </div>
@@ -99,22 +101,30 @@ export default function AppLayout() {
                         </SideBarButton>
                       </button>
                       <button onClick={handleLogout}>
+                          <div className="md:flex md:gap-2 md:w-full 
+                          transition-colors py-3 px-3 
+                          hover:bg-red-800/50">
                           <PowerIcon className="w-5 h-auto mx-2" />
+                          </div>
                       </button>
                     </div>
                   </div>
 
                   <div className="hidden md:flex flex-col items-center ">
                     <button
-                      className="bg-gray-200 w-1/2 rounded-br-2xl 
-                      rounded-tl-2xl p-2 hover:bg-gray-300 cursor-pointer transition-all"
+                      className="bg-red-100 text-red-600 
+                      p-2 hover:bg-red-300 cursor-pointer transition-all"
                       onClick={handleLogout}
                     >
-                      <p className="text-sm text-black font-bold">
-                        Cerrar sesión
-                      </p>
+                      <div className="flex gap-2 justify-center items-center">
+                        <ArrowLeftStartOnRectangleIcon className="size-5 "/>
+                        <p className="text-sm font-bold">
+                          Cerrar sesión
+                        </p>
+
+                      </div>
                     </button>
-                    <p className="text-center mb-2 mt-10">
+                    <p className=" text-center mb-2 mt-10">
                       Todos los derechos reservados {new Date().getFullYear()}
                     </p>
                   </div>

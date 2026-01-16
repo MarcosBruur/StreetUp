@@ -61,7 +61,7 @@ export default function Team() {
   }
 
   return (
-    <div className="mt-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black py-8 mx-5">
+    <div className="w-full md:w-auto my-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black py-8 md:mx-5">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="px-4 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">

@@ -20,6 +20,7 @@ type ProfileCardProps = {
 export default function ProfileCard({ user, profile }: ProfileCardProps) {
   if (!user || !profile) return null;
 
+  
   return (
     <div className="relative">
       {/* Efectos de fondo decorativos */}
