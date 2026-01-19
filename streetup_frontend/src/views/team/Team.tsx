@@ -2,7 +2,7 @@
 // components/teams/Teams.tsx - Vista de equipos con paleta azul/verde
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getTeamByUser } from "../../api/TeamsApi"
+import { getTeamsByUser } from "../../api/TeamsApi"
 import { useAuth } from "../../hooks/useAuth";
 import TeamCard from "../../components/team/TeamCard";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
@@ -21,9 +21,9 @@ export default function Team() {
 
   
   // Consulta para obtener mis equipos
-  const { data:team } = useQuery({
-    queryKey: ["team"],
-    queryFn: () => getTeamByUser(),
+  const { data:teams } = useQuery({
+    queryKey: ["my_teams"],
+    queryFn: getTeamsByUser,
     enabled: !!user?.id,
     retry: 2,
   });
@@ -91,7 +91,7 @@ export default function Team() {
         </div>
 
 
-        {team && team.length > 0 && (
+        {teams && teams.data.length > 0 && (
           <div className="px-4 mb-12">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-lg bg-linear-to-r from-blue-500/20 to-emerald-500/20">
@@ -99,26 +99,15 @@ export default function Team() {
               </div>
               <h2 className="text-2xl font-bold text-white">Mis Equipos</h2>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm">
-                {team.length} equipo{team.length !== 1 ? 's' : ''}
+                {teams.data.length} equipo{teams.data.length !== 1 ? 's' : ''}
               </span>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {team.slice(0, 3).map((team) => (
+              {teams.data.map((team) => (
                 <TeamCard key={team.id} team={team} isMyTeam={true} />
               ))}
-            </div>
-            
-            {team.length > 3 && (
-              <div className="text-center mt-6">
-                <button 
-                  onClick={() => navigate("/teams/my-teams")}
-                  className="text-blue-400 hover:text-blue-300 font-medium"
-                >
-                  Ver todos mis equipos ({team.length})
-                </button>
-              </div>
-            )}
+            </div> 
           </div>
         )}
 

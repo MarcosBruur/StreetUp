@@ -319,11 +319,8 @@ class TeamViewSet(viewsets.ViewSet):
 
     def list(self, request):
         teams = Teams.objects.all()
-
-        # Crear instancia de paginador
         paginator = TeamPagination()
         paginated_teams = paginator.paginate_queryset(teams, request)
-
         serializer = TeamSerializer(paginated_teams, many=True)
         return paginator.get_paginated_response(serializer.data)
 
@@ -331,13 +328,15 @@ class TeamViewSet(viewsets.ViewSet):
         serializer = TeamSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = request.user
-
-        validated = serializer.validated_data
-        validated["leader"] = user
-
-        team = Teams.objects.create(**validated)
-        return Response(TeamSerializer(team).data, status=status.HTTP_201_CREATED)
+        team = Teams(**serializer.validated_data)
+        team.leader = request.user
+        team.save()
+        return JsonResponse({
+            "message": "Equipo creado correctamente",
+            "data": TeamSerializer(team).data,
+        },
+            status=status.HTTP_201_CREATED
+        )
 
     @action(methods=['get'], detail=False)
     def getTeamsByUser(self, request):
@@ -345,6 +344,9 @@ class TeamViewSet(viewsets.ViewSet):
             user = request.user
             teams = Teams.objects.filter(leader=user)
             serializer = TeamSerializer(teams, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({
+                "message": "ok",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
         except Users.DoesNotExist:
             return Response('Usuario no encontrado', status=status.HTTP_404_NOT_FOUND)

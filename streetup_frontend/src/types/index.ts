@@ -4,6 +4,12 @@ export interface CustomJwtPayload extends JwtPayload {
   user_id: string;
 }
 
+
+
+export const sportsOptions = ["futbol","basquet","tenis","voley","paddle","ciclismo"] as const;
+
+
+
 /**AUTH */
 export const AuthSchema = z.object({
   userName: z.string(),
@@ -98,22 +104,31 @@ export const TeamSchema = z.object({
   name: z.string(),
   leader: z.string(),
   members: z.array(z.string()),
-  sport: z.string(),
-  description: z.string().nullable(),
-  location: z.string().nullable(),
+  sport: z.enum(sportsOptions),
+  description: z.string(),
+  location: z.string(),
+  photo: z.string(),
 });
 
-export const TeamApiSchema = z.array(
+export const TeamsByUserApiSchema = z.object({
+  message: z.string(),
+  data: z.array(TeamSchema),
+});
+
+export const TeamApiSchema = 
   z.object({
-    id: z.string(),
-    name: z.string(),
-    leader: z.string(),
-    members: z.array(z.string()),
-    sport: z.string(),
-    description: z.string(),
-    location: z.string(),
+    message: z.string(),
+    data: z.object({
+      id: z.string(),
+      name: z.string(),
+      leader: z.string(),
+      members: z.array(z.string()),
+      sport: z.string(),
+      description: z.string(),
+      location: z.string(),
+    })
   })
-);
+;
 
 export const TeamsApiSchema = z.object({
   count: z.number(),
@@ -125,6 +140,7 @@ export const TeamsApiSchema = z.object({
 export type TeamApi = z.infer<typeof TeamApiSchema>;
 export type Team = z.infer<typeof TeamSchema>;
 export type TeamForm = Pick<
-  Team,
-  "name" | "description" | "sport" | "location"
+  Team, "name" | "sport" | "description" | "location" | "photo" 
 >;
+
+

@@ -81,20 +81,11 @@ class Teams(Document):
     name = fields.StringField(required=True)
     leader = fields.ReferenceField(
         'Users', reverse_delete_rule=NULLIFY, required=False)
-    members = fields.ListField(fields.ReferenceField(
-        'Users', reverse_delete_rule=DO_NOTHING, required=True))
+    members = fields.ListField(
+        fields.ReferenceField('Users'),
+        required=False,
+        default=list
+    )
     sport = fields.StringField(required=True)
     description = fields.StringField(required=True)
     location = fields.StringField(required=False)
-
-    def save_image(self, file_obj):
-        os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-        nombre = f"{uuid.uuid4()}.webp"
-        path = os.path.join(UPLOAD_DIR, nombre)
-
-        img = Image.open(file_obj).convert("RGB")
-        img.save(path, "WEBP", quality=90)
-
-        self.photo = f"teams/{nombre}"
-        self.save()

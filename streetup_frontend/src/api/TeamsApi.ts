@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { TeamApiSchema, type Team, type TeamForm } from "../types/index";
+import { TeamApiSchema, TeamsByUserApiSchema, type Team, type TeamForm } from "../types/index";
+import { json } from "zod";
 
 type getTeamsProps = {
   page: number;
@@ -21,25 +22,53 @@ export async function getTeams(paginator: getTeamsProps) {
   }
 }
 
-export async function createTeam(formData: TeamForm) {
+// export async function createTeam(formData: TeamForm) {
+//   try {
+//     const { data } = await api.post("/teams/", formData);
+//     return data;
+//   } catch (error) {
+//     if (isAxiosError(error) && error.response) {
+//       throw new Error(error.response.data.error);
+//     }
+//   }
+// }
+
+
+export const createTeam = async (formdata: TeamForm) => {
+  try{
+    const formData = new FormData();
+    formData.append("name", formdata.name);
+    formData.append("sport", formdata.sport);
+    formData.append("description", formdata.description);
+    formData.append("location", formdata.location);
+    formData.append("photo", formdata.photo);
+    const {data} = await api.post("/teams/", formData);
+    const response = TeamApiSchema.safeParse(data);
+    if(response.success) return response.data;
+  }catch(error){
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+  
+};
+
+export async function getTeamsByUser() {
   try {
-    const { data } = await api.post("/teams/", formData);
-    return data;
+    const { data } = await api("/teams/getTeamsByUser");
+    const response = TeamsByUserApiSchema.safeParse(data);
+
+    if (!response.success) {
+      console.error(response.error);
+      throw new Error("Respuesta inválida del servidor");
+    }
+
+    return response.data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);
     }
+    throw error;
   }
 }
 
-export async function getTeamByUser() {
-  try {
-    const { data } = await api<Team[]>("/teams/getTeamsByUser");
-    const response = TeamApiSchema.safeParse(data);
-    if (response.success) return response.data;
-  } catch (error) {
-    if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.error);
-    }
-  }
-}

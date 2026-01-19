@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { 
   StarIcon as StarIconSolid,
-  CheckCircleIcon as CheckCircleIconSolid
 } from "@heroicons/react/24/solid";
 import type { Team } from "../../types";
 import { useNavigate } from "react-router-dom";
@@ -17,21 +16,8 @@ type TeamCardProps = {
   isMyTeam?: boolean;
 };
 
-export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
+export default function TeamCard({ team }: TeamCardProps) {
   const navigate = useNavigate();
-
-  const getSportColor = (sport: string) => {
-    const colors: Record<string, string> = {
-      'futbol': 'from-blue-500 to-emerald-500',
-      'baloncesto': 'from-blue-600 to-emerald-600',
-      'tenis': 'from-emerald-500 to-blue-500',
-      'natacion': 'from-blue-400 to-emerald-400',
-      'voley': 'from-emerald-600 to-blue-600',
-      'rugby': 'from-blue-700 to-emerald-700',
-      'default': 'from-blue-500 to-emerald-500'
-    };
-    return colors[sport.toLowerCase()] || colors.default;
-  };
 
   const getSportIcon = (sport: string) => {
     const icons: Record<string, string> = {
@@ -53,7 +39,9 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
       
       <div className="relative bg-linear-to-br from-gray-800 via-gray-900 to-black rounded-2xl overflow-hidden border border-white/10 shadow-xl hover:shadow-2xl hover:border-blue-500/30 transition-all duration-300">
         {/* Header con gradiente específico del deporte */}
-        <div className={`relative h-40 bg-linear-to-r ${getSportColor(team.sport)}`}>
+        <div className="relative h-40 bg-cover bg-center" style={{
+          backgroundImage: `url(/static/static/teams/${team.photo}.jpg)`,
+        }}>
           <div className="absolute inset-0 bg-black/30"></div>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-gray-900 to-transparent"></div>
           
@@ -65,35 +53,6 @@ export default function TeamCard({ team, isMyTeam = false }: TeamCardProps) {
             </div>
           </div>
 
-          {/* Badge si es mi equipo */}
-          {isMyTeam && (
-            <div className="absolute top-4 right-4">
-              <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-500/20 backdrop-blur-sm rounded-full border border-emerald-500/30">
-                <CheckCircleIconSolid className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-300 text-sm font-medium">Mi equipo</span>
-              </div>
-            </div>
-          )}
-
-          {/* Logo del equipo */}
-          <div className="absolute -bottom-8 left-6">
-            <div className="relative">
-              {/* <div className="size-20 rounded-2xl border-4 border-gray-900 overflow-hidden shadow-2xl bg-linear-to-br from-blue-600 to-emerald-600">
-                {team.logo ? (
-                  <img 
-                    src={`media/${team.logo}`} 
-                    alt={team.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">{team.name.charAt(0)}</span>
-                  </div>
-                )}
-              </div> */}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-gray-900"></div>
-            </div>
-          </div>
         </div>
 
         {/* Contenido */}
