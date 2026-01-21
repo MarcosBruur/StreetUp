@@ -11,6 +11,7 @@ import {
   MapPinIcon as MapPinOutline,
 } from "@heroicons/react/24/outline";
 import type { ActiveUser, Profile } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 type ProfileCardProps = {
   user: ActiveUser | undefined;
@@ -20,7 +21,7 @@ type ProfileCardProps = {
 export default function ProfileCard({ user, profile }: ProfileCardProps) {
   if (!user || !profile) return null;
 
-  
+  const navigate = useNavigate()
   return (
     <div className="relative">
       {/* Efectos de fondo decorativos */}
@@ -157,7 +158,13 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                   ))}
                 </div>
 
-                <button className="w-full mt-4 py-2.5 text-center text-fuchsia-400 hover:text-fuchsia-300 border border-fuchsia-500/30 rounded-lg hover:border-fuchsia-500/50 transition-all duration-300">
+                <button
+                onClick={()=>navigate("/team")}  
+                className="w-full mt-4 py-2.5 text-center 
+                text-fuchsia-400 hover:text-fuchsia-300 
+                border border-fuchsia-500/30 rounded-lg 
+                hover:border-fuchsia-500/50 transition-all 
+                duration-300">
                   Ver todos los equipos
                 </button>
               </div>
@@ -178,11 +185,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                 <span className="text-fuchsia-400 text-xl">⚽</span>
               </div>
             </div>
-            <div className="mt-4">
-              <div className="w-full bg-gray-700 rounded-full h-2">
-                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-3/4"></div>
-              </div>
-            </div>
+            
           </div>
 
           
@@ -197,11 +200,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                 <span className="text-fuchsia-400 text-xl">👥</span>
               </div>
             </div>
-            <div className="mt-4">
-              <div className="w-full bg-gray-700 rounded-full h-2">
-                <div className="bg-linear-to-r from-fuchsia-500 to-purple-600 h-2 rounded-full w-1/2"></div>
-              </div>
-            </div>
+            
           </div>
 
           <div className="bg-linear-to-r from-fuchsia-600/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-fuchsia-500/30 transition-all duration-300">

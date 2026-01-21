@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tailwindcss-animated";
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap");
+
 
 @theme {
   --color-custom-orange: #ff4949;
@@ -7,11 +9,13 @@
   --color-custom-violet: #e9b3fb;
   --color-custom-violetdark: #6f00ff;
   --color-custom-gray: #fff1f1;
+  --font-pixel-sans: "Pixelify Sans", sans-serif
 }
 
 
 body {
   color: white;
+  font-family: var(--font-pixel-sans);
 }
 
 .bg-auth {

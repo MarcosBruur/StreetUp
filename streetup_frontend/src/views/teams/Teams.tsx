@@ -80,16 +80,7 @@ export default function Teams() {
             </div>
           </div>
 
-          {/* Botones de acción */}
-          <div className="flex flex-wrap gap-3">
-            <button
-              className="flex items-center gap-2 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
-              onClick={() => navigate(location.pathname + `?create=true`)}
-            >
-              <PlusIcon className="w-5 h-5" />
-              Crear Equipo
-            </button>
-          </div>
+          
         </div>
 
         {/* Barra de búsqueda y filtros */}

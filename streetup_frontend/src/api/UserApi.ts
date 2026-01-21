@@ -65,7 +65,6 @@ export async function getUserById(id: User["id"]) {
     const { data } = await api<User>(`/users/${id}`);
 
     const response = UserSchema.safeParse(data);
-    console.log(response);
     if (response.success) return response.data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {

@@ -2,14 +2,16 @@
 import { 
   UserGroupIcon,
   MapPinIcon,
-  TrophyIcon,
-  CalendarIcon,
+  HandThumbUpIcon
 } from "@heroicons/react/24/outline";
 import { 
   StarIcon as StarIconSolid,
 } from "@heroicons/react/24/solid";
 import type { Team } from "../../types";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "../../api/UserApi";
 
 type TeamCardProps = {
   team: Team;
@@ -18,6 +20,12 @@ type TeamCardProps = {
 
 export default function TeamCard({ team }: TeamCardProps) {
   const navigate = useNavigate();
+
+  const {data:teamLeader} = useQuery({
+    queryKey: ['teamLeader',team.leader],
+    queryFn: ()=> getUserById(team.leader),
+    enabled: !!team.leader
+  })
 
   const getSportIcon = (sport: string) => {
     const icons: Record<string, string> = {
@@ -47,9 +55,14 @@ export default function TeamCard({ team }: TeamCardProps) {
           
           {/* Badge del deporte */}
           <div className="absolute top-4 left-4">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-full">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-black/50 backdrop-blur-sm">
               <span className="text-xl">{getSportIcon(team.sport)}</span>
               <span className="text-white font-medium capitalize">{team.sport}</span>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-20 right-20">
+            <div className="flex items-center justify-center gap-2 px-3 py-1.5 bg-black/50 backdrop-blur-sm">
+              <p className="text-white font-medium capitalize">Equipo: <span className="font-bold text-lg text-orange-600">{team.name}</span></p>
             </div>
           </div>
 
@@ -60,20 +73,16 @@ export default function TeamCard({ team }: TeamCardProps) {
           {/* Nombre y rating */}
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors duration-300">
-                {team.name}
-              </h3>
+              <h4 className="text-xl font-bold text-white ">
+                Lider: <span className="border-b-2 border-fuchsia-700">{teamLeader?.userName}</span>
+              </h4>
               <div className="flex items-center gap-2 mt-1">
                 <MapPinIcon className="w-4 h-4 text-gray-400" />
                 <span className="text-gray-400 text-sm">{team.location}</span>
               </div>
             </div>
             
-            <div className="flex items-center gap-1">
-              <StarIconSolid className="w-5 h-5 text-yellow-500" />
-              {/* <span className="text-white font-bold">{team.rating}</span> */}
-              <span className="text-gray-500 text-sm">/5</span>
-            </div>
+            
           </div>
 
           {/* Descripción */}
@@ -86,66 +95,31 @@ export default function TeamCard({ team }: TeamCardProps) {
             <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
               <div className="flex items-center gap-2">
                 <UserGroupIcon className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-400 text-sm">Miembros</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-white font-bold">{team.members}</span>
-                {/* <span className="text-gray-500 text-sm ml-1">/{team.maxMembers}</span> */}
+                <span className="text-gray-400 text-sm">{team.members.length} Miembros</span>
               </div>
             </div>
-
             <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
               <div className="flex items-center gap-2">
-                <TrophyIcon className="w-5 h-5 text-emerald-400" />
-                <span className="text-gray-400 text-sm">Victorias</span>
+                <HandThumbUpIcon className="w-5 h-5 text-blue-400" />
+                <span className="text-gray-400 text-sm">100 Me Gusta</span>
               </div>
-              {/* <span className="text-white font-bold">{team.wins}</span> */}
             </div>
           </div>
-
-          {/* Frecuencia de partidos */}
-          <div className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg mb-6">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="w-5 h-5 text-blue-400" />
-              <span className="text-gray-400 text-sm">Próximo partido</span>
-            </div>
-            {/* <span className="text-emerald-400 text-sm font-medium">
-              {team.nextMatch ? new Date(team.nextMatch).toLocaleDateString() : 'Por definir'}
-            </span> */}
-          </div>
-
-          {/* Botones de acción */}
-          {/* <div className="flex gap-3">
-            {isMyTeam ? (
-              <button
-                onClick={() => navigate(`/teams/${team.id}`)}
-                className="flex-1 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center"
-              >
-                Ver Equipo
-              </button>
-            ) : team.members >= team.maxMembers ? (
-              <button
-                disabled
-                className="flex-1 bg-gray-700 text-gray-400 font-semibold py-3 rounded-lg cursor-not-allowed text-center"
-              >
-                Equipo Completo
-              </button>
-            ) : (
-              <button
-                onClick={() => navigate(`/teams/${team.id}/join`)}
-                className="flex-1 bg-linear-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 text-center flex items-center justify-center gap-2"
-              >
-                <UserPlusIcon className="w-5 h-5" />
-                Unirse
-              </button>
-            )} */}
-            
+          <div className="flex justify-around items-center">
             <button
-              onClick={() => navigate(`/teams/${team.id}`)}
-              className="px-4 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg transition-colors duration-300"
-            >
-              Ver
+                  onClick={() => navigate(`/teams/${team.id}`)}
+                  className="px-4 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition-colors duration-300"
+                >
+                  Ver
             </button>
+            <button
+                  onClick={() => navigate(`/teams/${team.id}`)}
+                  className="px-4 py-3 bg-green-800 hover:bg-green-700 hover:shadow-[0px_0px_13px_1px_#25cf64] transition-all text-gray-300 hover:text-white  duration-300"
+                >
+                  Editar
+            </button>
+          </div>
+            
           </div>
         </div>
       </div>

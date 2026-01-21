@@ -49,7 +49,7 @@ export default function SideBar() {
         </button>
 
         <button onClick={(e) => handleClick(e, "team")}>
-          <SideBarButton name="Mi Equipo" active={active === "team"}>
+          <SideBarButton name="Mis Equipos" active={active === "team"}>
             {<StarIcon className="w-5 h-auto mx-2" />}
           </SideBarButton>
         </button>

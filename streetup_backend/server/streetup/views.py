@@ -160,7 +160,7 @@ class UserViewSet(viewsets.ViewSet):
             user = Users.objects.get(id=pk)
             serializer = UserSerializer(user)
 
-            return Response(serializer.data)
+            return JsonResponse(serializer.data)
         except Users.DoesNotExist:
             return Response('Usuario no econtrado', status=status.HTTP_404_NOT_FOUND)
 
