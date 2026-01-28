@@ -5,10 +5,8 @@ import { useAuth } from "../../hooks/useAuth";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
 
 import { 
-  UserGroupIcon, 
-  PlusIcon, 
+  UserGroupIcon,  
   MagnifyingGlassIcon,
-  
   TrophyIcon,
   
 } from "@heroicons/react/24/outline";

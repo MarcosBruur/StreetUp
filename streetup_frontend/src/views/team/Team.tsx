@@ -22,25 +22,11 @@ export default function Team() {
   
   // Consulta para obtener mis equipos
   const { data:teams } = useQuery({
-    queryKey: ["my_teams"],
+    queryKey: ["teams", "my"],
     queryFn: getTeamsByUser,
     enabled: !!user?.id,
     retry: 2,
   });
-
-  // Estado de carga
-  // const isLoading = isLoadingAll || isLoadingMyTeams;
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-blue-900 to-emerald-900">
-  //       <div className="text-center">
-  //         <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-emerald-500 mb-4"></div>
-  //         <p className="text-white text-xl font-semibold">Cargando equipos...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   if (!user) {
     return (

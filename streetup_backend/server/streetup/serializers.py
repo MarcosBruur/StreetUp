@@ -113,6 +113,7 @@ class TeamSerializer(serializers.Serializer):
         instance.description = validated_data.get(
             'description', instance.description)
         instance.location = validated_data.get('location', instance.location)
+        instance.photo = validated_data.get('photo', instance.photo)
         instance.save()
         return instance
 

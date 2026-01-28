@@ -324,6 +324,15 @@ class TeamViewSet(viewsets.ViewSet):
         serializer = TeamSerializer(paginated_teams, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+    def retrieve(self, request, pk=None):
+        try:
+            team = Teams.objects.get(id=pk)
+            serializer = TeamSerializer(team)
+
+            return JsonResponse(serializer.data)
+        except Users.DoesNotExist:
+            return Response('equipo no econtrado', status=status.HTTP_404_NOT_FOUND)
+
     def create(self, request):
         serializer = TeamSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -336,6 +345,32 @@ class TeamViewSet(viewsets.ViewSet):
             "data": TeamSerializer(team).data,
         },
             status=status.HTTP_201_CREATED
+        )
+
+    def update(self, request, pk=None):
+
+        try:
+            team = Teams.objects.get(id=pk)
+        except Teams.DoesNotExist:
+            return Response(
+                {"error": "Equipo no encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = TeamSerializer(
+            team,
+            data=request.data,
+            partial=True  # permite actualizar solo algunos campos
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return JsonResponse(
+            {
+                "message": "Equipo actualizado correctamente",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
         )
 
     @action(methods=['get'], detail=False)
