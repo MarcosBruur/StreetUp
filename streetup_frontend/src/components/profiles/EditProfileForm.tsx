@@ -16,7 +16,6 @@ export default function EditProfileForm() {
     retry: 2,
   });
 
-  console.log(data);
   const { mutate } = useMutation({
     mutationFn: editProfile,
     onError: (error) => {
@@ -37,6 +36,7 @@ export default function EditProfileForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEditProfile = (data: ProfileForm) => {
+    console.log(data);
     mutate(data);
   };
 

@@ -50,7 +50,13 @@ export default function Home() {
         <Map
           {...viewState}
           onMove={(e) => setViewState(e.viewState)}
-          style={{ width: 800, height: 600, borderRadius: 10 }}
+          style={{ 
+            width: 800, height: 600, borderRadius: 10,
+            border: "2px solid #C3110C", 
+            boxShadow:"-1px 1px 15px 6px rgba(252,93,45,0.75)",
+            WebkitBoxShadow:"-1px 1px 15px 6px rgba(252,93,45,0.75)",
+            MozBoxShadow:"-1px 1px 15px 6px rgba(252,93,45,0.75)" 
+          }}
           mapStyle="mapbox://styles/mapbox/streets-v11"
           mapboxAccessToken={MAPBOX_TOKEN}
         >

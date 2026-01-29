@@ -51,7 +51,7 @@ export default function AppLayout() {
           style={{ backgroundImage: "url('/static/static/font_login.jpg')" }}
         >
           <div className="overflow-hidden">
-            <div className="flex flex-col md:flex-row md:h-screen overflow-hidden">
+            <div className="animate-fade-right flex flex-col md:flex-row md:h-screen overflow-hidden">
               <aside className="w-full md:w-[20%] border-r border-stone-300 p-4 md:flex flex-col justify-between ">
                 <div className="">
                   <h2 className="hidden md:block text-2xl text-center mt-5">
@@ -63,7 +63,7 @@ export default function AppLayout() {
 
                   <div className="hidden md:block mt-6">
                     
-                    <div className="md:block mt-4">
+                    <div className="md:block mt-4 ">
                       <SideBar />
                     </div>
                   </div>
@@ -131,11 +131,10 @@ export default function AppLayout() {
                 </footer>
               </aside>
 
-              <main className="w-full md:w-[80%] overflow-y-auto overflow-x-hidden">
-                <div className="mt-5 flex justify-center">
+              <main className="w-full md:w-[80%] overflow-y-auto animate-fade-left overflow-x-hidden">
+                <div className="animate-fade-down mt-5 flex justify-center">
                   <Logo />
                 </div>
-
                 <Outlet />
               </main>
             </div>
