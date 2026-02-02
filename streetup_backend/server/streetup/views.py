@@ -215,29 +215,15 @@ class ProfileViewSet(viewsets.ViewSet):
             user = request.user.to_dict()
             profile = Profiles.objects.get(id=user['profile'])
 
-            data = request.data.copy()
-
-            photo = request.FILES.get("photo")
-
-            if photo:
-
-                import os
-                from django.conf import settings
-                from django.core.files.storage import default_storage
-
-                folder = os.path.join(settings.BASE_DIR, "media", "profiles")
-                os.makedirs(folder, exist_ok=True)
-
-                filename = default_storage.save(
-                    f"profiles/{photo.name}", photo)
-                data["photo"] = filename
-
-                print(data)
-
-            serializer = ProfileSerializer(profile, data=data, partial=True)
+            serializer = ProfileSerializer(
+                profile,
+                data=request.data,
+                partial=True,
+                context={"request": request}
+            )
             serializer.is_valid(raise_exception=True)
-
             serializer.save()
+
             return Response("Perfil actualizado", status=200)
 
         except Profiles.DoesNotExist:

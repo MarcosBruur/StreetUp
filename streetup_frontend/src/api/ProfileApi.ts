@@ -37,17 +37,19 @@ export const createProfile = async (data: ProfileForm) => {
 export async function editProfile(data: ProfileForm) {
   const formData = new FormData();
 
-  if (data.photo && data.photo[0]) {
-    formData.append("photo", data.photo[0]);
+  if (data.photo) {
+    formData.append("photo", data.photo);
   }
 
   formData.append("age", String(data.age));
   formData.append("location", data.location);
   formData.append("description", data.description);
-  data.sports?.forEach((sport) => formData.append("sports", sport));
+  formData.append("sports", JSON.stringify(data.sports));
+
+  
 
   const res = await api.put("/profiles/editProfile/", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+
     withCredentials: true,
   });
 

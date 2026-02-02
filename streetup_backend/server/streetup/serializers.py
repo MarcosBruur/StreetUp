@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Users, Profiles, Teams, Tokens
+import json
 
 
 class UserSerializer(serializers.Serializer):
@@ -59,6 +60,20 @@ class ProfileSerializer(serializers.Serializer):
     location = serializers.CharField(required=False)
     photo_view = serializers.CharField(read_only=True, source='photo')
 
+    def to_internal_value(self, data):
+        data = data.copy()
+
+        sports = data.get("sports")
+        if isinstance(sports, str):
+            try:
+                data["sports"] = json.loads(sports)
+            except ValueError:
+                raise serializers.ValidationError({
+                    "sports": "Formato inválido"
+                })
+
+        return super().to_internal_value(data)
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         if instance.photo:
@@ -86,12 +101,19 @@ class ProfileSerializer(serializers.Serializer):
         return profile
 
     def update(self, instance, validated_data):
+        request = self.context.get("request")
+        photo = request.FILES.get("photo") if request else None
+
+        if photo:
+            instance.save_image(photo)
+
         instance.age = validated_data.get('age', instance.age)
-        instance.photo = validated_data.get('photo', instance.photo)
         instance.description = validated_data.get(
             'description', instance.description)
         instance.sports = validated_data.get('sports', instance.sports)
         instance.location = validated_data.get('location', instance.location)
+        instance.status = validated_data.get('status', instance.status)
+
         instance.save()
         return instance
 

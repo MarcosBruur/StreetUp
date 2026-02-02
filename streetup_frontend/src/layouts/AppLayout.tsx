@@ -11,7 +11,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../components/sidebar/SearchBar";
 import SideBar from "../components/sidebar/SideBar";
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
@@ -132,7 +131,7 @@ export default function AppLayout() {
               </aside>
 
               <main className="w-full md:w-[80%] overflow-y-auto animate-fade-left overflow-x-hidden">
-                <div className="animate-fade-down mt-5 flex justify-center">
+                <div className="animate-fade-down animate-duration-2000 mt-5 flex justify-center">
                   <Logo />
                 </div>
                 <Outlet />

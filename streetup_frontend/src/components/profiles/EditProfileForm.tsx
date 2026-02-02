@@ -36,7 +36,6 @@ export default function EditProfileForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEditProfile = (data: ProfileForm) => {
-    console.log(data);
     mutate(data);
   };
 
