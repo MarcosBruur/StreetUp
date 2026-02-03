@@ -61,9 +61,13 @@ class ProfileSerializer(serializers.Serializer):
     photo_view = serializers.CharField(read_only=True, source='photo')
 
     def to_internal_value(self, data):
-        data = data.copy()
+
+        # convertir QueryDict a dict normal
+        if hasattr(data, "dict"):
+            data = data.dict()
 
         sports = data.get("sports")
+
         if isinstance(sports, str):
             try:
                 data["sports"] = json.loads(sports)

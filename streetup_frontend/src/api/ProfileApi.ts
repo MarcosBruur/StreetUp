@@ -16,7 +16,6 @@ export async function getProfile() {
 export const createProfile = async (data: ProfileForm) => {
   const formData = new FormData();
 
-    
   if (data.photo) {
     formData.append("photo", data.photo);
   }
@@ -24,8 +23,9 @@ export const createProfile = async (data: ProfileForm) => {
   formData.append("age", String(data.age));
   formData.append("location", data.location);
   formData.append("description", data.description);
-  data.sports?.forEach((sport) => formData.append("sports", sport));
+  formData.append("sports",JSON.stringify(data.sports));
 
+  
   const res = await api.post("/profiles/", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
@@ -37,8 +37,8 @@ export const createProfile = async (data: ProfileForm) => {
 export async function editProfile(data: ProfileForm) {
   const formData = new FormData();
 
-  if (data.photo) {
-    formData.append("photo", data.photo);
+  if (typeof(data.photo) === "object") {
+    formData.append("photo", data.photo[0]);
   }
 
   formData.append("age", String(data.age));
@@ -49,7 +49,7 @@ export async function editProfile(data: ProfileForm) {
   
 
   const res = await api.put("/profiles/editProfile/", formData, {
-
+    headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
   });
 

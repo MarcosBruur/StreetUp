@@ -199,8 +199,8 @@ class ProfileViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = ProfileSerializer(
             data=request.data, context={"request": request})
-        serializer.is_valid(raise_exception=True)
 
+        serializer.is_valid()
         profile = serializer.save()
 
         user = request.user
@@ -211,6 +211,8 @@ class ProfileViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['put'], parser_classes=[MultiPartParser, FormParser])
     def editProfile(self, request):
+        print(request.data)
+        print(request.FILES)
         try:
             user = request.user.to_dict()
             profile = Profiles.objects.get(id=user['profile'])
@@ -221,6 +223,8 @@ class ProfileViewSet(viewsets.ViewSet):
                 partial=True,
                 context={"request": request}
             )
+            if not serializer.is_valid():
+                print(serializer.errors)
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
