@@ -309,9 +309,22 @@ class TeamViewSet(viewsets.ViewSet):
 
     def list(self, request):
         teams = Teams.objects.all()
+
+        search = request.query_params.get("search")
+        sport = request.query_params.get("sport")
+
+        if search:
+            teams = teams.filter(
+                name__icontains=search
+            )
+
+        if sport:
+            teams = teams.filter(sport=sport)
+
         paginator = TeamPagination()
         paginated_teams = paginator.paginate_queryset(teams, request)
         serializer = TeamSerializer(paginated_teams, many=True)
+
         return paginator.get_paginated_response(serializer.data)
 
     def retrieve(self, request, pk=None):

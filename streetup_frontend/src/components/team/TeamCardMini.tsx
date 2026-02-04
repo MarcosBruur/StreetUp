@@ -87,20 +87,33 @@ export default function TeamCardMini({ team }: TeamCardProps) {
           </div>
           <div className="flex flex-col gap-4">
             
-            <div className="flex justify-center">
-              <button
+            <div className="flex flex-col justify-center items-center gap-5">
+              <div className="flex justify-center items-center gap-2">
+                <button
                     onClick={() => console.log("Like button clicked")}
                     className="px-4 py-3 rounded-full bg-purple-800 border-white 
-                    hover:bg-purple-700 
-                    hover:shadow-[0px_0px_13px_1px_#c20a97] 
+                    hover:bg-purple-700  
                     hover:scale-110
                     transition-all text-gray-300 
                     hover:text-white  duration-300"
                   >
-                    <div className="flex flex-col justify-center items-center">
-
-                    <HandThumbUpIcon className="size-5"/>
-                    </div>
+                      <div className="flex flex-col justify-center items-center">
+                      <HandThumbUpIcon className="size-5"/>
+                      </div>   
+              </button>
+                <p>Dar Me gusta</p>
+              </div>
+              
+              <button
+                    onClick={() => console.log("Like button clicked")}
+                    className="bg-linear-to-r from-gray-800 
+                    to-gray-900 hover:from-gray-700 
+                    hover:to-gray-800 text-white px-8 py-3 
+                    font-bold transition-all duration-300 
+                    hover:scale-105 
+                    border border-fuchsia-500/30"
+                  >
+                  Ver Más
               </button>
             </div>
           </div>

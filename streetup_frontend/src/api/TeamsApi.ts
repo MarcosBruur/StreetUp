@@ -10,10 +10,12 @@ type getTeamsProps = {
 
 export async function getTeams(paginator: getTeamsProps) {
   try {
-    const { data } = await api(
-      `/teams/?page=${paginator.page}&page_size=${paginator.page_size}`
-    );
+    const { data } = await api("/teams/", {
+      params: paginator
+    });
+
     return data.results;
+
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);

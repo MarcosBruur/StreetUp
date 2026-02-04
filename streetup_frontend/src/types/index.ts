@@ -6,7 +6,7 @@ export interface CustomJwtPayload extends JwtPayload {
 
 
 
-export const sportsOptions = ["futbol","basquet","tenis","voley","paddle","ciclismo"] as const;
+export const sportsOptions = ["futbol","basquet","tenis","voley","padel","ciclismo"] as const;
 
 
 

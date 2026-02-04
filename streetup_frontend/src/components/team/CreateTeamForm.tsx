@@ -28,7 +28,6 @@ export default function CreateTeamForm() {
   } = useForm<TeamForm>();
 
   const handleCreateProfile = (data: TeamForm) => {
-    console.log(data)
     mutate(data);
   };
 

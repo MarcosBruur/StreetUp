@@ -3,12 +3,10 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
+import { useState } from "react";
 
-import { 
-  UserGroupIcon,  
+import {   
   MagnifyingGlassIcon,
-  TrophyIcon,
-  
 } from "@heroicons/react/24/outline";
 import { 
   UserGroupIcon as UserGroupIconSolid,
@@ -23,12 +21,14 @@ export default function Teams() {
   const { data: user } = useAuth();
   const navigate = useNavigate();
 
+  const [search, setSearch] = useState("");
+  const [sport, setSport] = useState("");
+
   const {data: teams} = useQuery<Team[]>({
-    queryKey: ['all_teams'],
-    queryFn:  () => getTeams({ page: 1, page_size: 10 }),
+    queryKey: ['all_teams',search,sport],
+    queryFn:  () => getTeams({ page: 1, page_size: 10,search,sport}),
     retry: 2,
   })
-  console.log(teams);
     
   return (
     <div className="w-full md:w-auto pb-2 my-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black pt-8 md:mx-5">
@@ -52,32 +52,45 @@ export default function Teams() {
         </div>
 
         {/* Barra de búsqueda y filtros */}
-        <div className="px-4 mb-8">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1 relative">
-                <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Buscar equipos por nombre, deporte o ubicación..."
-                  className="w-full pl-12 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <div className="flex gap-2">
-                <select className="px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="">Todos los deportes</option>
-                  <option value="futbol">Fútbol</option>
-                  <option value="baloncesto">Baloncesto</option>
-                  <option value="tenis">Tenis</option>
-                  <option value="natacion">Natación</option>
-                </select>
-                <button className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors duration-300">
-                  Filtrar
-                </button>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+        }}>
+          <div className="px-4 mb-8">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Buscar equipos por nombre, deporte o ubicación..."
+                    className="w-full pl-12 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <select
+                    value={sport} 
+                    onChange={(e) => setSport(e.target.value)}
+                    className="px-4 py-3 bg-gray-900/50 border 
+                    border-gray-700 rounded-lg 
+                    text-white focus:outline-none focus:ring-2 
+                    focus:ring-blue-500"
+                    >
+                    <option value="">Todos los deportes</option>
+                    <option value="futbol">Fútbol</option>
+                    <option value="basquet">Basquet</option>
+                    <option value="tenis">Tenis</option>
+                    <option value="padel">Pádel</option>
+                    <option value="ciclismo">Ciclismo</option>
+                  </select>
+                 
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
+        
    
         {/* Equipos Recomendados */}
         <div className="px-4 mb-12">
@@ -88,10 +101,7 @@ export default function Teams() {
               </div>
               <h2 className="text-2xl font-bold text-white">Equipos Recomendados</h2>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
-              <TrophyIcon className="w-5 h-5" />
-              <span>Basado en tus deportes favoritos</span>
-            </div>
+            
           </div>
           
           {
