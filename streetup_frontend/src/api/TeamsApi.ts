@@ -4,8 +4,8 @@ import { TeamApiSchema, TeamsByUserApiSchema, TeamSchema, type Team, type TeamFo
 import { json } from "zod";
 
 type getTeamsProps = {
-  page: number;
-  page_size: number;
+  page: number | undefined;
+  page_size: number | undefined;
 };
 
 export async function getTeams(paginator: getTeamsProps) {
@@ -13,26 +13,13 @@ export async function getTeams(paginator: getTeamsProps) {
     const { data } = await api(
       `/teams/?page=${paginator.page}&page_size=${paginator.page_size}`
     );
-    const response = TeamApiSchema.safeParse(data);
-    if (response.success) return response.data;
+    return data.results;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);
     }
   }
 }
-
-// export async function createTeam(formData: TeamForm) {
-//   try {
-//     const { data } = await api.post("/teams/", formData);
-//     return data;
-//   } catch (error) {
-//     if (isAxiosError(error) && error.response) {
-//       throw new Error(error.response.data.error);
-//     }
-//   }
-// }
-
 
 export const createTeam = async (formdata: TeamForm) => {
   try{
@@ -94,7 +81,6 @@ export async function editTeam({ teamId, formdata }: EditTeamPayload) {
       throw new Error(error.response.data.error);
     }
   }
-  
 }
 
 export async function getTeamsByUser() {
@@ -106,8 +92,7 @@ export async function getTeamsByUser() {
       console.error(response.error);
       throw new Error("Respuesta inválida del servidor");
     }
-
-    return response.data;
+    return response.data.data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);

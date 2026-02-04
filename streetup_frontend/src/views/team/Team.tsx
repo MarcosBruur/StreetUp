@@ -28,6 +28,8 @@ export default function Team() {
     retry: 2,
   });
 
+ 
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-blue-900 to-emerald-900">
@@ -59,7 +61,7 @@ export default function Team() {
               
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white">Mi Equipo</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">Mis Equipos</h1>
               <p className="text-gray-400">Crea y gestiona tu propio equipo deportivo</p>
             </div>
           </div>
@@ -71,31 +73,42 @@ export default function Team() {
               onClick={() => navigate(location.pathname + `?create=true`)}
             >
               <PlusIcon className="w-5 h-5" />
-              Crear Equipo
+              Crear Equipos
             </button>
           </div>
         </div>
 
 
-        {teams && teams.data.length > 0 && (
+        {teams && teams.length > 0 ? (
           <div className="px-4 mb-12">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-lg bg-linear-to-r from-blue-500/20 to-emerald-500/20">
                 <UserGroupIconSolid className="w-6 h-6 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold text-white">Mis Equipos</h2>
+              <h2 className="text-2xl font-bold text-white">Mis Equiposss</h2>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm">
-                {teams.data.length} equipo{teams.data.length !== 1 ? 's' : ''}
+                {teams.length} equipo{teams.length !== 1 ? 's' : ''}
               </span>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {teams.data.map((team) => (
+              { 
+                teams.map((team) => (
                 <TeamCard key={team.id} team={team} isMyTeam={true} />
-              ))}
+              )) 
+              }
+              
             </div> 
           </div>
-        )}
+        ) : (
+                <p className="text-gray-400 text-2xl text-center">
+                  Aún no has creado ningun 
+                  <span className="font-bold text-orange-600"> equipo propio</span>
+                  , presiona en "crear 
+                  equipos" para comenzar a crear y gestionar tus propios 
+                  equipos deportivos.
+                </p>
+              )}
 
         {/* Modal de creación de equipo */}
         <CreateTeamModal />

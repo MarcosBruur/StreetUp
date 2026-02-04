@@ -5,9 +5,10 @@ import { getProfile } from "../../api/ProfileApi";
 import { useAuth } from "../../hooks/useAuth";
 import EditProfileModal from "../../components/profiles/EditProfileModal";
 import ProfileCard from "../../components/profiles/ProfileCard";
-import type { Profile } from "../../types";
+import type { Profile, Team } from "../../types";
 import { PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon as PencilSquareIconSolid } from "@heroicons/react/24/solid";
+import { getTeamsByUser } from "../../api/TeamsApi";
 
 export default function Profile() {
   const { data: user } = useAuth();
@@ -16,6 +17,12 @@ export default function Profile() {
   const { data: profile, isLoading } = useQuery<Profile>({
     queryKey: ["profile"],
     queryFn: getProfile,
+    retry: 2,
+  });
+
+  const {data: teams} = useQuery<Team[]>({
+    queryKey: ["teams"],
+    queryFn: getTeamsByUser,
     retry: 2,
   });
 
@@ -87,7 +94,7 @@ export default function Profile() {
         </div>
 
         {/* Tarjeta de perfil */}
-        <ProfileCard user={user} profile={profile} />
+        <ProfileCard user={user} profile={profile} teams={teams}/>
 
         
 

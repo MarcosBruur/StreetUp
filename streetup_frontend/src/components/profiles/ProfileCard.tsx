@@ -10,15 +10,16 @@ import {
 import { 
   MapPinIcon as MapPinOutline,
 } from "@heroicons/react/24/outline";
-import type { ActiveUser, Profile } from "../../types";
+import type { ActiveUser, Profile, Team } from "../../types";
 import { useNavigate } from "react-router-dom";
 
 type ProfileCardProps = {
   user: ActiveUser | undefined;
   profile: Profile | undefined;
+  teams: Team[] | undefined;
 };
 
-export default function ProfileCard({ user, profile }: ProfileCardProps) {
+export default function ProfileCard({ user, profile,teams }: ProfileCardProps) {
   if (!user || !profile) return null;
 
   const navigate = useNavigate()
@@ -39,11 +40,11 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             <div className="flex items-end gap-4">
               {/* Foto de perfil */}
               <div className="relative group">
-                <div className="size-32 sm:w-50 sm:h-50 rounded-3xl border-4 border-gray-900 overflow-hidden shadow-2xl">
+                <div className="size-50 lg:size-62 rounded-3xl border-4 border-gray-900 overflow-hidden shadow-2xl">
                   <img
                     src={`media/${profile.photo}`}
                     alt={user.userName}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 
@@ -135,20 +136,20 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                   </h3>
                   <span className="text-sm text-fuchsia-400">Activo</span>
                 </div>
-
-                <div className="space-y-3">
-                  {["Los Tigres FC", "Dragones Unidos", "Águilas Reales"].map((team, index) => (
+              
+              {teams && teams.length === 0 ? (
+                <p>No hay equipos creados aún</p>
+              ): (
+                  <div className="space-y-3">
+                  {teams?.map((team, index) => (
                     <div 
                       key={index}
                       className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all duration-300"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
-                          <span className="text-white font-bold">{team.charAt(0)}</span>
-                        </div>
                         <div>
-                          <div className="text-white font-medium">{team}</div>
-                          <div className="text-gray-400 text-sm">5 miembros</div>
+                          <div className="text-orange-600 font-medium">{team.name}</div>
+                          <div className="text-gray-400 text-sm">{team.members.length === 0 ? 'Sin Miembros': `${team.members.length} Miembros`}</div>
                         </div>
                       </div>
                       <div className="text-xs px-2 py-1 bg-green-500/20 text-green-300 rounded-full">
@@ -157,7 +158,8 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                     </div>
                   ))}
                 </div>
-
+              )}
+              
                 <button
                 onClick={()=>navigate("/team")}  
                 className="w-full mt-4 py-2.5 text-center 
@@ -165,7 +167,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
                 border border-fuchsia-500/30 rounded-lg 
                 hover:border-fuchsia-500/50 transition-all 
                 duration-300">
-                  Ver todos los equipos
+                  {teams && teams.length > 0 ? 'Ver todos los equipos' : 'Crea tu primer equipo'}
                 </button>
               </div>
             </div>
@@ -194,7 +196,7 @@ export default function ProfileCard({ user, profile }: ProfileCardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Equipos Activos</p>
-                <p className="text-3xl font-bold text-white">3</p>
+                <p className="text-3xl font-bold text-white">{teams?.length}</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
                 <span className="text-fuchsia-400 text-xl">👥</span>
