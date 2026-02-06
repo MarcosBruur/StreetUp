@@ -192,8 +192,15 @@ class ProfileViewSet(viewsets.ViewSet):
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
     def list(self, request):
-        profile = Profiles.objects.all()
-        serializer = ProfileSerializer(profile, many=True)
+        profiles = Profiles.objects.all()
+        search = request.query_params.get("search")
+
+        if search:
+            profiles = profiles.filter(
+                name__icontains=search
+            )
+
+        serializer = ProfileSerializer(profiles, many=True)
         return Response(serializer.data)
 
     def create(self, request):
@@ -205,6 +212,8 @@ class ProfileViewSet(viewsets.ViewSet):
 
         user = request.user
         user.profile = profile.id
+        profile.name = user.userName
+        profile.save()
         user.save(update_fields=['profile'])
 
         return Response(ProfileSerializer(profile).data, status=status.HTTP_201_CREATED)
@@ -381,6 +390,19 @@ class TeamViewSet(viewsets.ViewSet):
         try:
             user = request.user
             teams = Teams.objects.filter(leader=user)
+            serializer = TeamSerializer(teams, many=True)
+            return JsonResponse({
+                "message": "ok",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        except Users.DoesNotExist:
+            return Response('Usuario no encontrado', status=status.HTTP_404_NOT_FOUND)
+
+    @action(methods=['post'], detail=False)
+    def getTeamsByLeader(self, request):
+        leader = request.data.get("leader")
+        try:
+            teams = Teams.objects.filter(leader=leader)
             serializer = TeamSerializer(teams, many=True)
             return JsonResponse({
                 "message": "ok",

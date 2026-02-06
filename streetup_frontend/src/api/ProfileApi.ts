@@ -13,6 +13,34 @@ export async function getProfile() {
   }
 }
 
+export async function getProfileById(id:string) {
+  try {
+    const { data } = await api(`/profiles/${id}`);
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
+type getProfilesProps ={
+  search?:string;
+}
+export async function getProfiles({search}: getProfilesProps) {
+  try {
+    const { data } = await api("/profiles",{
+      params: {search}
+    });
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
+
 export const createProfile = async (data: ProfileForm) => {
   const formData = new FormData();
 

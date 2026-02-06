@@ -12,6 +12,7 @@ ProfileStatus = ["free", "busy"]
 
 
 class Profiles(Document):
+    name = fields.StringField(required=True)
     photo = fields.StringField()
     age = fields.IntField(min_value=13, required=True)
     description = fields.StringField()
@@ -80,9 +81,9 @@ class Teams(Document):
     photo = fields.StringField()
     name = fields.StringField(required=True)
     leader = fields.ReferenceField(
-        'Users', reverse_delete_rule=NULLIFY, required=False)
+        'Profiles', reverse_delete_rule=NULLIFY, required=False)
     members = fields.ListField(
-        fields.ReferenceField('Users'),
+        fields.ReferenceField('Profiles'),
         required=False,
         default=list
     )

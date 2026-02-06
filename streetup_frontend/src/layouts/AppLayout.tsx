@@ -123,7 +123,7 @@ export default function AppLayout() {
 
                       </div>
                     </button>
-                    <p className=" text-center mb-2 mt-10">
+                    <p className=" text-center mb-2 mt-10 font-bold">
                       Todos los derechos reservados {new Date().getFullYear()}
                     </p>
                   </div>
@@ -131,7 +131,7 @@ export default function AppLayout() {
               </aside>
 
               <main className="w-full md:w-[80%] overflow-y-auto animate-fade-left overflow-x-hidden">
-                <div className="animate-fade-down animate-duration-2000 mt-5 flex justify-center">
+                <div className=" animate-duration-2000 animate-fade-down mt-5 flex justify-center">
                   <Logo />
                 </div>
                 <Outlet />

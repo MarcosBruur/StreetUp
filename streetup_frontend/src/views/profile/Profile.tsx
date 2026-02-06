@@ -8,7 +8,7 @@ import ProfileCard from "../../components/profiles/ProfileCard";
 import type { Profile, Team } from "../../types";
 import { PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon as PencilSquareIconSolid } from "@heroicons/react/24/solid";
-import { getTeamsByUser } from "../../api/TeamsApi";
+import { getTeamsByLeader } from "../../api/TeamsApi";
 
 export default function Profile() {
   const { data: user } = useAuth();
@@ -21,8 +21,8 @@ export default function Profile() {
   });
 
   const {data: teams} = useQuery<Team[]>({
-    queryKey: ["teams"],
-    queryFn: getTeamsByUser,
+    queryKey: ["teams",profile?.id],
+    queryFn: () =>getTeamsByLeader(profile?.id!),
     retry: 2,
   });
 

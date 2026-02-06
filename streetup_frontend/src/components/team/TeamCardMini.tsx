@@ -4,10 +4,10 @@ import {
   MapPinIcon,
   HandThumbUpIcon
 } from "@heroicons/react/24/outline";
-import type { Team } from "../../types";
+import type { Profile, Team } from "../../types";
 import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "../../api/UserApi";
 import EditTeamModal from "./EditTeamModal";
+import { getProfileById } from "../../api/ProfileApi";
 
 type TeamCardProps = {
   team: Team;
@@ -16,9 +16,9 @@ type TeamCardProps = {
 
 export default function TeamCardMini({ team }: TeamCardProps) {
   
-  const {data:teamLeader} = useQuery({
+  const {data:teamLeader} = useQuery<Profile>({
     queryKey: ['teamLeader',team.leader],
-    queryFn: ()=> getUserById(team.leader),
+    queryFn: ()=> getProfileById(team.leader),
     enabled: !!team.leader
   })
 
@@ -50,7 +50,7 @@ export default function TeamCardMini({ team }: TeamCardProps) {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h4 className="text-xl font-bold text-white ">
-                Lider: <span className="border-b-2 border-fuchsia-700">{teamLeader?.userName}</span>
+                Lider: <span className="border-b-2 border-fuchsia-700">{teamLeader?.name}</span>
               </h4>
               <div className="flex items-center gap-2 mt-1">
                 <MapPinIcon className="w-4 h-4 text-gray-400" />

@@ -82,6 +82,7 @@ export const ProfileStatusSchema = z.enum(["free", "busy"]);
 export type ProfileStatus = z.infer<typeof ProfileStatusSchema>;
 
 export const ProfileSchema = z.object({
+  name: z.string(),
   id: z.string(),
   photo: z.any().nullable(),
   photo_view: z.string(),

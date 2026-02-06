@@ -10,6 +10,7 @@ import Players from "./views/players/Players";
 import Team from "./views/team/Team";
 import NewProfile from "./views/profile/NewProfile";
 import Confirm from "./views/auth/Confirm";
+import PlayerInfo from "./views/players/PlayerInfo";
 
 export default function Router() {
   return (
@@ -24,6 +25,7 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/players" element={<Players />} />
+          <Route path="/players/:player_id" element={<PlayerInfo />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new_profile" element={<NewProfile />} />
           <Route path="/team" element={<Team />} />

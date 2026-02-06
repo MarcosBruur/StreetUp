@@ -2,11 +2,11 @@
 // components/teams/Teams.tsx - Vista de equipos con paleta azul/verde
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getTeamsByUser } from "../../api/TeamsApi"
+import { getTeamsByLeader } from "../../api/TeamsApi"
 import { useAuth } from "../../hooks/useAuth";
 import TeamCard from "../../components/team/TeamCard";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
-import type { Team } from "../../types";
+import type { Profile, Team } from "../../types";
 import { 
   UserGroupIcon, 
   PlusIcon, 
@@ -14,16 +14,23 @@ import {
 import { 
   UserGroupIcon as UserGroupIconSolid,
 } from "@heroicons/react/24/solid";
+import { getProfile } from "../../api/ProfileApi";
 
 export default function Team() {
   const { data: user } = useAuth();
   const navigate = useNavigate();
 
+
+  const {data: profile} = useQuery<Profile>({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    retry: 2,
+  })
   
   // Consulta para obtener mis equipos
-  const { data:teams } = useQuery({
-    queryKey: ["teams", "my"],
-    queryFn: getTeamsByUser,
+  const { data:teams } = useQuery<Team[]>({
+    queryKey: ["teams", profile?.id],
+    queryFn: ()=> getTeamsByLeader(profile?.id!),
     enabled: !!user?.id,
     retry: 2,
   });
@@ -48,7 +55,8 @@ export default function Team() {
     );
   }
 
-  return (
+ 
+ if(teams) return (
     <div className="w-full md:w-auto my-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black py-8 md:mx-5">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -93,6 +101,7 @@ export default function Team() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               { 
+              
                 teams.map((team) => (
                 <TeamCard key={team.id} team={team} isMyTeam={true} />
               )) 

@@ -1,11 +1,12 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
 import { TeamApiSchema, TeamsByUserApiSchema, TeamSchema, type Team, type TeamForm } from "../types/index";
-import { json } from "zod";
 
 type getTeamsProps = {
   page: number | undefined;
   page_size: number | undefined;
+  search?:string;
+  sport?:string;
 };
 
 export async function getTeams(paginator: getTeamsProps) {
@@ -14,6 +15,7 @@ export async function getTeams(paginator: getTeamsProps) {
       params: paginator
     });
 
+    console.log(data)
     return data.results;
 
   } catch (error) {
@@ -61,6 +63,30 @@ export async function getTeamById(id: Team["id"]) {
     throw error;
   }
 }
+
+export async function getTeamsByLeader(leader_id: Team["leader"]) {
+  const formData = new FormData();
+  formData.append("leader", leader_id);
+  try {
+    const { data } = await api.post(`/teams/getTeamsByLeader/`,
+      formData
+    );
+
+    const response = TeamsByUserApiSchema.safeParse(data);
+
+    if (!response.success) {
+      console.error(response.error);
+      throw new Error("Respuesta inválida del servidor");
+    }
+    return data.data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+    throw error;
+  }
+}
+
 
 type EditTeamPayload = {
   teamId: string;

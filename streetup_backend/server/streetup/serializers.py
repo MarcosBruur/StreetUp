@@ -51,6 +51,7 @@ class TokenSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.Serializer):
+    name = serializers.CharField()
     id = serializers.CharField(read_only=True)
     age = serializers.IntegerField()
     description = serializers.CharField()
@@ -111,6 +112,7 @@ class ProfileSerializer(serializers.Serializer):
         if photo:
             instance.save_image(photo)
 
+        instance.name = validated_data.get('name', instance.name)
         instance.age = validated_data.get('age', instance.age)
         instance.description = validated_data.get(
             'description', instance.description)

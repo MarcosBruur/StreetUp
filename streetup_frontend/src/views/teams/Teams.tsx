@@ -1,7 +1,3 @@
-
-// components/teams/Teams.tsx - Vista de equipos con paleta azul/verde
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import CreateTeamModal from "../../components/team/CreateTeamModal";
 import { useState } from "react";
 
@@ -18,9 +14,7 @@ import type { Team } from "../../types";
 import TeamCardMini from "../../components/team/TeamCardMini";
 
 export default function Teams() {
-  const { data: user } = useAuth();
-  const navigate = useNavigate();
-
+  
   const [search, setSearch] = useState("");
   const [sport, setSport] = useState("");
 
@@ -29,6 +23,7 @@ export default function Teams() {
     queryFn:  () => getTeams({ page: 1, page_size: 10,search,sport}),
     retry: 2,
   })
+
     
   return (
     <div className="w-full md:w-auto pb-2 my-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black pt-8 md:mx-5">
@@ -64,7 +59,7 @@ export default function Teams() {
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Buscar equipos por nombre, deporte o ubicación..."
+                    placeholder="Buscar equipos por nombre"
                     className="w-full pl-12 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
