@@ -1,4 +1,3 @@
-import CreateTeamModal from "../../components/team/CreateTeamModal";
 import { useState } from "react";
 
 import {   
@@ -78,8 +77,6 @@ export default function Players() {
 
         
 
-        {/* Modal de creación de equipo */}
-        <CreateTeamModal />
       </div>
     </div>
     </div>

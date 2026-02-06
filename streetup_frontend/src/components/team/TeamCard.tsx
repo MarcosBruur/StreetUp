@@ -24,18 +24,6 @@ export default function TeamCard({ team }: TeamCardProps) {
     enabled: !!team.leader
   })
 
-  const getSportIcon = (sport: string) => {
-    const icons: Record<string, string> = {
-      'futbol': '⚽',
-      'baloncesto': '🏀',
-      'tenis': '🎾',
-      'natacion': '🏊',
-      'voley': '🏐',
-      'rugby': '🏉',
-      'default': '🏆'
-    };
-    return icons[sport.toLowerCase()] || icons.default;
-  };
 
   return (
     <div className="group relative">
@@ -96,7 +84,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
               <div className="flex items-center gap-2">
                 <HandThumbUpIcon className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-400 text-sm">100 Me Gusta</span>
+                <span className="text-gray-400 text-sm">{team.likes} Me Gusta</span>
               </div>
             </div>
           </div>
@@ -117,7 +105,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             </div>
             <div className="flex justify-center">
               <button
-                    onClick={() => navigate(`?team_id=${team.id}`)}
+                    onClick={() => navigate("/error")}
                     className="px-4 py-3 bg-orange-800 hover:bg-orange-700 hover:shadow-[0px_0px_13px_1px_#d45206] transition-all text-gray-300 hover:text-white  duration-300"
                   >
                     Buscar Miembros

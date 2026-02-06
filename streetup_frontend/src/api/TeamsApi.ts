@@ -15,7 +15,7 @@ export async function getTeams(paginator: getTeamsProps) {
       params: paginator
     });
 
-    console.log(data)
+
     return data.results;
 
   } catch (error) {
@@ -126,6 +126,17 @@ export async function getTeamsByUser() {
       throw new Error(error.response.data.error);
     }
     throw error;
+  }
+}
+
+export async function sendLike(team_id: Team["id"]){
+  try{
+    const {data} = await api(`/teams/${team_id}/sendLike`)
+    return data;
+  }catch(error){
+    if(isAxiosError(error) && error.response){
+      throw new Error(error.response.data.error);
+    }
   }
 }
 

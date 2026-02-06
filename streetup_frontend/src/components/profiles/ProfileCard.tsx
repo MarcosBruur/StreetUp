@@ -209,7 +209,7 @@ export default function ProfileCard({ user, profile,teams }: ProfileCardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Me gusta recibidos</p>
-                <p className="text-3xl font-bold text-white">3</p>
+                <p className="text-3xl font-bold text-white">{profile.likes}</p>
               </div>
               <div className="animate-bounce size-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
                 <span className="text-fuchsia-400 text-xl">

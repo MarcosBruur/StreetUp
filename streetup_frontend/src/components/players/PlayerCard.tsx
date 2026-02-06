@@ -1,8 +1,9 @@
-import { getProfile } from "../../api/ProfileApi";
+import { getProfile, sendLike } from "../../api/ProfileApi";
 import type { Profile } from "../../types";
 import { useQuery } from "@tanstack/react-query";
 import {MapPinIcon,HandThumbUpIcon} from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 
 export default function PlayerCard({ player }: { player: Profile }) {
@@ -12,6 +13,9 @@ export default function PlayerCard({ player }: { player: Profile }) {
   });
 
   const navigate = useNavigate();
+
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(player.likes);
 
 
   if (data)
@@ -41,24 +45,37 @@ export default function PlayerCard({ player }: { player: Profile }) {
               </div>
               <div className="flex gap-5 justify-around mt-3">
                 <button 
-                  onClick={()=> navigate(`${location.pathname}/${player.id}`)}
+                  onClick={()=> navigate(`/players/${player.id}`)}
                   className="px-3 py-2 bg-cyan-700 
                   hover:bg-cyan-600"
                 >
                   Ver Más
                 </button>
-                <div className="flex gap-2 justify-center items-center">
-                  <button 
-                    className="px-2 py-1 rounded-full bg-purple-800 border-white 
-                    hover:bg-purple-700  
-                    hover:scale-110
-                    transition-all text-gray-300 
-                    hover:text-white  duration-300"
-                  >
-                    <HandThumbUpIcon className="size-5"/>
-                  </button>
-                  <p>Me Gusta</p>
+                <div className="flex flex-col gap-1 justify-center items-center">
+                  <div className="flex justify-center items-center gap-2">
+                    <button
+                      onClick={async () => {
+                        await sendLike(player.id);
+                        setLiked(true);
+                        setLikes((prev) => prev + 1);
+                        setTimeout(() => setLiked(false), 2000);
+                      }}
+                      className="px-2 py-1 rounded-full bg-purple-800 border-white 
+                      hover:bg-purple-700 hover:scale-110 transition-all 
+                      text-gray-300 hover:text-white duration-300"
+                    >
+                      <HandThumbUpIcon className="size-5"/>
+                    </button>
+                    <p>Me Gusta</p>
+                  </div>
+                  
+                  {liked && (
+                    <p className="text-green-600 font-bold animate-fade-up">
+                      +1 Like
+                    </p>
+                  )}
 
+                <p className="text-fuchsia-700 font-bold">{likes}</p>
                 </div>
               </div>
             </div>

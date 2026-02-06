@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import Error from "../auth/Error";
@@ -14,6 +14,8 @@ export default function EditTeamForm() {
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
+  const {team_id} = useParams();
+  if(team_id) queryParams.set("team_id", team_id);
   const teamId = queryParams.get("team_id");
 
   /* =========================

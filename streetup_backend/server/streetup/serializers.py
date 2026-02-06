@@ -60,6 +60,7 @@ class ProfileSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=["free", "busy"], required=False)
     location = serializers.CharField(required=False)
     photo_view = serializers.CharField(read_only=True, source='photo')
+    likes = serializers.IntegerField()
 
     def to_internal_value(self, data):
 
@@ -133,6 +134,7 @@ class TeamSerializer(serializers.Serializer):
     sport = serializers.CharField()
     location = serializers.CharField(required=False)
     description = serializers.CharField()
+    likes = serializers.IntegerField()
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -154,5 +156,6 @@ class TeamSerializer(serializers.Serializer):
             "sport": instance.sport,
             "photo": instance.photo,
             "description": instance.description,
-            "location": instance.location
+            "location": instance.location,
+            "likes": instance.likes
         }

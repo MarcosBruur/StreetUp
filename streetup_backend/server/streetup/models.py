@@ -20,6 +20,7 @@ class Profiles(Document):
     status = fields.StringField(required=True, choices=[
                                 "free", "busy"], default="free")
     location = fields.StringField()
+    likes = fields.IntField(default=0)
 
     def save_image(self, file_obj):
         os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -90,3 +91,4 @@ class Teams(Document):
     sport = fields.StringField(required=True)
     description = fields.StringField(required=True)
     location = fields.StringField(required=False)
+    likes = fields.IntField(default=0)

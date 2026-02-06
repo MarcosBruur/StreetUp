@@ -93,7 +93,7 @@ export default function Team() {
               <div className="p-2 rounded-lg bg-linear-to-r from-blue-500/20 to-emerald-500/20">
                 <UserGroupIconSolid className="w-6 h-6 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold text-white">Mis Equiposss</h2>
+              <h2 className="text-2xl font-bold text-white">Mis Equipos</h2>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm">
                 {teams.length} equipo{teams.length !== 1 ? 's' : ''}
               </span>

@@ -11,6 +11,8 @@ import Team from "./views/team/Team";
 import NewProfile from "./views/profile/NewProfile";
 import Confirm from "./views/auth/Confirm";
 import PlayerInfo from "./views/players/PlayerInfo";
+import TeamInfoView from "./views/team/TeamInfoView";
+import Error404View from "./views/Error404View";
 
 export default function Router() {
   return (
@@ -24,11 +26,13 @@ export default function Router() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:team_id" element={<TeamInfoView />} />
           <Route path="/players" element={<Players />} />
           <Route path="/players/:player_id" element={<PlayerInfo />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new_profile" element={<NewProfile />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/error" element={<Error404View />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -91,6 +91,7 @@ export const ProfileSchema = z.object({
   sports: z.array(z.string()),
   location: z.string(),
   status: ProfileStatusSchema,
+  likes: z.number()
 });
 
 export type Profile = z.infer<typeof ProfileSchema>;
@@ -109,6 +110,7 @@ export const TeamSchema = z.object({
   description: z.string(),
   location: z.string(),
   photo: z.string(),
+  likes: z.number()
 });
 
 export const TeamsByUserApiSchema = z.object({

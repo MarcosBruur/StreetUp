@@ -285,6 +285,16 @@ class ProfileViewSet(viewsets.ViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['get'])
+    def sendLike(self, request, pk):
+        try:
+            profile = Profiles.objects.get(id=pk)
+            profile.likes += 1
+            profile.save()
+            return Response('+1 LIKE', status=status.HTTP_200_OK)
+        except Profiles.DoesNotExist:
+            return Response('Perfil no econtrado', status=status.HTTP_404_NOT_FOUND)
+
     @action(detail=True, methods=['post'])
     def upload_photo(self, request, pk=None):
         try:
@@ -410,3 +420,13 @@ class TeamViewSet(viewsets.ViewSet):
             }, status=status.HTTP_200_OK)
         except Users.DoesNotExist:
             return Response('Usuario no encontrado', status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['get'])
+    def sendLike(self, request, pk):
+        try:
+            team = Teams.objects.get(id=pk)
+            team.likes += 1
+            team.save()
+            return Response('+1 LIKE', status=status.HTTP_200_OK)
+        except Teams.DoesNotExist:
+            return Response('Equipo no econtrado', status=status.HTTP_404_NOT_FOUND)

@@ -24,6 +24,17 @@ export async function getProfileById(id:string) {
   }
 }
 
+export async function sendLike(profile_id: Profile["id"]){
+  try{
+    const {data} = await api(`/profiles/${profile_id}/sendLike`)
+    return data;
+  }catch(error){
+    if(isAxiosError(error) && error.response){
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
 type getProfilesProps ={
   search?:string;
 }

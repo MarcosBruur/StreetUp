@@ -8,6 +8,9 @@ import type { Profile, Team } from "../../types";
 import { useQuery } from "@tanstack/react-query";
 import EditTeamModal from "./EditTeamModal";
 import { getProfileById } from "../../api/ProfileApi";
+import { sendLike } from "../../api/TeamsApi";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 type TeamCardProps = {
   team: Team;
@@ -15,7 +18,9 @@ type TeamCardProps = {
 };
 
 export default function TeamCardMini({ team }: TeamCardProps) {
-  
+  const navigate = useNavigate();
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(team.likes);
   const {data:teamLeader} = useQuery<Profile>({
     queryKey: ['teamLeader',team.leader],
     queryFn: ()=> getProfileById(team.leader),
@@ -71,41 +76,45 @@ export default function TeamCardMini({ team }: TeamCardProps) {
           </p>
 
           {/* Estadísticas */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          
             <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center gap-2">
+              <div className="flex justify-center items-center gap-2">
                 <UserGroupIcon className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-400 text-sm">{team.members.length} Miembros</span>
+                <span className="text-gray-400 text-sm ">{team.members.length} Miembros</span>
               </div>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center gap-2">
-                <HandThumbUpIcon className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-400 text-sm">100 Me Gusta</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
+          
+          <div className="flex flex-col gap-4 mt-5">
             
-            <div className="flex flex-col justify-center items-center gap-5">
+            <div className="flex flex-col justify-center items-center gap-2">
               <div className="flex justify-center items-center gap-2">
                 <button
-                    onClick={() => console.log("Like button clicked")}
-                    className="px-4 py-3 rounded-full bg-purple-800 border-white 
-                    hover:bg-purple-700  
-                    hover:scale-110
-                    transition-all text-gray-300 
-                    hover:text-white  duration-300"
-                  >
-                      <div className="flex flex-col justify-center items-center">
-                      <HandThumbUpIcon className="size-5"/>
-                      </div>   
-              </button>
-                <p>Dar Me gusta</p>
+                                    onClick={async () => {
+                                      await sendLike(team.id);
+                                      setLiked(true);
+                                      setLikes((prev) => prev + 1);
+                
+                                      setTimeout(() => setLiked(false), 2000);
+                                    }}
+                                    className="px-2 py-1 rounded-full bg-purple-800 border-white 
+                                    hover:bg-purple-700 hover:scale-110 transition-all 
+                                    text-gray-300 hover:text-white duration-300"
+                                  >
+                                    <HandThumbUpIcon className="size-5"/>
+                                  </button>
+                                  <p>Me Gusta</p>
+                
+                                  {liked && (
+                                    <p className="text-green-600 font-bold animate-fade-up">
+                                      +1 Like
+                                    </p>
+                                  )}
+                
               </div>
+                                  <p className="text-fuchsia-700 font-bold">{likes}</p>
               
               <button
-                    onClick={() => console.log("Like button clicked")}
+                    onClick={()=> navigate(`/teams/${team.id}`)}
                     className="bg-linear-to-r from-gray-800 
                     to-gray-900 hover:from-gray-700 
                     hover:to-gray-800 text-white px-8 py-3 

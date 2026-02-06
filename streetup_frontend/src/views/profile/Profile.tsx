@@ -57,7 +57,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="w-full md:w-auto mt-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 via-gray-900 to-black pt-8 md:mx-5">
+    <div className="w-full md:w-auto mt-10 min-h-screen rounded-2xl bg-linear-to-br from-gray-800 to-gray-900 pt-8 md:mx-5">
       <div className="max-w-7xl mx-auto">
         {/* Header con título y botón de editar */}
         <div className="px-4 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-12 gap-4">
