@@ -5,7 +5,7 @@ export default function Error404View() {
     <>
       <div className="h-full w-auto flex items-center justify-center">
 
-      <div className="animate-bounce animate-infinite shadow-[0px_0px_32px_7px_#cfab0a] p-4 flex gap-4 bg-linear-to-br from-gray-800 to-gray-900 pt-8 md:mx-5">
+      <div className="shadow-[0px_0px_32px_7px_#cfab0a] p-4 flex gap-4 bg-linear-to-br from-gray-800 to-gray-900 pt-8 md:mx-5">
       <ExclamationTriangleIcon className="size-10 text-yellow-600 mx-auto mb-4" />
       <h1 className="text-3xl text-yellow-600 text-center font-bold">
         PROXIMAMENTE...

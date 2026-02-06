@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { UserGroupIcon } from "@heroicons/react/24/solid";
+import Error404View from "./Error404View";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoibWFyY29zYnJ1dXIiLCJhIjoiY21pbDBhaWM0MWV0MTNlcHB4a2N1cTJ2MSJ9.Obi8EuY8j-rbL-51UPvh2w";
@@ -86,9 +86,9 @@ export default function Home() {
         </Map>
       </div>
       {/* Estadísticas */}
-        <div className="lg:mx-4 rounded-lg px-4 py-2 mb-12 bg-linear-to-br from-gray-800 to-gray-900">
+        <div className="lg:mx-4 rounded-lg px-4 py-4 mb-12 bg-linear-to-br from-gray-800 to-gray-900">
           <h2 className="text-2xl font-bold text-white mb-6 mt-6">Estadísticas de la Comunidad</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
               <div className="flex items-center justify-between">
                 <div>
@@ -142,7 +142,10 @@ export default function Home() {
                 <p className="text-gray-400 text-xs mt-2">+5 desde la semana pasada</p>
               </div>
             </div>
-          </div>
+           
+            
+            </div> */}
+              <Error404View/>
         </div>
     </>
   );
