@@ -51,7 +51,7 @@ class TokenSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.Serializer):
-    name = serializers.CharField()
+    name = serializers.CharField(read_only=True)
     id = serializers.CharField(read_only=True)
     age = serializers.IntegerField()
     description = serializers.CharField()
@@ -60,10 +60,9 @@ class ProfileSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=["free", "busy"], required=False)
     location = serializers.CharField(required=False)
     photo_view = serializers.CharField(read_only=True, source='photo')
-    likes = serializers.IntegerField()
+    likes = serializers.IntegerField(required=False)
 
     def to_internal_value(self, data):
-
         # convertir QueryDict a dict normal
         if hasattr(data, "dict"):
             data = data.dict()
@@ -93,6 +92,8 @@ class ProfileSerializer(serializers.Serializer):
     def create(self, validated_data):
         request = self.context["request"]
 
+        validated_data["name"] = request.user.userName
+        validated_data.setdefault("likes", 0)
         photo = request.FILES.get("photo")   # archivo real
 
         # ❗️ Eliminar campo photo porque no es string
@@ -134,7 +135,7 @@ class TeamSerializer(serializers.Serializer):
     sport = serializers.CharField()
     location = serializers.CharField(required=False)
     description = serializers.CharField()
-    likes = serializers.IntegerField()
+    likes = serializers.IntegerField(required=False)
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)

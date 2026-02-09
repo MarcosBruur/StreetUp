@@ -207,7 +207,10 @@ class ProfileViewSet(viewsets.ViewSet):
         serializer = ProfileSerializer(
             data=request.data, context={"request": request})
 
-        serializer.is_valid()
+        if not serializer.is_valid():
+            print(serializer.errors)
+
+        serializer.is_valid(raise_exception=True)
         profile = serializer.save()
 
         user = request.user
@@ -220,8 +223,6 @@ class ProfileViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['put'], parser_classes=[MultiPartParser, FormParser])
     def editProfile(self, request):
-        print(request.data)
-        print(request.FILES)
         try:
             user = request.user.to_dict()
             profile = Profiles.objects.get(id=user['profile'])
@@ -357,10 +358,15 @@ class TeamViewSet(viewsets.ViewSet):
 
     def create(self, request):
         serializer = TeamSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            print(serializer.errors)
         serializer.is_valid(raise_exception=True)
 
         team = Teams(**serializer.validated_data)
-        team.leader = request.user
+        profile = request.user.profile
+
+        team.leader = profile
         team.save()
         return JsonResponse({
             "message": "Equipo creado correctamente",
