@@ -16,7 +16,7 @@ export default function CreateTeamForm() {
     },
     onSuccess: (data) => {
       toast.success(data?.message);
-      queryClient.invalidateQueries({ queryKey: ["team"] });
+      queryClient.invalidateQueries({ queryKey: ["teams"] });
       navigate(location.pathname, { replace: true });
     },
   });
@@ -32,12 +32,15 @@ export default function CreateTeamForm() {
   };
 
   const backgrounds = [
-  { id: "team", src: "/static/static/teams/team.jpg" },
-  { id: "font_color", src: "/static/static/teams/font_color.jpg" },
-  { id: "font_graffiti", src: "/static/static/teams/font_graffiti.jpg" },
-  { id: "font_graffiti_cel", src: "/static/static/teams/font_graffiti_cel.jpg" },
-  { id: "font_home", src: "/static/static/teams/font_home.jpg" },
-];
+    { id: "team", src: "/static/static/teams/team.jpg" },
+    { id: "font_color", src: "/static/static/teams/font_color.jpg" },
+    { id: "font_graffiti", src: "/static/static/teams/font_graffiti.jpg" },
+    { id: "font_graffiti_cel", src: "/static/static/teams/font_graffiti_cel.jpg" },
+    { id: "font_home", src: "/static/static/teams/font_home.jpg" },
+    { id: "1", src: "/static/static/teams/1.jpg" },
+    { id: "2", src: "/static/static/teams/2.jpg" },
+    { id: "3", src: "/static/static/teams/3.jpg" },
+  ];
 
   const selectedBg = watch("photo");
 
@@ -125,7 +128,7 @@ export default function CreateTeamForm() {
         <div>
   <label className="block mb-2">Fondo:</label>
 
-  <div className="mt-2 py-2 px-4 md:px-0 grid grid-cols-2 md:flex gap-5">
+  <div className="mt-2 py-2 px-4 grid grid-cols-2 md:grid-cols-4 gap-5">
     {backgrounds.map((bg) => (
       <label key={bg.id} className="cursor-pointer">
         <input
@@ -149,7 +152,7 @@ export default function CreateTeamForm() {
           <img
             src={bg.src}
             alt={bg.id}
-            className="size-30 object-cover"
+            className="size-40 object-cover"
           />
         </div>
       </label>

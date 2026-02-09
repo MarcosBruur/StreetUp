@@ -55,6 +55,7 @@ export async function getProfiles({search}: getProfilesProps) {
 export const createProfile = async (data: ProfileForm) => {
   const formData = new FormData();
 
+  
   if (data.photo) {
     formData.append("photo", data.photo);
   }
@@ -64,14 +65,17 @@ export const createProfile = async (data: ProfileForm) => {
   formData.append("description", data.description);
   formData.append("sports",JSON.stringify(data.sports));
 
-  
-  const res = await api.post("/profiles/", formData, {
+  try{
+    const res = await api.post("/profiles/", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
-  });
-
-
-  return res.data;
+    });
+    return res.data;
+  }catch(error){
+    if(isAxiosError(error) && error.response){
+      throw new Error(error.response.data.error);
+    }
+  }
 };
 export async function editProfile(data: ProfileForm) {
   const formData = new FormData();

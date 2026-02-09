@@ -42,17 +42,21 @@ export default function Home() {
     );
   }, []);
 
+  const isMobile = window.innerWidth < 768;
+
   if (loading) return <p>Cargando ubicación...</p>;
 
   return (
     <>
       
-      <div className="flex justify-center my-10">
+      <div className="flex justify-center md:my-10 mx-5">
         <Map
           {...viewState}
           onMove={(e) => setViewState(e.viewState)}
           style={{ 
-            width: 800, height: 600, borderRadius: 10,
+            width: isMobile ?  500 : 800, 
+            height: isMobile ? 450 : 600, 
+            borderRadius: 10,
             border: "2px solid #C3110C", 
             boxShadow:"-1px 1px 15px 6px rgba(252,93,45,0.75)",
             WebkitBoxShadow:"-1px 1px 15px 6px rgba(252,93,45,0.75)",
@@ -61,7 +65,7 @@ export default function Home() {
           mapStyle="mapbox://styles/mapbox/streets-v11"
           mapboxAccessToken={MAPBOX_TOKEN}
         >
-          {/* --- POPUP CORRECTO (mapbox) --- */}
+          
           <Popup
             longitude={marker.longitude}
             latitude={marker.latitude}
@@ -72,7 +76,7 @@ export default function Home() {
             Estás aquí
           </Popup>
 
-          {/* --- MARCADOR DRAGGABLE --- */}
+          
           <Marker
             longitude={marker.longitude}
             latitude={marker.latitude}
@@ -86,7 +90,7 @@ export default function Home() {
         </Map>
       </div>
       {/* Estadísticas */}
-        <div className="lg:mx-4 rounded-lg px-4 py-4 mb-12 bg-linear-to-br from-gray-800 to-gray-900">
+        <div className="mt-6 lg:mx-4 rounded-lg px-4 py-4 mb-12 bg-linear-to-br from-gray-800 to-gray-900">
           <h2 className="text-2xl font-bold text-white mb-6 mt-6">Estadísticas de la Comunidad</h2>
           {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-linear-to-br from-blue-900/30 to-emerald-900/30 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">

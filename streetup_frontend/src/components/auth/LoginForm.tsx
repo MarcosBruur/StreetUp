@@ -41,7 +41,7 @@ export default function LoginForm() {
             if (data?.user.profile === null) {
               navigate("/new_profile");
             } else {
-              navigate("/profile");
+              navigate("/");
             }
           },
   })

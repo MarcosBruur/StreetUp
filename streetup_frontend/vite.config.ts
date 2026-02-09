@@ -13,7 +13,6 @@ export default defineConfig({
       buildStart() {
         const target = path.resolve(__dirname, "../streetup_backend/server/static/assets");
         fs.emptyDirSync(target);
-        console.log("🧹 Limpieza de static Django completada");
       },
     },
   ],

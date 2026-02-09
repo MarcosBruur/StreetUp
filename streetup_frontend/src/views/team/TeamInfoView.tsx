@@ -2,10 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth";
-import EditProfileModal from "../../components/profiles/EditProfileModal";
 import type {  Team } from "../../types";
-import { PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { ArrowUturnLeftIcon, PencilSquareIcon as PencilSquareIconSolid } from "@heroicons/react/24/solid";
+import {  UserCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowUturnLeftIcon  } from "@heroicons/react/24/solid";
 import { getTeamById } from "../../api/TeamsApi";
 import TeamInfo from "../../components/team/TeamInfo";
 import { useParams } from "react-router-dom";

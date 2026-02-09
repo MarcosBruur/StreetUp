@@ -2,8 +2,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import CreateTeamForm from "./CreateTeamForm";
 import EditTeamForm from "./EditTeamForm";
 
 export default function EditTeamModal() {

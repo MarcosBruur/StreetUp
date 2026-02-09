@@ -177,7 +177,7 @@ export default function TeamInfo({ team }: TeamInfoProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Partidos Jugados</p>
-                <p className="text-3xl font-bold text-white">50</p>
+                <p className="text-lg font-bold text-white">...PROXIMAMENTE...</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-linear-to-r from-fuchsia-500/20 to-purple-600/20 flex items-center justify-center">
                 <span className="text-fuchsia-400 text-xl">⚽</span>

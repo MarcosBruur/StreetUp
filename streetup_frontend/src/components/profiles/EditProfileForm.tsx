@@ -1,5 +1,5 @@
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery,useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import Error from "../auth/Error";
 import type { ProfileForm } from "../../types";
@@ -11,17 +11,18 @@ import { useNavigate } from "react-router-dom";
 export default function EditProfileForm() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // ---------- QUERY ----------
+
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
     retry: 2,
   });
 
-  // ---------- FORM ----------
+  
   const {
     register,
     handleSubmit,
@@ -30,14 +31,14 @@ export default function EditProfileForm() {
     formState: { errors },
   } = useForm<ProfileForm>();
 
-  // Cuando llega el profile -> cargar valores
+ 
   useEffect(() => {
     if (data) {
       reset(data);
     }
   }, [data, reset]);
 
-  // ---------- MUTATION ----------
+  
   const { mutate } = useMutation({
     mutationFn: editProfile,
     onError: (error: Error) => {
@@ -45,6 +46,9 @@ export default function EditProfileForm() {
     },
     onSuccess: (msg) => {
       toast.success(msg);
+      queryClient.invalidateQueries({
+        queryKey: ["profile"]
+      })
       navigate(location.pathname,{replace:true});
     },
   });
@@ -113,9 +117,9 @@ export default function EditProfileForm() {
           </div>
         </div>
 
-        {/* ---------- FORM FIELDS ---------- */}
+        
         <div className="flex flex-col gap-y-2 mt-5">
-          {/* AGE */}
+          <label htmlFor="age">Edad</label>
           <input
             type="number"
             className="bg-white p-2 w-full text-black rounded-sm"
@@ -127,7 +131,7 @@ export default function EditProfileForm() {
           />
           {errors.age && <Error>{errors.age.message}</Error>}
 
-          {/* LOCATION */}
+          <label htmlFor="location">Ubicación</label>
           <input
             type="text"
             className="bg-white p-2 w-full text-black"
@@ -135,7 +139,7 @@ export default function EditProfileForm() {
             {...register("location")}
           />
 
-          {/* DESCRIPTION */}
+          <label htmlFor="description">Descripción</label>
           <textarea
             className="bg-white p-2 w-full text-black"
             placeholder="Descripción"
@@ -151,7 +155,7 @@ export default function EditProfileForm() {
               "basquet",
               "tenis",
               "voley",
-              "paddel",
+              "padel",
               "ciclismo",
             ].map((sport) => (
               <label key={sport} className="flex items-center gap-1">

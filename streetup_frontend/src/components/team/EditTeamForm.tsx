@@ -6,30 +6,24 @@ import { toast } from "react-toastify";
 
 import Error from "../auth/Error";
 import { sportsOptions, type TeamForm } from "../../types";
-import { createTeam, editTeam, getTeamById } from "../../api/TeamsApi";
+import {  editTeam, getTeamById } from "../../api/TeamsApi";
 
 export default function EditTeamForm() {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   const queryParams = new URLSearchParams(location.search);
   const {team_id} = useParams();
   if(team_id) queryParams.set("team_id", team_id);
   const teamId = queryParams.get("team_id");
 
-  /* =========================
-     QUERY (OBTENER EQUIPO)
-  ========================= */
   const { data: team } = useQuery({
     queryKey: ["team", teamId],
     queryFn: () => getTeamById(teamId!),
     enabled: !!teamId,
   });
 
-  /* =========================
-     FORM
-  ========================= */
   const {
     register,
     handleSubmit,
@@ -38,9 +32,6 @@ export default function EditTeamForm() {
     formState: { errors },
   } = useForm<TeamForm>();
 
-  /* =========================
-     CARGAR DATOS EN EL FORM
-  ========================= */
   useEffect(() => {
     if (team) {
       reset({
@@ -53,22 +44,24 @@ export default function EditTeamForm() {
     }
   }, [team, reset]);
 
-  /* =========================
-     MUTATION
-  ========================= */
   const { mutate } = useMutation({
     mutationFn: editTeam,
     onError: (error) => {
       toast.error(error.message);
-    },onSuccess: (data) => {
-  toast.success(data?.message);
-  navigate(location.pathname, { replace: true });
-    window.location.reload();     
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message);
+      queryClient.invalidateQueries({
+      queryKey: ["team", teamId],
+      });
+      queryClient.invalidateQueries({
+      queryKey: ["teams"],
+      });
+      navigate(location.pathname, { replace: true });
   }});
 
 
   const handleEditProfile = (formData: TeamForm) => {
-    console.log(formData)
     mutate({ teamId: teamId!, formdata: formData });
   };
 
@@ -78,6 +71,9 @@ export default function EditTeamForm() {
     { id: "font_graffiti", src: "/static/static/teams/font_graffiti.jpg" },
     { id: "font_graffiti_cel", src: "/static/static/teams/font_graffiti_cel.jpg" },
     { id: "font_home", src: "/static/static/teams/font_home.jpg" },
+    { id: "1", src: "/static/static/teams/1.jpg" },
+    { id: "2", src: "/static/static/teams/2.jpg" },
+    { id: "3", src: "/static/static/teams/3.jpg" },
   ];
 
   const selectedBg = watch("photo");
@@ -89,6 +85,7 @@ export default function EditTeamForm() {
       className="mt-2"
     >
       <div className="flex flex-col gap-y-2">
+        <label htmlFor="name">Nombe</label>
         <input
           type="text"
           className="bg-white px-2 w-full text-black"
@@ -97,6 +94,7 @@ export default function EditTeamForm() {
         />
         {errors.name && <Error>{errors.name.message}</Error>}
 
+        <label htmlFor="sport">deporte</label>
         <select
           className="bg-gray-200 p-2 text-black w-full"
           {...register("sport", { required: "Seleccioná un deporte" })}
@@ -110,6 +108,7 @@ export default function EditTeamForm() {
         </select>
         {errors.sport && <Error>{errors.sport.message}</Error>}
 
+        <label htmlFor="location">Ubicación</label>
         <input
           type="text"
           className="bg-white px-2 w-full text-black"
@@ -117,6 +116,7 @@ export default function EditTeamForm() {
           {...register("location", { required: "Ubicación obligatoria" })}
         />
 
+        <label htmlFor="description">Descripción</label>
         <textarea
           className="bg-white px-2 w-full text-black"
           placeholder="Descripción"
@@ -127,7 +127,7 @@ export default function EditTeamForm() {
 
         <div>
           <label className="block mb-2">Fondo:</label>
-          <div className="grid grid-cols-2 md:flex gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {backgrounds.map((bg) => (
               <label key={bg.id} className="cursor-pointer">
                 <input
@@ -143,7 +143,7 @@ export default function EditTeamForm() {
                       : "border-white"
                   }`}
                 >
-                  <img src={bg.src} alt={bg.id} className="size-30" />
+                  <img src={bg.src} alt={bg.id} className="size-40" />
                 </div>
               </label>
             ))}

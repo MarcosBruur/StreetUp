@@ -22,7 +22,7 @@ const sportsOptions = [
   { id: "basquet", label: "Básquet", emoji: "🏀" },
   { id: "tenis", label: "Tenis", emoji: "🎾" },
   { id: "voley", label: "Vóley", emoji: "🏐" },
-  { id: "paddle", label: "Pádel", emoji: "🎾" },
+  { id: "padel", label: "Pádel", emoji: "🎾" },
   { id: "ciclismo", label: "Ciclismo", emoji: "🚴" },
 ];
 
@@ -74,6 +74,8 @@ export default function NewProfileForm() {
       ...data,
       sports: selectedSports
     };
+
+    console.log(formData);
     mutate(formData);
   };
 
